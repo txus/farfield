@@ -1,0 +1,19 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      # Serial on purpose: each acceptance test holds a full-session render
+      # plus its analysis copies in flight (several GB); concurrent xdist
+      # workers OOM the 16 GB runner, which surfaces as 'The operation was
+      # canceled' with no test failure.
+      - run: uv run pytest -q

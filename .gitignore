@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+uv.lock
+*.html
+!farfield/viz_template.html
+
+# No audio ever belongs in this repository: renders are reproducible from
+# the presets, and source recordings could never be licensed by this
+# project. See the License section of the README.
+*.wav
+*.flac
+*.mp3

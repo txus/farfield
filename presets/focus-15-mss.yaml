@@ -1,0 +1,429 @@
+name: focus-15-mss
+title: "Free Flow 15 — MSS, the 7.333 Hz deep section"
+fidelity: measured-mss
+notes: |
+  MEASURED. Transcribed from spectral analysis of a personal copy of the
+  Monroe Sound Science 3D remaster of Gateway "Exploring Focus 15" (see docs/tape-analysis/mss-results.json in this repository). This
+  is our arrangement of measured numbers, not a copy of the recording:
+  every frequency, beat, level ratio, rotation period, crossfeed and bed
+  figure below is read off that analysis, and everything else about how
+  they are scheduled and mixed is ours.
+
+  Source caveat: the MSS material was measured from 320 kbps CBR mp3, a
+  LOSSY source, unlike the FLAC tape transfers behind the focus-10/12/15/21
+  presets. The analysis's own mp3_artifact_check clears the interaural
+  figures (side-channel information is being coded at these frequencies,
+  and the pan sidebands are recovered 37-40 dB over the side floor), but
+  the continuum levels above 16 kHz are encoder-limited and nothing here
+  depends on them.
+
+  NOT RENDERED, and disclosed rather than faked: the remaster's music (a
+  G pentatonic intro pad at 150-300 s and a closing span at 2470-2570 s)
+  and its spoken narration (eighteen spans between 86 s and 2490 s). Both
+  are real content of the recording; neither is beat structure, and
+  this preset carries the beat layers only, so the bed and the
+  carriers run continuously through the windows the tape gives to voice
+  and music. The 2470-2570 s exit block is also not rendered: its centres
+  (Bb4 466.167, and one pair on no 12-TET pitch at all) leave the G major
+  grid the rest of the release obeys, and this transcription ends with the
+  beat ladder rather than special-casing them.
+
+  The MSS grid is a retune, not a speed change: every pair centre sits on
+  a 12-TET A440 pitch of a G major triad (G1 48.999, G2 97.999, G3
+  195.998, B4 493.882, D5 587.331, G5 783.991), within 4 mHz, while the
+  beats stay on the tape's values (0.300 Hz sub-delta, 1.5008 Hz delta,
+  4.001 Hz theta, 10.000 Hz alpha, 7.333 Hz deep). Carriers are written as
+  the measured left/right pair members, not as centre+beat, so the numbers
+  in this file are the numbers in the analysis.
+
+  Kept deliberately, all measured: the 30.000 s counter-rotating amplitude
+  pan on every carrier from theta up (rotation depth 0.98 -- see below);
+  the ground pair's per-ear tremolo, 0.250 Hz in the left ear and 0.500 Hz
+  in the right at index 0.83, which is a tremolo and not a pan (its
+  sidebands sit in each channel's own spectrum); the -3.4 dB crossfeed and
+  +-34-48 deg interaural phase on the 98 Hz delta pair, which is a stereo
+  widening network, not an HRTF placement (its equivalent ITD exceeds any
+  physical head delay); the ground pair dropping out for exactly the
+  860-2060 s deep section that the 7.333 Hz layer owns; and the bed's
+  broad low hump (re-measured: peak 88 Hz, see below) with its
+  separate 1-4.8 kHz texture panning on a 7.5000 s LFO.
+
+  The 7.333 Hz layer is the tape era's unexplained F15 7.3 Hz split, kept
+  and moved onto the G grid; its D5 pair really does beat 7 mHz faster
+  than the other two, consistently, so that is transcribed rather than
+  rounded away.
+
+  Rotation depth is 0.98, not the analysis's eps = 0.80. That eps is a
+  sideband/carrier index derived under a LINEAR pan law; the recordings'
+  own summed power moves only 0.12 dB at the LFO rate, against the 2.15 dB
+  a linear pan of that index would swing, so the law is equal-power. Under
+  equal power, depth 0.80 reaches a 9.5 dB peak ILD where the tape's ILD
+  trace fits a 14.44 dB sinusoid; depth 0.98 is what the same estimator
+  recovers from the tape. Period, pair counter-phasing (179.5-180.9 deg)
+  and power preservation are transcribed unchanged.
+
+  Rotation phases are per-track and per-layer in the source, and this is
+  the one track for which NO phase was measured: every phase_deg in this
+  file is DERIVED and is the weakest set of numbers here. The theta anchor
+  is -57.5 deg, the mean of the two tracks that measured their 194 Hz pair
+  (-57.6 and -57.3); the theta triad then keeps Free Flow 10's measured
+  spacing (-45.3, -89.7 deg), and alpha and the 7.333 Hz layer keep Free
+  Flow 12's measured alpha offsets from its own theta anchor (-22.5,
+  -68.2, -113.2 deg). The analysis says outright that no single rule fits
+  all layers, so these are a plausible arrangement, not a transcription.
+
+  The bed is two independent noise streams (measured interchannel coherence
+  0.03-0.15 across 300-3000 Hz) with no whole-bed pan and no reverb or
+  interaural delay -- all three measured absent, in contrast to the tapes.
+  It DOES swell; see THE SWELL below, which corrects a "no surf" verdict this
+  preset used to carry. Our two-stream stereo stage requires an LFO, so its
+  depth is pinned at 0.1 dB, inside the measured 0.05-0.4 dB residual the
+  analysis reports as "no pan" below 1500 Hz. The audible 3D gesture is the texture layer
+  instead, and it is a SECOND two-stream crossfade, not a mono source panned
+  across the head -- see the wrap paragraph below.
+
+  THE SWELL, and the "no surf" verdict it overturns. mss-results.json used to
+  record bed.surf = "none" on the strength of a 53.1%-against-52.3% envelope
+  statistic. That verdict was wrong, and instructively so: it was measured on
+  the MONO SUM with an unsmoothed full-bandwidth Hilbert envelope, a number
+  dominated by the noise's own fast fluctuation and structurally blind to a
+  7.5 s swell. Measured with 0.30 s smoothing and a per-ear
+  decomposition into S = (L+R)/2, the common mode, and P = (L-R)/2, the pan,
+  the tape's TOTAL loudness breathes plainly: broadband 20 Hz-20 kHz
+  amplitude AM of 2.6-4.6% at the 7.5000 s pan rate over 22 voice-free
+  windows on four tracks, grand mean 3.4%, against the 0.1-1.0% -- pure
+  estimator floor -- that this preset rendered before the correction. A
+  second estimator agrees: the tape's mono-sum envelope-spectrum line at
+  7.5 s stands 25-30 dB over its local median through 1.5-8 kHz where the old
+  render stood at +2.
+
+  MECHANISM, established rather than assumed. An equal-power crossfade holds
+  a^2 + b^2 = 1 by construction, so position moves and loudness cannot. Two
+  mechanisms could break that, and they are distinguishable. Unequal stream
+  levels put the total-power modulation at the pan FUNDAMENTAL but exactly in
+  phase (or antiphase) with the ILD, and leave a DC offset on the ILD trace.
+  A genuine common-mode amplitude LFO riding with the pan puts it at the
+  fundamental at whatever phase it likes. The measurement is decisive: S
+  LEADS P by a quarter cycle -- +85.7 +- 1.3 deg over Free Flow 10's six
+  windows, +72 to +103 deg over all 22 windows on all four tracks -- and the
+  tape's mean ILD in the moving band is -0.04 to -0.19 dB, i.e. zero. Exact
+  quadrature rules the unequal-streams mechanism out, and it is the signature
+  of two per-ear gain LFOs at one rate whose phase offset departs from
+  180 deg: for any such offset the sum and the difference of the two ears'
+  envelopes are 90 deg apart identically. This preset therefore renders a
+  common-mode surf on the bed at the texture's own rate, phase-locked to it.
+
+  BOTH NOISE ELEMENTS SWELL, and it took a second pass to get that right.
+  The first attempt put the surf on the bed alone and a listener reported the
+  gesture still missing above 1.5 kHz. Rendering this preset three ways --
+  tones only, tones+bed, full -- and differencing says why, the mix being
+  exactly linear: by power share the bed owns 20-300 Hz (73%) and 300-1500
+  (87%), but the TEXTURE owns 1500-3000 (62%), 3000-4500 (92%), 4500-6000
+  (92%) and 6000-8000 (66%). The bands the gesture is heard in were exactly
+  the bands a bed-only swell could not reach; 4500-6000 Hz measured 0.2-0.6%
+  against the tape's 5.4-6.2%. The texture therefore carries its own surf, at
+  the same rate and the same quadrature relationship to ITS OWN pan --
+  verified rather than assumed, the rendered lead coming out +87 to +97 deg
+  against the tape's +85 to +100.
+
+  MEASURED: the 7.5000 s rate, the +90 deg quadrature lead, the 3.4%
+  broadband depth and the 5.4-6.2% at 4500-6000 Hz. DERIVED: bed surf depth
+  0.090, texture surf depth 0.114, and every surf phase_deg, which is its
+  segment's texture pan phase MINUS 90 (the engine's surf envelope puts its
+  AC phasor at phase_deg + 180 and the crossfade puts its ILD phasor at its
+  own phase_deg, so pan - 90 is what makes S lead P by a quarter cycle).
+  Those depths are engine-side quantities, not percentages: the envelope's
+  fractional amplitude AM is (depth/2)/(1 - depth/2), so 4.7% and 6.0%
+  respectively. The bed's is fitted to the broadband and 20-300 Hz figures
+  (the carriers, which do not swell, dilute 4.7% to the 3.3-4.3% the mix
+  measures against the tape's 2.8-4.6%); the texture's is fitted to
+  4500-6000 Hz, where the render lands at 5.9-6.3%. One pair of depths
+  serves all four programs, as one bed design should.
+
+  4500-6000 Hz is the calibration band on purpose. It sits inside the moving
+  element's own peak (the tape's ILD peaks at 4467-5623 Hz), it is clear of
+  the encoder noise that makes everything above 6.3 kHz unusable, and the
+  tape agrees there to +-0.4 points across 22 windows on four tracks. Bands
+  quoted over the whole of 1.5-8 kHz are not usable at all: the tape's
+  3000-4500 lobe is ANTIPHASE to its neighbours, so the aggregate nearly
+  nulls (0.5-2.0%) and says nothing about depth.
+
+  OMITTED, and disclosed: the tape's swell is SPECTRALLY SHAPED and each of
+  our elements is flat across its own band. Third-octave, the tape reads
+  about 3.4% below 300 Hz, rises to 9.9-11.1% at 400-630 Hz and falls back to
+  2.3% by 2.5 kHz. Ours reads 4.1-4.5% at 300-1500 against the tape's 3.8-8.9
+  and 5.5% at 1500-3000 against the tape's 1.8-2.8 -- short in one direction,
+  long in the other, by about a factor of two each way. Whether a two-element
+  split could produce that shape by itself was TESTED and it cannot: on Free
+  Flow 10, which has no carrier above 300 Hz and no moving element below
+  about 800 Hz, the 250 and 315 Hz thirds read 2.4% and 3.1% while 400, 500
+  and 630 read 9.9%, 9.8% and 8.8% -- a threefold range inside a band where
+  only the bed exists, so the bed's own swell is itself frequency-dependent.
+  Reproducing it needs a swelling element with its own band shape and none is
+  invented here. Two further residuals are left alone for cause: above 6 kHz
+  the tape's common mode reads 13-33% at levels 70-85 dB down, which is mp3
+  bit-allocation noise tracking programme loudness rather than content; and
+  in the 3.15-4 kHz thirds the tape's common mode sits at 0.25x the pan
+  amplitude in ANTIPHASE, a property of the tape's own pan law that an
+  equal-power crossfade does not have and that no common-mode swell can
+  reproduce at any depth, since its sign is wrong.
+
+  OUTPUT LEVEL is DERIVED to match the source, and that is a mastering choice
+  recorded here rather than a measurement. peak_dbfs is -12.51, not the -3.0
+  this preset used to carry. Normalizing to -3 dBFS peak put the render
+  9.2-10.1 dB hotter in RMS than the recording it exists to be compared
+  against -- a default masquerading as a decision, and one that made every
+  A/B listening test dishonest, because the louder side always wins. The
+  target is the tape's LOUDNESS, not its peak, because the crest factors
+  differ: this track's voice-free 120 s windows measure -27.52 +- 0.08 dBFS RMS at
+  peaks of -12.8 to -13.2 dBFS, and peak-matching across the four tracks would
+  have missed the loudness by 0.2 to 1.9 dB. peak_dbfs was solved for the RMS
+  instead, and the rendered windows now sit at -27.53 dBFS, a residual under
+  0.01 dB against the tape's mean and far inside its own window-to-window
+  scatter. Each track carries its own number because each track's layer
+  census and crest factor differ. Calibration used the analysis's own
+  voice-free windows minus the one on Freeflow 12 (300 s) and the one on
+  Freeflow 21 (250 s) that abut music spans this preset does not render and
+  read 0.6-3.4 dB hot as a result. Nothing clips and the normalization chain
+  is untouched: peak normalization still runs last and the output peak is
+  -12.51 dBFS by construction.
+
+  THE WRAP, and what it replaces. Earlier revisions of this preset carried a
+  note headed "ONE MEASURED DISCREPANCY" claiming the tape's moving texture
+  could not be reproduced, that a mono panned band was capped near 4 dB of
+  ILD swing by the bed slope, and that "something more elaborate than one
+  panned band is in the original". The first two claims were wrong and the
+  third was right for the wrong reason. They were artifacts of modelling the
+  texture as ONE mono source panned between the ears. The tape's moving band
+  is substantially DECORRELATED: magnitude-squared coherence measures
+  0.24-0.38 across 2.8-5.6 kHz where a panned mono source would read close
+  to 1.0, against a 0.03-0.15 floor elsewhere in the bed. That is the whole
+  percept. With decorrelated streams the ear does not stitch the outgoing
+  and the incoming sound into one object crossing the middle: one leaves on
+  the right and a different one appears on the left, which is the wrap the
+  recording gives and the retrace-through-the-centre our mono model gave.
+  The trajectory itself is a plain sinusoid in both (the tape's pan waveform
+  has a second-harmonic ratio of 0.0001), so the wrap is not a sawtooth
+  trajectory; it is the decorrelation. The texture is therefore rendered the
+  same way the bed is, as two independent band-limited streams gain-swept
+  against each other, which delivers a large ILD swing and low coherence at
+  once -- exactly what the tape measures, and what the mono model could not
+  do at any level.
+
+  Texture figures, all measured over nine voice-free windows on
+  four tracks. MEASURED: the 7.5000 s LFO period, the per-track LFO phase,
+  and the per-band ILD sinusoid amplitude, which rises 0.11 dB at 400 Hz,
+  0.58 at 1 kHz, 1.37 at 2 kHz, 4.09 at 3.2 kHz, 6.70 at 4 kHz, peaks at
+  7.80 dB in the 4467-5623 Hz band and falls to 3.52 by 6.3 kHz and 0.88 by
+  8 kHz (window-to-window sd 0.02-0.14 dB). DERIVED: band_hz 1000-4800,
+  level_db -54.0 and ild_amplitude_db 8.5, jointly fitted so the rendered
+  mix reproduces both that ILD profile and the tape's continuum through 1-8
+  kHz. Note ild_amplitude_db is now the INTRINSIC depth of the two-stream
+  sweep, not the mix ILD: at 8.5 the render measures 7.3-7.4 dB in the
+  tape's peak band against the tape's 7.80. OMITTED, and disclosed: our ILD
+  profile is BROADER than the tape's -- the render reads about 2.6 dB at
+  1.4-1.8 kHz and 5.9 dB at 5.6-7.1 kHz where the tape reads 0.62 and 3.52.
+  One 4th-order Butterworth band over a two-slope bed cannot make skirts as
+  steep as the tape's, and no attempt is made to fake them. Our coherence in
+  the moving band is 0.001-0.002 against the tape's 0.24-0.38: fully
+  decorrelated where the tape is partly correlated, which is the right side
+  of the old error but not the same number.
+
+  The bed's shape triple is derived from the tape (see
+  mss-results.json's bed.spectrum_shape_v2). peak_hz 88.0 is MEASURED: the
+  argmax of the median-Welch continuum over 25-400 Hz reads 88.1 +- 1.5 Hz
+  across nine voice-free windows on four tracks, not the 100 Hz the first
+  analysis quoted. rise 16.0 and fall -35.0 dB/decade are DERIVED, fitted to
+  the tape's own third-octave continuum over the two regions where the
+  moving texture is measurably absent (25-800 Hz and 8-12.5 kHz). They are
+  steeper than the analysis's quoted +7.7 / -26.3 because those were
+  straight-line fits: +7.7 came from a fit below 150 Hz that straddles the
+  knee, and -26.3 came from a 150-8000 Hz fit across a curve that is steep
+  just above the knee, flatter through the 1-3 kHz middle, and falls off a
+  cliff above 6 kHz. Rendered, this bed plus its texture measures -29.2
+  dB/decade over 150-8000 against the tape's own -27.3 under the same
+  estimator, and its whole third-octave continuum from 25 Hz to 12.5 kHz
+  sits within 1.3 dB rms of the tape's.
+
+  The delta pair's crossfeed_phase_deg is 41.0, which is DERIVED: the
+  tape measures +34.3 on the low member and -47.6 on the high, and this
+  engine applies one magnitude with opposite signs per member, so 41.0
+  is their mean. The ground pair's own measured crossfeed (-29 to
+  -49 dB, i.e. nearly hard-panned) is NOT rendered: at that depth it is
+  inaudible against the layer's own per-ear tremolo, and leaving it out
+  keeps the ground layer's schema simple. Disclosed rather than silent.
+
+  DERIVED, not measured: the bed's and the texture's level_db. The bed's is
+  calibrated so the rendered continuum sits +15.4 dB against the 194 Hz
+  theta carrier, integrated over 20-20000 Hz with the carrier as a coherent
+  projection. That figure is MEASURED here (+15.0 to +16.1 dB over nine
+  windows on four tracks) and it SUPERSEDES the -8.6 dB this preset used to
+  be calibrated against. The old figure was mss-results.json's
+  bed_vs_carrier_db.vs_194_hz_theta, which is a median-PSD-times-bandwidth
+  reading of the 150-8000 Hz band; on a band that slopes this steeply that
+  estimator sits about 18 dB under the band's actual integral, and the
+  preset then applied it over the whole 20-20000 Hz band as well. The two
+  errors compounded and left the bed roughly 21 dB too quiet -- audibly
+  carrier-heavy against the recording, which is what prompted the
+  re-measurement. A second, independent estimator agrees: Free Flow 10 carries
+  no carrier above 300 Hz, so a plain 350 Hz-20 kHz band RMS of the tape is
+  pure bed, and it reads -1.04 dB against the 194 Hz carrier where this
+  preset used to render -14.66. The level_db values themselves are 
+  engine-side quantities on a different axis and are not expected to match anything
+  in the json. Layer levels are the measured mid-channel RMS dBFS; the
+  ground and delta layers, whose measured levels are ranges across the four
+  tracks (-40.5..-35.1 and -40.4..-35.0), take the midpoint.
+sample_rate: 48000
+output:
+  peak_dbfs: -12.51
+
+defaults:
+  harmonics: [1.0]
+
+segments:
+  # 0-240 s -- ground + delta only, before theta enters
+  - duration: "4:15"
+    overlap: "0:15"
+    groups:
+      - &ground
+        name: ground
+        high_ear: right
+        level_db: -37.8
+        pairs: [{left: 48.850, right: 49.150}]
+        tremolo:
+          left: {rate_hz: 0.25, depth: 0.83}
+          right: {rate_hz: 0.5, depth: 0.83}
+      - &delta
+        name: delta
+        high_ear: right
+        level_db: -37.7
+        pairs: [{left: 97.2484, right: 98.7492}]
+        placement: {crossfeed_db: -3.4, crossfeed_phase_deg: 41.0}
+    bed: &bed
+      level_db: -28.3
+      shape: {peak_hz: 88.0, rise_db_per_decade: 16.0, fall_db_per_decade: -35.0}
+      surf: {rate_hz: 0.1333333, depth: 0.090, phase_deg: -103.0}
+      stereo: {mode: crossfade, lfo_period_s: 7.5, depth_db: 0.1}
+    texture: &texture
+      band_hz: [1000, 4800]
+      level_db: -54.0
+      pan: {period_s: 7.5, ild_amplitude_db: 8.5, phase_deg: -13.0}
+      surf: {rate_hz: 0.1333333, depth: 0.114, phase_deg: -103.0}
+
+  # 240-720 s -- the rotating 4.001 Hz theta triad enters
+  - duration: "8:15"
+    overlap: "0:15"
+    groups:
+      - *ground
+      - *delta
+      - &th196
+        name: th196
+        level_db: -39.3
+        pairs: [{left: 193.9976, right: 197.9982}]
+        rotation: {period_s: 30.0, depth: 0.98, phase_deg: -57.5}
+      - &th247
+        name: th247
+        level_db: -41.5
+        pairs: [{left: 244.9410, right: 248.9422}]
+        rotation: {period_s: 30.0, depth: 0.98, phase_deg: -102.8}
+      - &th294
+        name: th294
+        level_db: -44.1
+        pairs: [{left: 291.6647, right: 295.6651}]
+        rotation: {period_s: 30.0, depth: 0.98, phase_deg: -147.2}
+    bed: *bed
+    texture: *texture
+
+  # 720-860 s -- alpha blooms briefly before the handover
+  - duration: "2:35"
+    overlap: "0:15"
+    groups:
+      - *ground
+      - *delta
+      - *th196
+      - *th247
+      - *th294
+      - &al392
+        name: al392
+        level_db: -49.7
+        pairs: [{left: 386.9951, right: 396.9950}]
+        rotation: {period_s: 30.0, depth: 0.98, phase_deg: -80.0}
+      - &al494
+        name: al494
+        level_db: -51.9
+        pairs: [{left: 488.8829, right: 498.8806}]
+        rotation: {period_s: 30.0, depth: 0.98, phase_deg: -125.7}
+      - &al587
+        name: al587
+        level_db: -54.4
+        pairs: [{left: 582.3309, right: 592.3318}]
+        rotation: {period_s: 30.0, depth: 0.98, phase_deg: -170.7}
+    bed: *bed
+    texture: *texture
+
+  # 860-2060 s -- the 20-minute deep section: 7.333 Hz owns it, ground out
+  - duration: "20:15"
+    overlap: "0:15"
+    groups:
+      - *delta
+      - *th196
+      - *th247
+      - *th294
+      - &t733a
+        name: t733a
+        level_db: -52.6
+        pairs: [{left: 490.2186, right: 497.5476}]
+        rotation: {period_s: 30.0, depth: 0.98, phase_deg: -80.0}
+      - &t733b
+        name: t733b
+        level_db: -54.8
+        pairs: [{left: 583.6631, right: 590.9992}]
+        rotation: {period_s: 30.0, depth: 0.98, phase_deg: -125.7}
+      - &t733c
+        name: t733c
+        level_db: -56.7
+        pairs: [{left: 780.3283, right: 787.6580}]
+        rotation: {period_s: 30.0, depth: 0.98, phase_deg: -170.7}
+    bed: &bed_late
+      <<: *bed
+      surf: {rate_hz: 0.1333333, depth: 0.090, phase_deg: 137.0}
+    texture: &texture_late
+      <<: *texture
+      pan: {period_s: 7.5, ild_amplitude_db: 8.5, phase_deg: -133.0}
+      surf: {rate_hz: 0.1333333, depth: 0.114, phase_deg: 137.0}
+
+  # 2060-2300 s -- back out: ground returns, alpha replaces the 7.333 layer
+  - duration: "4:15"
+    overlap: "0:15"
+    groups:
+      - *ground
+      - *delta
+      - *th196
+      - *th247
+      - *th294
+      - *al392
+      - *al494
+      - *al587
+    bed: *bed_late
+    texture: *texture_late
+
+  # 2300-2420 s -- alpha out
+  - duration: "2:15"
+    overlap: "0:15"
+    groups:
+      - *ground
+      - *delta
+      - *th196
+      - *th247
+      - *th294
+    bed: *bed_late
+    texture: *texture_late
+
+  # 2420-2460 s -- ground and theta out, delta closes
+  - duration: "0:40"
+    groups:
+      - *delta
+    bed: *bed_late
+    texture: *texture_late
+
+emerge: false

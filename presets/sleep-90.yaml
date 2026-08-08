@@ -1,0 +1,85 @@
+name: sleep-90
+title: "Sleep Processor — 90 minute cycle"
+fidelity: patent
+notes: |
+  The Sleep Processor sequence from US5356368A. Segment boundaries and the
+  relative dB offsets between signal groups and pink sound are verbatim from
+  the patent. The patent names each group only by EEG band, so the specific
+  frequency chosen inside each band is ours: alpha 10 Hz, theta 7 Hz, delta
+  2.5 Hz, and a lower delta at 1.0 Hz.
+
+  Voice inserts (the patent's "relax", "let go", "sleep" prompts at 10 dB
+  below the primary group) are not implemented.
+
+  There is deliberately no emerge block: the protocol is designed to end in
+  light sleep.
+
+  Timing: Each non-final segment's duration is padded by 20 seconds (its
+  outgoing overlap). This ensures that when resolved, the crossfade between
+  segments begins exactly at the patent's boundaries (0, 5, 20, 40, 65, 80
+  minutes) and groups sound together across transitions as the patent
+  intends. The final segment has no overlap and no padding, landing at exactly
+  90 minutes when resolved.
+sample_rate: 48000
+output:
+  peak_dbfs: -3.0
+
+defaults:
+  carrier_base: 200.0
+  pairs: 3
+  harmonics: [1.0, 0.35, 0.15]
+
+segments:
+  # Resolved 0:00-5:00: Group A alpha, Group B theta 15 dB down, pink 20 dB down.
+  # Duration padded by outgoing 20 s overlap; crossfade begins at patent boundary.
+  - duration: "5:20"
+    overlap: "0:20"
+    groups:
+      - {name: A, beat: 10.0, level_db: 0.0}
+      - {name: B, beat: 7.0, level_db: -15.0}
+    pink: {level_db: -20.0}
+
+  # Resolved 5:00-20:00: Group B theta, Group C delta 20 dB down, pink 15 dB down.
+  # Duration padded by outgoing 20 s overlap; crossfade begins at 5:00.
+  - duration: "15:20"
+    overlap: "0:20"
+    groups:
+      - {name: B, beat: 7.0, level_db: 0.0}
+      - {name: C, beat: 2.5, level_db: -20.0}
+    pink: {level_db: -15.0}
+
+  # Resolved 20:00-40:00: Group C delta, Group D lower delta 10 dB down, pink 10 dB down.
+  # Duration padded by outgoing 20 s overlap; crossfade begins at 20:00.
+  - duration: "20:20"
+    overlap: "0:20"
+    groups:
+      - {name: C, beat: 2.5, level_db: 0.0}
+      - {name: D, beat: 1.0, level_db: -10.0}
+    pink: {level_db: -10.0}
+
+  # Resolved 40:00-65:00: Group D sustained, deep sleep induction.
+  # Duration padded by outgoing 20 s overlap; crossfade begins at 40:00.
+  - duration: "25:20"
+    overlap: "0:20"
+    groups:
+      - {name: D, beat: 1.0, level_db: 0.0}
+    pink: {level_db: -10.0}
+
+  # Resolved 65:00-80:00: Group C with D, transition.
+  # Duration padded by outgoing 20 s overlap; crossfade begins at 65:00.
+  - duration: "15:20"
+    overlap: "0:20"
+    groups:
+      - {name: C, beat: 2.5, level_db: 0.0}
+      - {name: D, beat: 1.0, level_db: -10.0}
+    pink: {level_db: -10.0}
+
+  # Resolved 80:00-90:00: Group B with C, REM preparation.
+  # Final segment unpadded (no outgoing overlap); duration exactly 10:00.
+  - duration: "10:00"
+    groups:
+      - {name: B, beat: 7.0, level_db: 0.0}
+      - {name: C, beat: 2.5, level_db: -10.0}
+    pink: {level_db: -15.0}
+
+emerge: false

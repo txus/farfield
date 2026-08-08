@@ -1,0 +1,24 @@
+farfield — an open-source binaural-beat synthesis and analysis engine
+Copyright 2026 Txus
+
+This product includes software developed for the farfield project.
+
+Provenance note: farfield implements audio-guidance techniques described
+in Robert Monroe's expired patents (US 3,884,218; US 5,213,562;
+US 5,356,368) and the spatial-angle-modulation technique disclosed in The
+Monroe Institute's abandoned patent applications (US 2013/0010967 A1;
+US 2015/0016613 A1). Expired and abandoned patent documents are published
+prior art, free for anyone to practice. Presets marked "measured-tape" or
+"measured-mss" encode frequencies, beat rates, and timings measured by
+spectral analysis of personal copies of commercial recordings; such
+measurements are unprotectable facts. No audio, narration, or music from
+any recording is included in or reproduced by this project.
+
+Trademark disclaimer: Hemi-Sync® and Gateway Experience® are registered
+trademarks of Interstate Industries, Inc. Monroe Institute® and Monroe
+Sound Science® are registered trademarks of The Monroe Institute. SAM™ is
+a trademark claimed by The Monroe Institute. This project is not
+affiliated with, endorsed by, or sponsored by Interstate Industries, Inc.
+or The Monroe Institute, and this NOTICE grants no rights in any of those
+marks. Per Section 6 of the Apache License 2.0, the license of this
+software likewise grants no trademark permissions.

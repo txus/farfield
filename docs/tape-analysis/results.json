@@ -1,0 +1,2234 @@
+{
+ "method": "decimate 44.1k->2940 Hz (scipy FIR, zero-phase); 60 s Hann coherent FFT (0.0167 Hz bins) per block per channel; quadratic log-interpolated peaks; tonality gate = 12 dB over the local median in f +/-4..16 Hz; beats verified by band-passing the mono sum and FFT-ing the |analytic envelope|.",
+ "level_reference": "dB are 20*log10(amplitude) of the windowed coherent FFT, full scale = 0 dB; level_db_rel is relative to the strongest carrier in that track. Levels are section medians; during fade-ins/outs individual carriers vary by +/-6 dB.",
+ "tracks": {
+  "F10": {
+   "file": "Free Flow 10 (personal copy, 1938.5 s)",
+   "duration_s": 1938.5,
+   "focus": 10,
+   "transfer": {
+    "stable": false,
+    "note": "analog master: all carriers drift downward ~0.3% over the session and the two members of each pair drift independently, so the BEATS drift too (4.12 -> 3.89 Hz on pair A). No round-number grid; no single speed factor fits."
+   },
+   "channel_carriers": {
+    "L": [
+     {
+      "name": "A",
+      "f_range": [
+       99.85,
+       100.2
+      ],
+      "t_start_s": 100,
+      "t_end_s": 1370
+     },
+     {
+      "name": "B",
+      "f_range": [
+       298.41,
+       298.95
+      ],
+      "t_start_s": 350,
+      "t_end_s": 1900,
+      "note": "amplitude-modulated ~0.58 Hz early, ~0.48 Hz late, m~0.22 (sidebands -19 dB); 2nd harmonic at 2f, -29 dB"
+     },
+     {
+      "name": "C",
+      "f_range": [
+       496.15,
+       497.13
+      ],
+      "t_start_s": 420,
+      "t_end_s": 1570,
+      "note": "broad ~+/-5 Hz noise skirt 20 dB down; frequency-jittery"
+     }
+    ],
+    "R": [
+     {
+      "name": "A",
+      "f_range": [
+       103.74,
+       104.3
+      ],
+      "t_start_s": 100,
+      "t_end_s": 1370
+     },
+     {
+      "name": "B",
+      "f_range": [
+       302.27,
+       302.92
+      ],
+      "t_start_s": 350,
+      "t_end_s": 1900,
+      "note": "same ~0.5 Hz AM as L; 2nd harmonic -29 dB"
+     },
+     {
+      "name": "C",
+      "f_range": [
+       492.45,
+       493.42
+      ],
+      "t_start_s": 420,
+      "t_end_s": 1570
+     }
+    ]
+   },
+   "pairs_summary": [
+    {
+     "name": "A",
+     "fL": 99.98,
+     "fR": 104.03,
+     "beat": 4.05,
+     "beat_drift": [
+      4.12,
+      3.89
+     ],
+     "t_start_s": 100,
+     "t_end_s": 1370,
+     "level_db_rel": 0.0
+    },
+    {
+     "name": "B",
+     "fL": 298.63,
+     "fR": 302.48,
+     "beat": 3.85,
+     "beat_drift": [
+      3.86,
+      3.68
+     ],
+     "t_start_s": 350,
+     "t_end_s": 1900,
+     "level_db_rel": -0.5
+    },
+    {
+     "name": "C",
+     "fL": 497.01,
+     "fR": 493.31,
+     "beat": -3.7,
+     "beat_drift": [
+      -3.71,
+      -3.73
+     ],
+     "t_start_s": 420,
+     "t_end_s": 1570,
+     "level_db_rel": -6.0
+    }
+   ],
+   "pairs_per_block": [
+    {
+     "tag": "A",
+     "t_start_s": 60,
+     "t_end_s": 120,
+     "fL": 100.203,
+     "fR": 104.288,
+     "beat": 4.085,
+     "level_db_rel": -10.2
+    },
+    {
+     "tag": "A",
+     "t_start_s": 120,
+     "t_end_s": 180,
+     "fL": 100.203,
+     "fR": 104.3,
+     "beat": 4.098,
+     "level_db_rel": -6.8
+    },
+    {
+     "tag": "A",
+     "t_start_s": 180,
+     "t_end_s": 240,
+     "fL": 100.158,
+     "fR": 104.27,
+     "beat": 4.112,
+     "level_db_rel": -6.1
+    },
+    {
+     "tag": "A",
+     "t_start_s": 240,
+     "t_end_s": 300,
+     "fL": 100.11,
+     "fR": 104.233,
+     "beat": 4.123,
+     "level_db_rel": -4.9
+    },
+    {
+     "tag": "A",
+     "t_start_s": 300,
+     "t_end_s": 360,
+     "fL": 100.044,
+     "fR": 104.151,
+     "beat": 4.107,
+     "level_db_rel": -0.3
+    },
+    {
+     "tag": "A",
+     "t_start_s": 360,
+     "t_end_s": 420,
+     "fL": 100.063,
+     "fR": 104.145,
+     "beat": 4.083,
+     "level_db_rel": 1.2
+    },
+    {
+     "tag": "B",
+     "t_start_s": 360,
+     "t_end_s": 420,
+     "fL": 298.949,
+     "fR": 302.82,
+     "beat": 3.871,
+     "level_db_rel": -20.8
+    },
+    {
+     "tag": "A",
+     "t_start_s": 420,
+     "t_end_s": 480,
+     "fL": 100.043,
+     "fR": 104.109,
+     "beat": 4.067,
+     "level_db_rel": -0.6
+    },
+    {
+     "tag": "B",
+     "t_start_s": 420,
+     "t_end_s": 480,
+     "fL": 298.661,
+     "fR": 302.523,
+     "beat": 3.862,
+     "level_db_rel": -3.7
+    },
+    {
+     "tag": "C",
+     "t_start_s": 420,
+     "t_end_s": 480,
+     "fL": 497.126,
+     "fR": 493.421,
+     "beat": -3.704,
+     "level_db_rel": -7.5
+    },
+    {
+     "tag": "A",
+     "t_start_s": 480,
+     "t_end_s": 540,
+     "fL": 100.028,
+     "fR": 104.086,
+     "beat": 4.058,
+     "level_db_rel": -1.1
+    },
+    {
+     "tag": "B",
+     "t_start_s": 480,
+     "t_end_s": 540,
+     "fL": 298.625,
+     "fR": 302.469,
+     "beat": 3.844,
+     "level_db_rel": -0.6
+    },
+    {
+     "tag": "C",
+     "t_start_s": 480,
+     "t_end_s": 540,
+     "fL": 497.002,
+     "fR": 493.292,
+     "beat": -3.71,
+     "level_db_rel": -8.0
+    },
+    {
+     "tag": "A",
+     "t_start_s": 540,
+     "t_end_s": 600,
+     "fL": 100.005,
+     "fR": 104.054,
+     "beat": 4.049,
+     "level_db_rel": -1.4
+    },
+    {
+     "tag": "B",
+     "t_start_s": 540,
+     "t_end_s": 600,
+     "fL": 298.639,
+     "fR": 302.496,
+     "beat": 3.857,
+     "level_db_rel": -1.8
+    },
+    {
+     "tag": "C",
+     "t_start_s": 540,
+     "t_end_s": 600,
+     "fL": 497.105,
+     "fR": 493.381,
+     "beat": -3.724,
+     "level_db_rel": -4.7
+    },
+    {
+     "tag": "A",
+     "t_start_s": 600,
+     "t_end_s": 660,
+     "fL": 99.981,
+     "fR": 104.026,
+     "beat": 4.045,
+     "level_db_rel": -0.9
+    },
+    {
+     "tag": "B",
+     "t_start_s": 600,
+     "t_end_s": 660,
+     "fL": 298.628,
+     "fR": 302.478,
+     "beat": 3.85,
+     "level_db_rel": -0.3
+    },
+    {
+     "tag": "C",
+     "t_start_s": 600,
+     "t_end_s": 660,
+     "fL": 497.006,
+     "fR": 493.306,
+     "beat": -3.699,
+     "level_db_rel": -6.4
+    },
+    {
+     "tag": "A",
+     "t_start_s": 660,
+     "t_end_s": 720,
+     "fL": 99.957,
+     "fR": 103.993,
+     "beat": 4.036,
+     "level_db_rel": -2.5
+    },
+    {
+     "tag": "B",
+     "t_start_s": 660,
+     "t_end_s": 720,
+     "fL": 298.618,
+     "fR": 302.469,
+     "beat": 3.852,
+     "level_db_rel": -1.3
+    },
+    {
+     "tag": "C",
+     "t_start_s": 660,
+     "t_end_s": 720,
+     "fL": 496.818,
+     "fR": 493.145,
+     "beat": -3.674,
+     "level_db_rel": -7.7
+    },
+    {
+     "tag": "A",
+     "t_start_s": 720,
+     "t_end_s": 780,
+     "fL": 99.921,
+     "fR": 103.944,
+     "beat": 4.023,
+     "level_db_rel": -5.9
+    },
+    {
+     "tag": "B",
+     "t_start_s": 720,
+     "t_end_s": 780,
+     "fL": 298.411,
+     "fR": 302.274,
+     "beat": 3.863,
+     "level_db_rel": -5.9
+    },
+    {
+     "tag": "C",
+     "t_start_s": 720,
+     "t_end_s": 780,
+     "fL": 496.754,
+     "fR": 493.069,
+     "beat": -3.684,
+     "level_db_rel": -6.7
+    },
+    {
+     "tag": "A",
+     "t_start_s": 780,
+     "t_end_s": 840,
+     "fL": 99.915,
+     "fR": 103.925,
+     "beat": 4.011,
+     "level_db_rel": -7.0
+    },
+    {
+     "tag": "B",
+     "t_start_s": 780,
+     "t_end_s": 840,
+     "fL": 298.513,
+     "fR": 302.374,
+     "beat": 3.862,
+     "level_db_rel": -3.5
+    },
+    {
+     "tag": "C",
+     "t_start_s": 780,
+     "t_end_s": 840,
+     "fL": 496.684,
+     "fR": 492.99,
+     "beat": -3.694,
+     "level_db_rel": -7.7
+    },
+    {
+     "tag": "A",
+     "t_start_s": 840,
+     "t_end_s": 900,
+     "fL": 99.906,
+     "fR": 103.909,
+     "beat": 4.003,
+     "level_db_rel": -8.2
+    },
+    {
+     "tag": "B",
+     "t_start_s": 840,
+     "t_end_s": 900,
+     "fL": 298.513,
+     "fR": 302.365,
+     "beat": 3.852,
+     "level_db_rel": -3.7
+    },
+    {
+     "tag": "C",
+     "t_start_s": 840,
+     "t_end_s": 900,
+     "fL": 496.713,
+     "fR": 493.016,
+     "beat": -3.697,
+     "level_db_rel": -9.3
+    },
+    {
+     "tag": "A",
+     "t_start_s": 900,
+     "t_end_s": 960,
+     "fL": 99.882,
+     "fR": 103.877,
+     "beat": 3.995,
+     "level_db_rel": -6.8
+    },
+    {
+     "tag": "B",
+     "t_start_s": 900,
+     "t_end_s": 960,
+     "fL": 298.506,
+     "fR": 302.356,
+     "beat": 3.85,
+     "level_db_rel": -7.3
+    },
+    {
+     "tag": "C",
+     "t_start_s": 900,
+     "t_end_s": 960,
+     "fL": 496.747,
+     "fR": 493.062,
+     "beat": -3.685,
+     "level_db_rel": -7.8
+    },
+    {
+     "tag": "A",
+     "t_start_s": 960,
+     "t_end_s": 1020,
+     "fL": 99.895,
+     "fR": 103.859,
+     "beat": 3.964,
+     "level_db_rel": -8.1
+    },
+    {
+     "tag": "B",
+     "t_start_s": 960,
+     "t_end_s": 1020,
+     "fL": 298.489,
+     "fR": 302.337,
+     "beat": 3.847,
+     "level_db_rel": -5.1
+    },
+    {
+     "tag": "C",
+     "t_start_s": 960,
+     "t_end_s": 1020,
+     "fL": 496.749,
+     "fR": 493.07,
+     "beat": -3.678,
+     "level_db_rel": -6.5
+    },
+    {
+     "tag": "A",
+     "t_start_s": 1020,
+     "t_end_s": 1080,
+     "fL": 99.894,
+     "fR": 103.842,
+     "beat": 3.948,
+     "level_db_rel": -7.3
+    },
+    {
+     "tag": "B",
+     "t_start_s": 1020,
+     "t_end_s": 1080,
+     "fL": 298.555,
+     "fR": 302.401,
+     "beat": 3.846,
+     "level_db_rel": -4.1
+    },
+    {
+     "tag": "C",
+     "t_start_s": 1020,
+     "t_end_s": 1080,
+     "fL": 496.614,
+     "fR": 492.93,
+     "beat": -3.684,
+     "level_db_rel": -8.0
+    },
+    {
+     "tag": "A",
+     "t_start_s": 1080,
+     "t_end_s": 1140,
+     "fL": 99.887,
+     "fR": 103.82,
+     "beat": 3.933,
+     "level_db_rel": -7.2
+    },
+    {
+     "tag": "B",
+     "t_start_s": 1080,
+     "t_end_s": 1140,
+     "fL": 298.611,
+     "fR": 302.45,
+     "beat": 3.84,
+     "level_db_rel": -4.4
+    },
+    {
+     "tag": "C",
+     "t_start_s": 1080,
+     "t_end_s": 1140,
+     "fL": 496.598,
+     "fR": 492.927,
+     "beat": -3.671,
+     "level_db_rel": -9.9
+    },
+    {
+     "tag": "A",
+     "t_start_s": 1140,
+     "t_end_s": 1200,
+     "fL": 99.882,
+     "fR": 103.802,
+     "beat": 3.92,
+     "level_db_rel": -7.1
+    },
+    {
+     "tag": "B",
+     "t_start_s": 1140,
+     "t_end_s": 1200,
+     "fL": 298.596,
+     "fR": 302.434,
+     "beat": 3.838,
+     "level_db_rel": -6.3
+    },
+    {
+     "tag": "C",
+     "t_start_s": 1140,
+     "t_end_s": 1200,
+     "fL": 496.582,
+     "fR": 492.912,
+     "beat": -3.67,
+     "level_db_rel": -7.4
+    },
+    {
+     "tag": "A",
+     "t_start_s": 1200,
+     "t_end_s": 1260,
+     "fL": 99.881,
+     "fR": 103.767,
+     "beat": 3.886,
+     "level_db_rel": -7.4
+    },
+    {
+     "tag": "B",
+     "t_start_s": 1200,
+     "t_end_s": 1260,
+     "fL": 298.591,
+     "fR": 302.43,
+     "beat": 3.839,
+     "level_db_rel": -4.6
+    },
+    {
+     "tag": "C",
+     "t_start_s": 1200,
+     "t_end_s": 1260,
+     "fL": 496.405,
+     "fR": 492.731,
+     "beat": -3.674,
+     "level_db_rel": -6.0
+    },
+    {
+     "tag": "A",
+     "t_start_s": 1260,
+     "t_end_s": 1320,
+     "fL": 99.865,
+     "fR": 103.752,
+     "beat": 3.887,
+     "level_db_rel": -12.1
+    },
+    {
+     "tag": "B",
+     "t_start_s": 1260,
+     "t_end_s": 1320,
+     "fL": 298.635,
+     "fR": 302.428,
+     "beat": 3.793,
+     "level_db_rel": -4.7
+    },
+    {
+     "tag": "C",
+     "t_start_s": 1260,
+     "t_end_s": 1320,
+     "fL": 496.301,
+     "fR": 492.621,
+     "beat": -3.681,
+     "level_db_rel": -6.7
+    },
+    {
+     "tag": "A",
+     "t_start_s": 1320,
+     "t_end_s": 1380,
+     "fL": 99.848,
+     "fR": 103.741,
+     "beat": 3.893,
+     "level_db_rel": -16.2
+    },
+    {
+     "tag": "B",
+     "t_start_s": 1320,
+     "t_end_s": 1380,
+     "fL": 298.712,
+     "fR": 302.479,
+     "beat": 3.767,
+     "level_db_rel": -6.1
+    },
+    {
+     "tag": "C",
+     "t_start_s": 1320,
+     "t_end_s": 1380,
+     "fL": 496.293,
+     "fR": 492.596,
+     "beat": -3.697,
+     "level_db_rel": -6.4
+    },
+    {
+     "tag": "B",
+     "t_start_s": 1380,
+     "t_end_s": 1440,
+     "fL": 298.674,
+     "fR": 302.394,
+     "beat": 3.72,
+     "level_db_rel": -3.5
+    },
+    {
+     "tag": "C",
+     "t_start_s": 1380,
+     "t_end_s": 1440,
+     "fL": 496.21,
+     "fR": 492.533,
+     "beat": -3.677,
+     "level_db_rel": -6.6
+    },
+    {
+     "tag": "B",
+     "t_start_s": 1440,
+     "t_end_s": 1500,
+     "fL": 298.701,
+     "fR": 302.398,
+     "beat": 3.697,
+     "level_db_rel": -3.8
+    },
+    {
+     "tag": "C",
+     "t_start_s": 1440,
+     "t_end_s": 1500,
+     "fL": 496.251,
+     "fR": 492.541,
+     "beat": -3.71,
+     "level_db_rel": -7.6
+    },
+    {
+     "tag": "B",
+     "t_start_s": 1500,
+     "t_end_s": 1560,
+     "fL": 298.695,
+     "fR": 302.38,
+     "beat": 3.685,
+     "level_db_rel": -3.8
+    },
+    {
+     "tag": "C",
+     "t_start_s": 1500,
+     "t_end_s": 1560,
+     "fL": 496.179,
+     "fR": 492.451,
+     "beat": -3.729,
+     "level_db_rel": -7.2
+    },
+    {
+     "tag": "B",
+     "t_start_s": 1560,
+     "t_end_s": 1620,
+     "fL": 298.613,
+     "fR": 302.294,
+     "beat": 3.68,
+     "level_db_rel": -6.9
+    },
+    {
+     "tag": "C",
+     "t_start_s": 1560,
+     "t_end_s": 1620,
+     "fL": 496.149,
+     "fR": 492.45,
+     "beat": -3.699,
+     "level_db_rel": -20.4
+    },
+    {
+     "tag": "B",
+     "t_start_s": 1620,
+     "t_end_s": 1680,
+     "fL": 298.589,
+     "fR": 302.368,
+     "beat": 3.779,
+     "level_db_rel": -3.5
+    },
+    {
+     "tag": "B",
+     "t_start_s": 1680,
+     "t_end_s": 1740,
+     "fL": 298.569,
+     "fR": 302.352,
+     "beat": 3.783,
+     "level_db_rel": -3.0
+    },
+    {
+     "tag": "B",
+     "t_start_s": 1740,
+     "t_end_s": 1800,
+     "fL": 298.557,
+     "fR": 302.339,
+     "beat": 3.782,
+     "level_db_rel": -3.0
+    },
+    {
+     "tag": "B",
+     "t_start_s": 1800,
+     "t_end_s": 1860,
+     "fL": 298.591,
+     "fR": 302.358,
+     "beat": 3.767,
+     "level_db_rel": -6.7
+    },
+    {
+     "tag": "B",
+     "t_start_s": 1860,
+     "t_end_s": 1920,
+     "fL": 298.565,
+     "fR": 302.345,
+     "beat": 3.779,
+     "level_db_rel": -7.2
+    }
+   ],
+   "same_channel_spacings": {
+    "L": [
+     198.65,
+     198.38
+    ],
+    "R": [
+     198.45,
+     190.83
+    ],
+    "note": "far above the binaural/monaural beating range; no audible monaural beat."
+   },
+   "verification": {
+    "A": 4.05,
+    "B": 3.85,
+    "C": 3.7083
+   }
+  },
+  "F12": {
+   "file": "Free Flow 12 (personal copy, 2109.96 s)",
+   "duration_s": 2109.96,
+   "focus": 12,
+   "transfer": {
+    "stable": true,
+    "speed_factor": 1.0000513,
+    "ppm_fast": 51.3,
+    "note": "every carrier sits at (round nominal) x 1.0000513, 18 tones from 50-632 Hz, residuals < 0.0006 Hz. Frequencies below are the DE-SCALED nominal values; multiply by 1.0000513 for what is actually in the file."
+   },
+   "mono_carrier": {
+    "f": 50.0,
+    "t_start_s": 0,
+    "t_end_s": 1930,
+    "note": "present in BOTH channels at equal level, L/R phase locked at -10 +/- 6 deg across 30 blocks => one centred source, zero binaural beat."
+   },
+   "channel_carriers": {
+    "L": [
+     50.0,
+     50.5,
+     100.75,
+     202,
+     252,
+     302,
+     405,
+     505,
+     605,
+     483,
+     608,
+     632
+    ],
+    "R": [
+     49.75,
+     50.0,
+     99.25,
+     198,
+     248,
+     298,
+     395,
+     495,
+     595,
+     467,
+     568,
+     592
+    ],
+    "note": "L is uniformly the HIGH member of every pair in the body of the track."
+   },
+   "pairs": [
+    {
+     "fL": 50.5,
+     "fR": 49.75,
+     "beat": 0.75,
+     "t_start_s": 0,
+     "t_end_s": 1930,
+     "level_db_rel": -1.0
+    },
+    {
+     "fL": 100.75,
+     "fR": 99.25,
+     "beat": 1.5,
+     "t_start_s": 0,
+     "t_end_s": 1930,
+     "level_db_rel": 0.0
+    },
+    {
+     "fL": 202,
+     "fR": 198,
+     "beat": 4.0,
+     "t_start_s": 355,
+     "t_end_s": 1925,
+     "level_db_rel": -7.0
+    },
+    {
+     "fL": 252,
+     "fR": 248,
+     "beat": 4.0,
+     "t_start_s": 355,
+     "t_end_s": 1925,
+     "level_db_rel": -14.0
+    },
+    {
+     "fL": 302,
+     "fR": 298,
+     "beat": 4.0,
+     "t_start_s": 355,
+     "t_end_s": 1925,
+     "level_db_rel": -16.0
+    },
+    {
+     "fL": 405,
+     "fR": 395,
+     "beat": 10.0,
+     "t_start_s": 595,
+     "t_end_s": 1745,
+     "level_db_rel": -20.0
+    },
+    {
+     "fL": 505,
+     "fR": 495,
+     "beat": 10.0,
+     "t_start_s": 595,
+     "t_end_s": 1745,
+     "level_db_rel": -18.5
+    },
+    {
+     "fL": 605,
+     "fR": 595,
+     "beat": 10.0,
+     "t_start_s": 595,
+     "t_end_s": 1745,
+     "level_db_rel": -24.0
+    },
+    {
+     "fL": 483,
+     "fR": 467,
+     "beat": 16.0,
+     "t_start_s": 1950,
+     "t_end_s": 2110,
+     "level_db_rel": 12.0
+    },
+    {
+     "fL": 608,
+     "fR": 592,
+     "beat": 16.0,
+     "t_start_s": 1950,
+     "t_end_s": 2110,
+     "level_db_rel": 4.0
+    },
+    {
+     "fL": 632,
+     "fR": 568,
+     "beat": 64.0,
+     "t_start_s": 1950,
+     "t_end_s": 2110,
+     "level_db_rel": 3.0
+    }
+   ],
+   "same_channel_spacings": {
+    "L": [
+     {
+      "pair": [
+       50.0,
+       50.5
+      ],
+      "monaural_beat": 0.5
+     }
+    ],
+    "R": [
+     {
+      "pair": [
+       49.75,
+       50.0
+      ],
+      "monaural_beat": 0.25
+     }
+    ],
+    "note": "the shared 50.0 mono tone beats against L's 50.5 and R's 49.75, so the low cluster delivers 0.25 / 0.5 / 0.75 Hz simultaneously - all three appear in the envelope demod."
+   },
+   "outro_note": "1950-2110 s is a loud exit signal, 12 dB above the body carriers, driven into audible nonlinearity: a full intermodulation comb at 24 / 101 / 125 / 149 Hz spacing appears 50-90 dB down.",
+   "verification": {
+    "100.75/99.25": 1.5,
+    "202/198": 4.0,
+    "505/495": 10.0,
+    "50-cluster": [
+     0.25,
+     0.5,
+     0.75
+    ]
+   }
+  },
+  "F15": {
+   "file": "Exploring Focus 15 (personal copy, 2349.99 s)",
+   "duration_s": 2349.99,
+   "focus": 15,
+   "transfer": {
+    "stable": true,
+    "speed_factor": 1.0,
+    "ppm_fast": 0.0,
+    "note": "carriers land on their nominal values within +/-25 ppm; the quiet deep-section layer (300.0/304.8/503.9/511.2/599.3/606.6/800.0/807.3) is exact to +/-0.1 ppm, i.e. bit-accurate on a 0.1 Hz grid. F15 is at correct speed; F12 is 51 ppm fast."
+   },
+   "mono_carrier": {
+    "f": 50.0,
+    "t_start_s": 45,
+    "t_end_s": 1900
+   },
+   "pairs": [
+    {
+     "fL": 100.75,
+     "fR": 99.25,
+     "beat": 1.5,
+     "t_start_s": 45,
+     "t_end_s": 160,
+     "level_db_rel": -2.0,
+     "note": "MONO intro: both tones equal in both channels, no beat"
+    },
+    {
+     "fL": 50.5,
+     "fR": 49.75,
+     "beat": 0.75,
+     "t_start_s": 165,
+     "t_end_s": 290,
+     "level_db_rel": -1.0
+    },
+    {
+     "fL": 100.75,
+     "fR": 99.25,
+     "beat": 1.5,
+     "t_start_s": 165,
+     "t_end_s": 290,
+     "level_db_rel": 0.0
+    },
+    {
+     "fL": 175,
+     "fR": 179,
+     "beat": 4.0,
+     "t_start_s": 290,
+     "t_end_s": 410,
+     "level_db_rel": -15.0
+    },
+    {
+     "fL": 262,
+     "fR": 266,
+     "beat": 4.0,
+     "t_start_s": 290,
+     "t_end_s": 410,
+     "level_db_rel": -16.0
+    },
+    {
+     "fL": 49.75,
+     "fR": 50.5,
+     "beat": -0.75,
+     "t_start_s": 410,
+     "t_end_s": 590,
+     "level_db_rel": -1.0
+    },
+    {
+     "fL": 99.25,
+     "fR": 100.75,
+     "beat": -1.495,
+     "t_start_s": 410,
+     "t_end_s": 590,
+     "level_db_rel": -8.0
+    },
+    {
+     "fL": 198,
+     "fR": 202,
+     "beat": -4.0,
+     "t_start_s": 410,
+     "t_end_s": 590,
+     "level_db_rel": -17.0
+    },
+    {
+     "fL": 248,
+     "fR": 252,
+     "beat": -4.0,
+     "t_start_s": 410,
+     "t_end_s": 590,
+     "level_db_rel": -23.0
+    },
+    {
+     "fL": 298,
+     "fR": 302,
+     "beat": -4.0,
+     "t_start_s": 410,
+     "t_end_s": 590,
+     "level_db_rel": -27.0
+    },
+    {
+     "fL": 395,
+     "fR": 405,
+     "beat": -10.0,
+     "t_start_s": 410,
+     "t_end_s": 590,
+     "level_db_rel": -28.0
+    },
+    {
+     "fL": 495,
+     "fR": 505,
+     "beat": -10.0,
+     "t_start_s": 410,
+     "t_end_s": 590,
+     "level_db_rel": -38.0
+    },
+    {
+     "fL": 595,
+     "fR": 605,
+     "beat": -10.0,
+     "t_start_s": 410,
+     "t_end_s": 590,
+     "level_db_rel": -40.0
+    },
+    {
+     "fL": 304.8,
+     "fR": 300.0,
+     "beat": 4.8,
+     "t_start_s": 470,
+     "t_end_s": 1600,
+     "level_db_rel": -27.0
+    },
+    {
+     "fL": 503.9,
+     "fR": 511.2,
+     "beat": -7.3,
+     "t_start_s": 470,
+     "t_end_s": 1600,
+     "level_db_rel": -28.5
+    },
+    {
+     "fL": 606.6,
+     "fR": 599.3,
+     "beat": 7.3,
+     "t_start_s": 470,
+     "t_end_s": 1600,
+     "level_db_rel": -28.5
+    },
+    {
+     "fL": 807.3,
+     "fR": 800.0,
+     "beat": 7.3,
+     "t_start_s": 470,
+     "t_end_s": 1600,
+     "level_db_rel": -29.0
+    },
+    {
+     "fL": 49.75,
+     "fR": 50.5,
+     "beat": -0.75,
+     "t_start_s": 1600,
+     "t_end_s": 1900,
+     "level_db_rel": 0.0
+    },
+    {
+     "fL": 99.25,
+     "fR": 100.75,
+     "beat": -1.495,
+     "t_start_s": 1600,
+     "t_end_s": 1900,
+     "level_db_rel": -10.0
+    },
+    {
+     "fL": 198,
+     "fR": 202,
+     "beat": -4.0,
+     "t_start_s": 1600,
+     "t_end_s": 1900,
+     "level_db_rel": -20.0
+    },
+    {
+     "fL": 248,
+     "fR": 252,
+     "beat": -4.0,
+     "t_start_s": 1600,
+     "t_end_s": 1900,
+     "level_db_rel": -25.0
+    },
+    {
+     "fL": 298,
+     "fR": 302,
+     "beat": -4.0,
+     "t_start_s": 1600,
+     "t_end_s": 1900,
+     "level_db_rel": -30.0
+    },
+    {
+     "fL": 395,
+     "fR": 405,
+     "beat": -10.0,
+     "t_start_s": 1600,
+     "t_end_s": 1900,
+     "level_db_rel": -28.0
+    },
+    {
+     "fL": 495,
+     "fR": 505,
+     "beat": -10.0,
+     "t_start_s": 1600,
+     "t_end_s": 1900,
+     "level_db_rel": -36.0
+    },
+    {
+     "fL": 595,
+     "fR": 605,
+     "beat": -10.0,
+     "t_start_s": 1600,
+     "t_end_s": 1900,
+     "level_db_rel": -40.0
+    },
+    {
+     "fL": 175,
+     "fR": 179,
+     "beat": 4.0,
+     "t_start_s": 1900,
+     "t_end_s": 2175,
+     "level_db_rel": -17.0
+    },
+    {
+     "fL": 262,
+     "fR": 266,
+     "beat": 4.0,
+     "t_start_s": 1900,
+     "t_end_s": 2175,
+     "level_db_rel": -15.0
+    },
+    {
+     "fL": 467,
+     "fR": 483,
+     "beat": 16.0,
+     "t_start_s": 2200,
+     "t_end_s": 2290,
+     "level_db_rel": -19.0
+    },
+    {
+     "fL": 592,
+     "fR": 608,
+     "beat": 16.0,
+     "t_start_s": 2200,
+     "t_end_s": 2290,
+     "level_db_rel": -29.0
+    },
+    {
+     "fL": 568,
+     "fR": 632,
+     "beat": 64.0,
+     "t_start_s": 2200,
+     "t_end_s": 2290,
+     "level_db_rel": -29.0
+    }
+   ],
+   "channel_polarity_note": "F15 SWAPS which ear carries the high member. Intro (165-290 s) has L high, exactly like F12. From 410 s to 1900 s R is high (all beats reverse sign). The 175/179 and 262/266 bridges and the outro have L low. F12 never swaps.",
+   "verification": {
+    "100.75/99.25": 1.4933,
+    "503.9/511.2": 7.3,
+    "300/304.8": 4.7975,
+    "800/807.3": 7.3
+   }
+  }
+ },
+ "noise_bed": {
+  "method": "median-averaged PSD of a voice-free 60-120 s stretch at full 44.1 kHz rate, tones removed by a wide median filter; slope fit 200 Hz - 16 kHz. Envelope modulation measured on the 2-8 kHz band with a 50 ms average; a stationary Gaussian bed of that bandwidth would show ~4% RMS modulation.",
+  "F10": {
+   "slope_db_per_decade": -22.0,
+   "psd_db": {
+    "1k": 1.6,
+    "3k": -9.8,
+    "8k": -22.9,
+    "15k": -24.4
+   },
+   "level_rel_carriers_db": -1.3,
+   "env_mod_pct": 5.7,
+   "character": "loudest bed of the three, but statistically stationary (5.7% vs the 4% expected for steady noise): tape hiss + rumble, not surf."
+  },
+  "F12": {
+   "slope_db_per_decade": -23.4,
+   "psd_db": {
+    "1k": -4.0,
+    "3k": -19.6,
+    "8k": -28.9,
+    "15k": -29.9
+   },
+   "level_rel_carriers_db": -14.1,
+   "env_mod_pct": 13.8,
+   "swell_rate_hz": 0.209,
+   "character": "genuine slow swells ~5 s period, 3x above the stationary baseline: a real surf/ocean bed, low-passed, ~14 dB under the carriers."
+  },
+  "F15": {
+   "slope_db_per_decade": -29.6,
+   "psd_db": {
+    "1k": -12.4,
+    "3k": -25.8,
+    "8k": -43.7,
+    "15k": -41.2
+   },
+   "level_rel_carriers_db": -30.3,
+   "env_mod_pct": 11.7,
+   "swell_rate_hz": 0.025,
+   "character": "very quiet and very dark; slow 40 s swell rather than surf. Essentially a bare noise floor in the deep section."
+  },
+  "common": "None of the three is pink (-10 dB/decade). All sit between brown (-20) and steeper, i.e. strongly low-passed. The 15 kHz values are flat vs 8 kHz because they hit the CD/transfer noise floor."
+ },
+ "anomalies": [
+  "F12 carries a strong 15734.3 Hz tone (~+13 dB, the NTSC horizontal line rate) - the master was transferred through video-based digital audio (PCM adaptor / VHS or U-matic). This is the likeliest source of its 51 ppm speed error.",
+  "120 Hz mains hum is present in all three tracks, wandering 119.98-120.26 Hz. Because it wanders it cannot be used to calibrate transfer speed; the carrier grid can.",
+  "F10 has no round-number grid at all and its two pair members drift independently: its beats are not constant. F12/F15 are frequency-stable to a part in 10^5 or better.",
+  "F15's deep-section layer (300.0/304.8/503.9/511.2/599.3/606.6/800.0/807.3 Hz) is exact to 0.1 ppm yet sits at strange non-round frequencies with a repeated 7.3 Hz split. Its provenance differs from everything else measured.",
+  "The F12 and F15 exit signals use the identical tone set {467,483,568,592,608,632} with the channels mirrored - strong evidence of a shared library of stock 'exit' cues."
+ ],
+ "timeline_2min": {
+  "F10": [
+   {
+    "t_start_s": 0,
+    "t_end_s": 120,
+    "narration_db_over_quiet": 14.5,
+    "content": "voice/music",
+    "active": [
+     "A: 100.20/104.29 beat +4.085"
+    ]
+   },
+   {
+    "t_start_s": 120,
+    "t_end_s": 240,
+    "narration_db_over_quiet": 0.5,
+    "content": "tones only",
+    "active": [
+     "A: 100.18/104.28 beat +4.105"
+    ]
+   },
+   {
+    "t_start_s": 240,
+    "t_end_s": 360,
+    "narration_db_over_quiet": 13.4,
+    "content": "voice/music",
+    "active": [
+     "A: 100.08/104.19 beat +4.115"
+    ]
+   },
+   {
+    "t_start_s": 360,
+    "t_end_s": 480,
+    "narration_db_over_quiet": 0.7,
+    "content": "tones only",
+    "active": [
+     "A: 100.05/104.13 beat +4.075",
+     "B: 298.81/302.67 beat +3.867",
+     "C: 497.13/493.42 beat -3.704"
+    ]
+   },
+   {
+    "t_start_s": 480,
+    "t_end_s": 600,
+    "narration_db_over_quiet": 0.2,
+    "content": "tones only",
+    "active": [
+     "A: 100.02/104.07 beat +4.053",
+     "B: 298.63/302.48 beat +3.851",
+     "C: 497.05/493.34 beat -3.717"
+    ]
+   },
+   {
+    "t_start_s": 600,
+    "t_end_s": 720,
+    "narration_db_over_quiet": 0.1,
+    "content": "tones only",
+    "active": [
+     "A: 99.97/104.01 beat +4.040",
+     "B: 298.62/302.47 beat +3.851",
+     "C: 496.91/493.23 beat -3.686"
+    ]
+   },
+   {
+    "t_start_s": 720,
+    "t_end_s": 840,
+    "narration_db_over_quiet": 2.9,
+    "content": "tones only",
+    "active": [
+     "A: 99.92/103.93 beat +4.017",
+     "B: 298.46/302.32 beat +3.862",
+     "C: 496.72/493.03 beat -3.689"
+    ]
+   },
+   {
+    "t_start_s": 840,
+    "t_end_s": 960,
+    "narration_db_over_quiet": 0.2,
+    "content": "tones only",
+    "active": [
+     "A: 99.89/103.89 beat +3.999",
+     "B: 298.51/302.36 beat +3.851",
+     "C: 496.73/493.04 beat -3.691"
+    ]
+   },
+   {
+    "t_start_s": 960,
+    "t_end_s": 1080,
+    "narration_db_over_quiet": 0.2,
+    "content": "tones only",
+    "active": [
+     "A: 99.89/103.85 beat +3.956",
+     "B: 298.52/302.37 beat +3.846",
+     "C: 496.68/493.00 beat -3.681"
+    ]
+   },
+   {
+    "t_start_s": 1080,
+    "t_end_s": 1200,
+    "narration_db_over_quiet": 2.0,
+    "content": "tones only",
+    "active": [
+     "A: 99.88/103.81 beat +3.926",
+     "B: 298.60/302.44 beat +3.839",
+     "C: 496.59/492.92 beat -3.670"
+    ]
+   },
+   {
+    "t_start_s": 1200,
+    "t_end_s": 1320,
+    "narration_db_over_quiet": 0.1,
+    "content": "tones only",
+    "active": [
+     "A: 99.87/103.76 beat +3.886",
+     "B: 298.61/302.43 beat +3.816",
+     "C: 496.35/492.68 beat -3.678"
+    ]
+   },
+   {
+    "t_start_s": 1320,
+    "t_end_s": 1440,
+    "narration_db_over_quiet": 0.0,
+    "content": "tones only",
+    "active": [
+     "A: 99.85/103.74 beat +3.893",
+     "B: 298.69/302.44 beat +3.744",
+     "C: 496.25/492.56 beat -3.687"
+    ]
+   },
+   {
+    "t_start_s": 1440,
+    "t_end_s": 1560,
+    "narration_db_over_quiet": 0.0,
+    "content": "tones only",
+    "active": [
+     "B: 298.70/302.39 beat +3.691",
+     "C: 496.21/492.50 beat -3.720"
+    ]
+   },
+   {
+    "t_start_s": 1560,
+    "t_end_s": 1680,
+    "narration_db_over_quiet": 0.1,
+    "content": "tones only",
+    "active": [
+     "B: 298.60/302.33 beat +3.729",
+     "C: 496.15/492.45 beat -3.699"
+    ]
+   },
+   {
+    "t_start_s": 1680,
+    "t_end_s": 1800,
+    "narration_db_over_quiet": 0.1,
+    "content": "tones only",
+    "active": [
+     "B: 298.56/302.35 beat +3.782"
+    ]
+   },
+   {
+    "t_start_s": 1800,
+    "t_end_s": 1920,
+    "narration_db_over_quiet": 0.2,
+    "content": "tones only",
+    "active": [
+     "B: 298.58/302.35 beat +3.773"
+    ]
+   },
+   {
+    "t_start_s": 1920,
+    "t_end_s": 1980,
+    "narration_db_over_quiet": 9.3,
+    "content": "voice/music",
+    "active": []
+   }
+  ],
+  "F12": [
+   {
+    "t_start_s": 0,
+    "t_end_s": 120,
+    "narration_db_over_quiet": 24.5,
+    "content": "voice/music",
+    "active": [
+     49.8,
+     50.0,
+     50.5,
+     99.3,
+     100.8
+    ]
+   },
+   {
+    "t_start_s": 120,
+    "t_end_s": 240,
+    "narration_db_over_quiet": 20.1,
+    "content": "voice/music",
+    "active": [
+     49.8,
+     50.0,
+     50.5,
+     99.3,
+     100.8
+    ]
+   },
+   {
+    "t_start_s": 240,
+    "t_end_s": 360,
+    "narration_db_over_quiet": 22.9,
+    "content": "voice/music",
+    "active": [
+     49.8,
+     50.0,
+     50.5,
+     99.3,
+     100.8,
+     120.0
+    ]
+   },
+   {
+    "t_start_s": 360,
+    "t_end_s": 480,
+    "narration_db_over_quiet": 3.0,
+    "content": "tones only",
+    "active": [
+     49.8,
+     50.0,
+     50.5,
+     99.3,
+     100.8,
+     198.0,
+     202.0,
+     248.0,
+     252.0,
+     298.0,
+     302.0
+    ]
+   },
+   {
+    "t_start_s": 480,
+    "t_end_s": 600,
+    "narration_db_over_quiet": 4.4,
+    "content": "light voice",
+    "active": [
+     49.8,
+     50.0,
+     50.5,
+     99.3,
+     100.8,
+     198.0,
+     202.0,
+     248.0,
+     252.0,
+     298.0,
+     302.0
+    ]
+   },
+   {
+    "t_start_s": 600,
+    "t_end_s": 720,
+    "narration_db_over_quiet": 4.6,
+    "content": "light voice",
+    "active": [
+     49.8,
+     50.0,
+     50.5,
+     99.3,
+     100.8,
+     198.0,
+     202.0,
+     248.0,
+     252.0,
+     298.0,
+     302.0,
+     395.0,
+     405.0,
+     495.0,
+     505.0,
+     595.0,
+     605.0
+    ]
+   },
+   {
+    "t_start_s": 720,
+    "t_end_s": 840,
+    "narration_db_over_quiet": 3.6,
+    "content": "light voice",
+    "active": [
+     49.8,
+     50.0,
+     50.5,
+     99.3,
+     100.8,
+     198.0,
+     202.0,
+     248.0,
+     252.0,
+     298.0,
+     302.0,
+     395.0,
+     405.0,
+     495.0,
+     505.0,
+     595.0,
+     605.0
+    ]
+   },
+   {
+    "t_start_s": 840,
+    "t_end_s": 960,
+    "narration_db_over_quiet": 0.1,
+    "content": "tones only",
+    "active": [
+     49.8,
+     50.0,
+     50.5,
+     99.3,
+     100.8,
+     198.0,
+     202.0,
+     248.0,
+     252.0,
+     298.0,
+     302.0,
+     395.0,
+     405.0,
+     495.0,
+     505.0,
+     595.0,
+     605.0
+    ]
+   },
+   {
+    "t_start_s": 960,
+    "t_end_s": 1080,
+    "narration_db_over_quiet": 0.1,
+    "content": "tones only",
+    "active": [
+     49.8,
+     50.0,
+     50.5,
+     99.3,
+     100.8,
+     198.0,
+     202.0,
+     248.0,
+     252.0,
+     298.0,
+     302.0,
+     395.0,
+     405.0,
+     495.0,
+     505.0,
+     595.0,
+     605.0
+    ]
+   },
+   {
+    "t_start_s": 1080,
+    "t_end_s": 1200,
+    "narration_db_over_quiet": 0.1,
+    "content": "tones only",
+    "active": [
+     49.8,
+     50.0,
+     50.5,
+     99.3,
+     100.8,
+     198.0,
+     202.0,
+     248.0,
+     252.0,
+     298.0,
+     302.0,
+     395.0,
+     405.0,
+     495.0,
+     505.0,
+     595.0,
+     605.0
+    ]
+   },
+   {
+    "t_start_s": 1200,
+    "t_end_s": 1320,
+    "narration_db_over_quiet": 0.9,
+    "content": "tones only",
+    "active": [
+     49.8,
+     50.0,
+     50.5,
+     99.3,
+     100.8,
+     198.0,
+     202.0,
+     248.0,
+     252.0,
+     298.0,
+     302.0,
+     395.0,
+     405.0,
+     495.0,
+     505.0,
+     595.0,
+     605.0
+    ]
+   },
+   {
+    "t_start_s": 1320,
+    "t_end_s": 1440,
+    "narration_db_over_quiet": 0.0,
+    "content": "tones only",
+    "active": [
+     49.8,
+     50.0,
+     50.5,
+     99.3,
+     100.8,
+     198.0,
+     202.0,
+     248.0,
+     252.0,
+     298.0,
+     302.0,
+     395.0,
+     405.0,
+     495.0,
+     505.0,
+     595.0,
+     605.0
+    ]
+   },
+   {
+    "t_start_s": 1440,
+    "t_end_s": 1560,
+    "narration_db_over_quiet": 0.1,
+    "content": "tones only",
+    "active": [
+     49.8,
+     50.0,
+     50.5,
+     99.3,
+     100.8,
+     198.0,
+     202.0,
+     248.0,
+     252.0,
+     298.0,
+     302.0,
+     395.0,
+     405.0,
+     495.0,
+     505.0,
+     595.0,
+     605.0
+    ]
+   },
+   {
+    "t_start_s": 1560,
+    "t_end_s": 1680,
+    "narration_db_over_quiet": 6.6,
+    "content": "light voice",
+    "active": [
+     49.8,
+     50.0,
+     50.5,
+     99.3,
+     100.8,
+     198.0,
+     202.0,
+     248.0,
+     252.0,
+     298.0,
+     302.0,
+     395.0,
+     405.0,
+     495.0,
+     505.0,
+     595.0,
+     605.0
+    ]
+   },
+   {
+    "t_start_s": 1680,
+    "t_end_s": 1800,
+    "narration_db_over_quiet": 10.2,
+    "content": "voice/music",
+    "active": [
+     49.8,
+     50.0,
+     50.5,
+     99.3,
+     100.8,
+     198.0,
+     202.0,
+     248.0,
+     252.0,
+     298.0,
+     302.0,
+     395.0,
+     405.0,
+     495.0,
+     505.0,
+     595.0,
+     605.0
+    ]
+   },
+   {
+    "t_start_s": 1800,
+    "t_end_s": 1920,
+    "narration_db_over_quiet": -0.8,
+    "content": "tones only",
+    "active": [
+     49.8,
+     50.0,
+     50.5,
+     99.3,
+     100.8,
+     198.0,
+     202.0,
+     248.0,
+     252.0,
+     298.0,
+     302.0
+    ]
+   },
+   {
+    "t_start_s": 1920,
+    "t_end_s": 2040,
+    "narration_db_over_quiet": 10.9,
+    "content": "voice/music",
+    "active": [
+     49.8,
+     50.0,
+     50.5,
+     99.3,
+     100.8,
+     198.0,
+     202.0,
+     248.0,
+     298.0,
+     467.0,
+     483.0,
+     568.0,
+     592.0,
+     608.0,
+     632.0
+    ]
+   },
+   {
+    "t_start_s": 2040,
+    "t_end_s": 2100,
+    "narration_db_over_quiet": 24.1,
+    "content": "voice/music",
+    "active": [
+     50.0,
+     50.5,
+     120.0,
+     175.0,
+     179.0,
+     198.0,
+     202.0,
+     248.0,
+     252.0,
+     262.0,
+     266.0,
+     298.0,
+     300.0,
+     302.0,
+     395.0,
+     405.0,
+     467.0,
+     483.0,
+     495.0,
+     505.0,
+     568.0,
+     592.0,
+     595.0,
+     605.0,
+     606.6,
+     608.0,
+     632.0
+    ]
+   }
+  ],
+  "F15": [
+   {
+    "t_start_s": 0,
+    "t_end_s": 120,
+    "narration_db_over_quiet": 36.3,
+    "content": "voice/music",
+    "active": [
+     49.8,
+     50.0,
+     50.5,
+     99.3,
+     100.8,
+     120.0
+    ]
+   },
+   {
+    "t_start_s": 120,
+    "t_end_s": 240,
+    "narration_db_over_quiet": 29.4,
+    "content": "voice/music",
+    "active": [
+     49.8,
+     50.0,
+     50.5,
+     99.3,
+     100.8,
+     120.0,
+     252.0,
+     505.0,
+     568.0
+    ]
+   },
+   {
+    "t_start_s": 240,
+    "t_end_s": 360,
+    "narration_db_over_quiet": 28.0,
+    "content": "voice/music",
+    "active": [
+     49.8,
+     50.0,
+     50.5,
+     99.3,
+     100.8,
+     120.0,
+     175.0,
+     179.0,
+     252.0,
+     262.0,
+     266.0
+    ]
+   },
+   {
+    "t_start_s": 360,
+    "t_end_s": 480,
+    "narration_db_over_quiet": 0.9,
+    "content": "tones only",
+    "active": [
+     49.8,
+     50.0,
+     50.5,
+     99.3,
+     100.8,
+     120.0,
+     175.0,
+     179.0,
+     198.0,
+     202.0,
+     252.0,
+     262.0,
+     266.0,
+     298.0,
+     302.0,
+     395.0,
+     405.0,
+     495.0,
+     505.0,
+     595.0,
+     605.0,
+     800.0,
+     807.3
+    ]
+   },
+   {
+    "t_start_s": 480,
+    "t_end_s": 600,
+    "narration_db_over_quiet": 16.3,
+    "content": "voice/music",
+    "active": [
+     49.8,
+     50.0,
+     50.5,
+     99.3,
+     100.8,
+     120.0,
+     198.0,
+     202.0,
+     248.0,
+     252.0,
+     298.0,
+     300.0,
+     302.0,
+     304.8,
+     495.0,
+     503.9,
+     505.0,
+     511.2,
+     595.0,
+     599.3,
+     605.0,
+     606.6,
+     800.0,
+     807.3
+    ]
+   },
+   {
+    "t_start_s": 600,
+    "t_end_s": 720,
+    "narration_db_over_quiet": 0.6,
+    "content": "tones only",
+    "active": [
+     120.0,
+     300.0,
+     304.8,
+     503.9,
+     511.2,
+     599.3,
+     606.6,
+     800.0,
+     807.3
+    ]
+   },
+   {
+    "t_start_s": 720,
+    "t_end_s": 840,
+    "narration_db_over_quiet": 0.7,
+    "content": "tones only",
+    "active": [
+     120.0,
+     300.0,
+     304.8,
+     503.9,
+     511.2,
+     599.3,
+     606.6,
+     800.0,
+     807.3
+    ]
+   },
+   {
+    "t_start_s": 840,
+    "t_end_s": 960,
+    "narration_db_over_quiet": 0.5,
+    "content": "tones only",
+    "active": [
+     120.0,
+     300.0,
+     304.8,
+     503.9,
+     511.2,
+     599.3,
+     606.6,
+     800.0,
+     807.3
+    ]
+   },
+   {
+    "t_start_s": 960,
+    "t_end_s": 1080,
+    "narration_db_over_quiet": 0.9,
+    "content": "tones only",
+    "active": [
+     120.0,
+     300.0,
+     304.8,
+     503.9,
+     511.2,
+     599.3,
+     606.6,
+     800.0,
+     807.3
+    ]
+   },
+   {
+    "t_start_s": 1080,
+    "t_end_s": 1200,
+    "narration_db_over_quiet": 0.8,
+    "content": "tones only",
+    "active": [
+     120.0,
+     300.0,
+     304.8,
+     503.9,
+     511.2,
+     599.3,
+     606.6,
+     800.0,
+     807.3
+    ]
+   },
+   {
+    "t_start_s": 1200,
+    "t_end_s": 1320,
+    "narration_db_over_quiet": 0.6,
+    "content": "tones only",
+    "active": [
+     120.0,
+     300.0,
+     304.8,
+     503.9,
+     511.2,
+     599.3,
+     606.6,
+     800.0,
+     807.3
+    ]
+   },
+   {
+    "t_start_s": 1320,
+    "t_end_s": 1440,
+    "narration_db_over_quiet": 0.5,
+    "content": "tones only",
+    "active": [
+     120.0,
+     300.0,
+     304.8,
+     503.9,
+     511.2,
+     599.3,
+     606.6,
+     800.0,
+     807.3
+    ]
+   },
+   {
+    "t_start_s": 1440,
+    "t_end_s": 1560,
+    "narration_db_over_quiet": 0.9,
+    "content": "tones only",
+    "active": [
+     120.0,
+     300.0,
+     304.8,
+     503.9,
+     511.2,
+     599.3,
+     606.6,
+     800.0,
+     807.3
+    ]
+   },
+   {
+    "t_start_s": 1560,
+    "t_end_s": 1680,
+    "narration_db_over_quiet": 0.5,
+    "content": "tones only",
+    "active": [
+     49.8,
+     50.0,
+     50.5,
+     99.3,
+     100.8,
+     120.0,
+     198.0,
+     202.0,
+     248.0,
+     252.0,
+     300.0,
+     302.0,
+     304.8,
+     395.0,
+     405.0,
+     495.0,
+     503.9,
+     505.0,
+     511.2,
+     595.0,
+     599.3,
+     605.0,
+     606.6,
+     800.0,
+     807.3
+    ]
+   },
+   {
+    "t_start_s": 1680,
+    "t_end_s": 1800,
+    "narration_db_over_quiet": 16.5,
+    "content": "voice/music",
+    "active": [
+     49.8,
+     50.0,
+     50.5,
+     99.3,
+     100.8,
+     120.0,
+     198.0,
+     202.0,
+     248.0,
+     252.0,
+     298.0,
+     302.0,
+     395.0,
+     405.0,
+     495.0,
+     505.0,
+     595.0,
+     605.0
+    ]
+   },
+   {
+    "t_start_s": 1800,
+    "t_end_s": 1920,
+    "narration_db_over_quiet": 17.0,
+    "content": "voice/music",
+    "active": [
+     49.8,
+     50.0,
+     50.5,
+     99.3,
+     100.8,
+     120.0,
+     198.0,
+     202.0,
+     248.0,
+     252.0,
+     262.0,
+     266.0,
+     298.0,
+     302.0,
+     395.0,
+     405.0,
+     495.0,
+     505.0,
+     595.0,
+     605.0
+    ]
+   },
+   {
+    "t_start_s": 1920,
+    "t_end_s": 2040,
+    "narration_db_over_quiet": 8.2,
+    "content": "voice/music",
+    "active": [
+     49.8,
+     50.0,
+     50.5,
+     100.8,
+     120.0,
+     175.0,
+     179.0,
+     262.0,
+     266.0,
+     505.0,
+     595.0,
+     605.0
+    ]
+   },
+   {
+    "t_start_s": 2040,
+    "t_end_s": 2160,
+    "narration_db_over_quiet": 17.9,
+    "content": "voice/music",
+    "active": [
+     120.0,
+     175.0,
+     179.0,
+     262.0,
+     266.0
+    ]
+   },
+   {
+    "t_start_s": 2160,
+    "t_end_s": 2280,
+    "narration_db_over_quiet": 21.3,
+    "content": "voice/music",
+    "active": [
+     120.0,
+     175.0,
+     179.0,
+     262.0,
+     266.0,
+     467.0,
+     483.0,
+     568.0,
+     592.0,
+     608.0,
+     632.0
+    ]
+   }
+  ]
+ },
+ "folklore_comparison": {
+  "premise": "Measured first, compared second. Folklore claims ~100/104-style pairs and multi-layer stacks at 100/200/250/300 Hz with ~1.5/4/16 Hz beats.",
+  "agrees": [
+   "100/104 with a 4 Hz beat: F10 pair A measures 99.98/104.03, beat 4.05. Essentially exact.",
+   "Carriers at 100/200/250/300: F12 has precisely these centres (100+/-0.75, 200+/-2, 250+/-2, 300+/-2) - exactly, once the 51 ppm transfer error is removed.",
+   "Beats of 1.5 and 4 Hz: F12's 100-pair is 1.500 and all three of 200/250/300 are 4.000.",
+   "A 16 Hz beat exists: confirmed in both F12 and F15."
+  ],
+  "disagrees": [
+   "16 Hz is in the WRONG PLACE. Not a body layer: it appears only in the 90-160 s exit signal, on carriers centred at 475 and 600 Hz, alongside a 64 Hz pair the folklore never mentions.",
+   "The entire 10 Hz layer is missing from the folklore: carriers 400/500/600 with 10.0 Hz beats run for 19 minutes of F12 and reappear in F15.",
+   "The 50 Hz cluster is missing: a centred mono 50.0 Hz anchor plus 0.25/0.5/0.75 Hz monaural AND binaural beats runs the full length of F12 and F15.",
+   "Channel polarity is ignored by folklore. F12 is L-high throughout; F15 deliberately flips to R-high for its main body, reversing every beat sign.",
+   "'Fixed nice numbers' is false for F10: carriers are not round, beats drift 4.12 -> 3.89 over the session, and its three pairs target 4 Hz but land on 4.05, 3.85 and -3.70. Regenerating F10 from folklore numbers yields something measurably different.",
+   "F15's deep section is absent from folklore entirely: 4.8 and 7.3 Hz beats on 300/500/600/800 Hz carriers, for 19 of its 40 minutes."
+  ]
+ },
+ "confidence_notes": {
+  "high": "All F12/F15 carrier frequencies and beats (coherent 600 s FFTs, tone residuals <0.001 Hz, every beat confirmed by envelope demodulation). The F12 51 ppm speed error (18 tones agreeing to +/-0.5 ppm). The F12 mono-50 Hz finding (L/R phase locked -10 +/- 6 deg across 30 blocks, plus three-way envelope confirmation).",
+  "good": "F10's three pairs and drift trajectories. The ~0.5 Hz AM on F10 pair B (sidebands 19 dB down, consistent across many blocks). Layer on/off times, good to about +/-30 s given fade-ins and the 60 s block grid.",
+  "lower": [
+   "Levels are section medians; individual carriers move +/-6 dB during fades.",
+   "The bed's level_rel_carriers uses a crude +/-2 Hz tonal notch, reliable only to a few dB. F10's is inflated because the wide median filter smears low-frequency carrier energy into the floor estimate below ~300 Hz. Above 1 kHz the bed numbers are clean.",
+   "F15's 175/179 and 262/266 pairs are low-level and short-lived; frequencies scatter +/-0.01 Hz, so membership in the exact-grid family is undetermined.",
+   "The F15 deep layer's generating rule is unknown. Ratios, harmonic relations and speed-rescalings all fail; intermodulation is ruled out because nothing in that section is loud enough to produce products only 25 dB below itself. Frequencies are certain; their meaning is not.",
+   "The F12/F15 exit 64 Hz pair (568/632) is inferred from the centre+/-half-beat pattern that fits {467,483}=475-/+8 and {592,608}=600-/+8, giving 568/632=600-/+32. Channel assignment is consistent and F15 mirrors it exactly, but 64 Hz is above the binaural fusion limit, so 'pair' here is a structural claim, not a perceptual one."
+  ]
+ }
+}

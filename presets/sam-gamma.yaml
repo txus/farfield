@@ -1,0 +1,134 @@
+name: sam-gamma
+title: "SAM — 40 Hz gamma by swept interaural phase"
+fidelity: patent
+notes: |
+  PATENT. Spatial Angle Modulation exactly as specified in US 2013/0010967
+  A1 and US 2015/0016613 A1 (Atwater & Turner, assignee The Monroe
+  Institute). Both applications were ABANDONED and never granted, so the
+  technique is published prior art and freely implementable; only the SAM
+  trademark is live. The synthesis is verbatim from those filings:
+
+      S_L = A*sin(2*pi*f_s*t + phi_p*sin(2*pi*f_m*t) + phi_L)
+      S_R = A*sin(2*pi*f_s*t - phi_p*sin(2*pi*f_m*t) + phi_R)
+
+  One shared carrier under antiphase phase modulation. What the listener
+  gets is not a binaural beat but a phantom source whose interaural delay
+  sweeps: the instantaneous frequency difference is
+  2*phi_p*f_m*cos(2*pi*f_m*t), mean ZERO. That is the whole point of the
+  technique and the reason this preset runs at 40 Hz. A conventional
+  binaural pair separated by 40 Hz does not fuse into a single moving
+  image at all; SAM's perceived beat sits at f_m while the instantaneous difference
+  stays small.
+
+  WHAT IS OURS, NOT THE PATENTS'. The filings give six degrees of freedom
+  and almost no numbers: example carriers 300 and 440 Hz, a claimed 40-70
+  Hz working range, ear separation 15-25 cm, and three path types named
+  only qualitatively (open, closed, discontinuous). There are no arc
+  angles, no phi_p values and no worked examples anywhere in them.
+  Everything numeric below is derived here, from the patents' own
+  equations plus a spherical-head interaural-delay model
+  (d = 0.175 m, c = 343 m/s, so a maximum physical delay of 510 us):
+
+    - arc_deg is our parameterization. A source at azimuth theta carries a
+      delay of (d/c)*sin(theta), so a swept arc of arc_deg total implies
+      phi_p = pi*f_s*(d/c)*sin(arc_deg/2). At 300 Hz a full ear-to-ear
+      180-degree arc needs phi_p = 0.481 rad, which is where the numbers
+      in this file come from.
+    - The 700 Hz carrier ceiling the engine enforces is ours too, forced
+      by physics the patents never mention: interaural phase is only an
+      unambiguous direction cue below roughly 700-750 Hz. The patents'
+      own examples sit under it, which is presumably why.
+    - The open path is rendered as a source whose AZIMUTH swings
+      sinusoidally between two endpoints, its delay following sin(theta),
+      so it decelerates at the turns; the closed path is the patents'
+      literal sinusoid, a source traversing a closed orbit. Both reach the
+      same delay extremes and differ only in the trajectory between them.
+    - The discontinuous path is a sample-and-hold of the modulator on a
+      phase-anchored grid: `steps` fixed positions per cycle, jump-cut
+      between. The jumps are audible as a faint tick at large step
+      spacings. That is what a jump cut is, and it is left in rather than
+      smoothed away.
+
+  SAM APPEARS IN NO MEASURED RECORDING. It is worth being blunt about
+  this, because the brand implies otherwise. The four MSS3D remasters
+  analysed in docs/tape-analysis/ were run through the exact estimator
+  that separates antiphase phase modulation from amplitude panning
+  (mss-report.md, "Method"), and the SAM component came back ABSENT: what
+  those recordings actually contain is amplitude panning. Nothing in this
+  preset is transcribed from audio. It reproduces the patents, and only
+  the patents.
+
+  Structure: four blocks on a 300 Hz carrier at f_m = 40 Hz, over a
+  quiet 100 Hz delta pair as ground and a pink bed. Block 2 repeats
+  block 1's SAM parameters exactly, so the arc continues across that seam
+  without a phase jump in either the carrier or the modulator. Blocks 3
+  and 4 switch path type — open, then discontinuous with the arc aimed
+  30 degrees off-axis by the static offsets — while the ground pair
+  continues underneath.
+sample_rate: 48000
+output:
+  peak_dbfs: -3.0
+
+segments:
+  # 0:00-6:00 -- closed path, the patents' literal equation. 120-degree arc
+  # (phi_p = 0.416 rad, +/-442 us) at the patents' 300 Hz example carrier.
+  - duration: "6:20"
+    overlap: "0:20"
+    groups:
+      - name: sweep
+        level_db: -6.0
+        sam: {carrier_hz: 300.0, rate_hz: 40.0, arc_deg: 120.0, path: closed}
+      - name: ground
+        level_db: -18.0
+        harmonics: [1.0]
+        pairs: [{center: 100.0, beat: 1.5}]
+    pink: {level_db: -20.0}
+
+  # 6:00-12:00 -- identical SAM parameters: the seam is a true continuation,
+  # and both phase accumulators hand off across it.
+  - duration: "6:20"
+    overlap: "0:20"
+    groups:
+      - name: sweep
+        level_db: -6.0
+        sam: {carrier_hz: 300.0, rate_hz: 40.0, arc_deg: 120.0, path: closed}
+      - name: ground
+        level_db: -18.0
+        harmonics: [1.0]
+        pairs: [{center: 100.0, beat: 1.5}]
+    pink: {level_db: -20.0}
+
+  # 12:00-17:00 -- open path, widened to a 160-degree arc: the source now
+  # shuttles between two endpoints instead of orbiting.
+  - duration: "5:20"
+    overlap: "0:20"
+    groups:
+      - name: sweep
+        level_db: -6.0
+        sam: {carrier_hz: 300.0, rate_hz: 40.0, arc_deg: 160.0, path: open}
+      - name: ground
+        level_db: -18.0
+        harmonics: [1.0]
+        pairs: [{center: 100.0, beat: 1.5}]
+    pink: {level_db: -20.0}
+
+  # 17:00-22:00 -- discontinuous: six held positions per cycle, the whole
+  # arc aimed 30 degrees off-axis by the static per-channel offsets.
+  - duration: "5:00"
+    groups:
+      - name: sweep
+        level_db: -6.0
+        sam:
+          carrier_hz: 300.0
+          rate_hz: 40.0
+          arc_deg: 120.0
+          path: discontinuous
+          steps: 6
+          offset_deg: {left: 15.0, right: -15.0}
+      - name: ground
+        level_db: -18.0
+        harmonics: [1.0]
+        pairs: [{center: 100.0, beat: 1.5}]
+    pink: {level_db: -20.0}
+
+emerge: false

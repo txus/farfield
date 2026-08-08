@@ -1,0 +1,91 @@
+name: focus-10
+title: "Focus 10 — measured free flow"
+fidelity: measured-tape
+notes: |
+  MEASURED. Transcribed from spectral analysis of a personal copy of the
+  Gateway "Free Flow 10" track (see docs/tape-analysis/ in this
+  repository). Idealized: de-scaled to round nominals to compensate for the
+  master's tape-speed drift; second harmonics (-29 dB mastering residue) are
+  omitted. The tape's first ~100 seconds (a spoken lead-in that precedes the
+  first carriers) are trimmed and the whole timeline below is shifted earlier
+  by that amount, so 0:00 here is the first tone. Kept deliberately: the continuously gliding beat frequencies (the
+  tape never settles on a fixed beat within a segment); the reversed pair C
+  (497.0/493.3 Hz — the left channel carries the higher of the two, opposite
+  the session's usual convention); and the unusually loud brown noise bed
+  that the tape carries throughout, static (not panned) with a fixed 145 us
+  interaural lead — probably head azimuth from the recording setup rather
+  than a deliberate effect, but kept because it defines the image. Bed
+  loudness and motion measured (docs/tape-analysis/bed-results.json):
+  the bed's RMS energy, spread thinly across the full spectrum, is actually
+  close in level to the strongest carrier rather than far beneath it.
+
+  Small idealizations, disclosed: the tape's beat trajectories are not
+  monotone (pair A first rises to ~4.12 before falling, and pair B's
+  beat climbs back toward 3.78 late in the track); this preset flattens
+  each to a single linear glide between its section endpoints. And the
+  bed's small static level tilt (~+1.5 dB toward the left ear) is not
+  rendered — the 145 us interaural lead is kept, the level tilt is not.
+sample_rate: 48000
+output:
+  peak_dbfs: -3.0
+
+defaults:
+  harmonics: [1.0]
+
+segments:
+  # resolved 0:00-4:10 — Group A alone
+  - duration: "4:25"
+    overlap: "0:15"
+    groups:
+      - {name: A, level_db: 0.0,
+         pairs: [{center: 102.0, beat: {from: 4.115, to: 4.070}}]}
+    bed: &bed
+      level_db: -4.1
+      color: brown
+      slope_db_per_decade: -22.0
+      stereo: {mode: static, interaural_delay_us: 145.0}
+
+  # resolved 4:10-5:20 — Group B enters
+  - duration: "1:25"
+    overlap: "0:15"
+    groups:
+      - {name: A, level_db: 0.0,
+         pairs: [{center: 102.0, beat: {from: 4.070, to: 4.057}}]}
+      - {name: B, level_db: -0.5,
+         pairs: [{center: 300.5, beat: {from: 3.867, to: 3.859}}],
+         tremolo: {rate_hz: {from: 0.580, to: 0.575}, depth: 0.22}}
+    bed: *bed
+
+  # resolved 5:20-21:10 — Group C enters, full stack
+  - duration: "16:05"
+    overlap: "0:15"
+    groups:
+      - {name: A, level_db: 0.0,
+         pairs: [{center: 102.0, beat: {from: 4.057, to: 3.886}}]}
+      - {name: B, level_db: -0.5,
+         pairs: [{center: 300.5, beat: {from: 3.859, to: 3.751}}],
+         tremolo: {rate_hz: {from: 0.575, to: 0.514}, depth: 0.22}}
+      - {name: C, level_db: -6.0,
+         pairs: [{left: 497.0, right: 493.3}]}
+    bed: *bed
+
+  # resolved 21:10-24:30 — Group A exits
+  - duration: "3:35"
+    overlap: "0:15"
+    groups:
+      - {name: B, level_db: -0.5,
+         pairs: [{center: 300.5, beat: {from: 3.751, to: 3.728}}],
+         tremolo: {rate_hz: {from: 0.514, to: 0.501}, depth: 0.22}}
+      - {name: C, level_db: -6.0,
+         pairs: [{left: 497.0, right: 493.3}]}
+    bed: *bed
+
+  # resolved 24:30-30:00 — Group C exits, Group B alone to the end
+  - duration: "5:30"
+    groups:
+      - {name: B, level_db: -0.5,
+         pairs: [{center: 300.5, beat: {from: 3.728, to: 3.691}}],
+         tremolo: {rate_hz: {from: 0.501, to: 0.480}, depth: 0.22}}
+    bed: *bed
+
+emerge: false

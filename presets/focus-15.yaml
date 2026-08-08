@@ -1,0 +1,158 @@
+name: focus-15
+title: "Focus 15 — measured, polarity-swapping"
+fidelity: measured-tape
+notes: |
+  MEASURED. Transcribed from spectral analysis of a personal copy of the
+  Gateway "Free Flow 15" track (see docs/tape-analysis/ in this
+  repository). Idealized: de-scaled to round nominals where the master ran
+  51.3 ppm fast (an NTSC pilot tone from a video-based PCM adaptor); second
+  harmonics (-29 dB mastering residue) are omitted. The tape's first 45
+  seconds (silence and a spoken intro that precede the first mono tones) are
+  trimmed — the timeline below begins at the first tone. The pan LFO's mild
+  rise/fall skew (rise faster than fall) is not reproduced; this engine
+  renders it as a pure sinusoid.
+
+  Kept deliberately: the mid-session ear-polarity swap (the high member
+  moves from the left ear to the right ear partway through, then the theta
+  and alpha layers return on the right before mirroring back for the exit);
+  the non-round "deep" grid in segment 5 (304.8/300.0, 503.9/511.2,
+  606.6/599.3, 807.3/800.0 Hz), kept verbatim rather than rounded because
+  the source is exact to within 0.1 ppm; and the deep brown bed that the
+  tape carries throughout, fully decorrelated (two independent noise
+  streams, not one panned) and ping-pong crossfaded on a ~9.65 s sinusoidal
+  LFO — the same production LFO as Focus 12, run slightly faster, and here
+  deeper (4.5 dB peak-to-peak). Bed loudness measured (docs/tape-analysis/bed-results.json): the bed sits +34.6 dB above its
+  strongest in-window carrier — the "deep" grid's tones are whisper-quiet,
+  not the mix.
+
+  Small roundings, disclosed: the bed slope renders -30.0 dB/decade
+  against the measured -29.6; the intro mono pair is levelled at 0.0 dB
+  against the measured -2.0; the four deep-grid pairs share one -28.0 dB
+  level against the measured -27/-28.5/-28.5/-29; and the exit block is
+  held to the end of the timeline where the tape's exit tones stop about
+  a minute earlier.
+sample_rate: 48000
+output:
+  peak_dbfs: -3.0
+
+defaults:
+  harmonics: [1.0]
+
+segments:
+  # resolved 0:00-2:00 — intro tones and the mono anchor
+  - duration: "2:15"
+    overlap: "0:15"
+    groups:
+      - {name: intro, level_db: 0.0,
+         pairs: [{mono: 100.75}, {mono: 99.25}]}
+      - {name: anchor, level_db: -1.0,
+         pairs: [{mono: 50.0}]}
+    bed: &bed
+      level_db: -6.5
+      color: brown
+      slope_db_per_decade: -30.0
+      stereo: {mode: crossfade, lfo_period_s: 9.65, depth_db: 4.5}
+
+  # resolved 2:00-4:05 — ground + delta, left ear high
+  - duration: "2:20"
+    overlap: "0:15"
+    groups:
+      - {name: ground, high_ear: left, level_db: -1.0,
+         pairs: [{mono: 50.0}, {center: 50.125, beat: 0.75}]}
+      - {name: delta, high_ear: left, level_db: 0.0,
+         pairs: [{center: 100.0, beat: 1.5}]}
+    bed: *bed
+
+  # resolved 4:05-6:05 — theta layer enters, still left ear high
+  - duration: "2:15"
+    overlap: "0:15"
+    groups:
+      - {name: ground, high_ear: left, level_db: -1.0,
+         pairs: [{mono: 50.0}, {center: 50.125, beat: 0.75}]}
+      - {name: delta, high_ear: left, level_db: 0.0,
+         pairs: [{center: 100.0, beat: 1.5}]}
+      # the bridges are right-high (measured fL 175 / fR 179, fL 262 / fR 266)
+      # even while the ground and delta layers are still left-high here
+      - {name: br175, high_ear: right, level_db: -15.0,
+         pairs: [{center: 177.0, beat: 4.0}]}
+      - {name: br262, high_ear: right, level_db: -16.0,
+         pairs: [{center: 264.0, beat: 4.0}]}
+    bed: *bed
+
+  # resolved 6:05-7:10 — polarity flip: full stack, right ear now high
+  - duration: "1:20"
+    overlap: "0:15"
+    groups:
+      - {name: ground, high_ear: right, level_db: -1.0,
+         pairs: [{mono: 50.0}, {center: 50.125, beat: 0.75}]}
+      - {name: delta, high_ear: right, level_db: -8.0,
+         pairs: [{center: 100.0, beat: 1.5}]}
+      - {name: th200, high_ear: right, level_db: -17.0,
+         pairs: [{center: 200.0, beat: 4.0}]}
+      - {name: th250, high_ear: right, level_db: -23.0,
+         pairs: [{center: 250.0, beat: 4.0}]}
+      - {name: th300, high_ear: right, level_db: -27.0,
+         pairs: [{center: 300.0, beat: 4.0}]}
+      - {name: al400, high_ear: right, level_db: -28.0,
+         pairs: [{center: 400.0, beat: 10.0}]}
+      - {name: al500, high_ear: right, level_db: -38.0,
+         pairs: [{center: 500.0, beat: 10.0}]}
+      - {name: al600, high_ear: right, level_db: -40.0,
+         pairs: [{center: 600.0, beat: 10.0}]}
+    bed: *bed
+
+  # resolved 7:10-25:55 — deep hold: anchor plus the non-round deep grid
+  - duration: "19:00"
+    overlap: "0:15"
+    groups:
+      - {name: anchor, level_db: -1.0,
+         pairs: [{mono: 50.0}]}
+      - {name: deep, level_db: -28.0,
+         pairs: [{left: 304.8, right: 300.0}, {left: 503.9, right: 511.2},
+                 {left: 606.6, right: 599.3}, {left: 807.3, right: 800.0}]}
+    bed: *bed
+
+  # resolved 25:55-30:55 — stack returns, right ear still high
+  - duration: "5:15"
+    overlap: "0:15"
+    groups:
+      - {name: ground, high_ear: right, level_db: 0.0,
+         pairs: [{mono: 50.0}, {center: 50.125, beat: 0.75}]}
+      - {name: delta, high_ear: right, level_db: -10.0,
+         pairs: [{center: 100.0, beat: 1.5}]}
+      - {name: th200, high_ear: right, level_db: -20.0,
+         pairs: [{center: 200.0, beat: 4.0}]}
+      - {name: th250, high_ear: right, level_db: -25.0,
+         pairs: [{center: 250.0, beat: 4.0}]}
+      - {name: th300, high_ear: right, level_db: -30.0,
+         pairs: [{center: 300.0, beat: 4.0}]}
+      - {name: al400, high_ear: right, level_db: -28.0,
+         pairs: [{center: 400.0, beat: 10.0}]}
+      - {name: al500, high_ear: right, level_db: -36.0,
+         pairs: [{center: 500.0, beat: 10.0}]}
+      - {name: al600, high_ear: right, level_db: -40.0,
+         pairs: [{center: 600.0, beat: 10.0}]}
+    bed: *bed
+
+  # resolved 30:55-35:55 — theta remnant before the exit, right ear high
+  - duration: "5:15"
+    overlap: "0:15"
+    groups:
+      - {name: br175, high_ear: right, level_db: -17.0,
+         pairs: [{center: 177.0, beat: 4.0}]}
+      - {name: br262, high_ear: right, level_db: -15.0,
+         pairs: [{center: 264.0, beat: 4.0}]}
+    bed: *bed
+
+  # resolved 35:55-38:25 — the exit block, mirrored from Focus 12, right ear high
+  - duration: "2:30"
+    groups:
+      - {name: x475, high_ear: right, level_db: -19.0,
+         pairs: [{center: 475.0, beat: 16.0}]}
+      - {name: x600, high_ear: right, level_db: -29.0,
+         pairs: [{center: 600.0, beat: 16.0}]}
+      - {name: x64, high_ear: right, level_db: -29.0,
+         pairs: [{center: 600.0, beat: 64.0}]}
+    bed: *bed
+
+emerge: false

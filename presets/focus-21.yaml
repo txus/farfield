@@ -1,0 +1,221 @@
+name: focus-21
+title: "Focus 21 — measured, the bridge"
+fidelity: measured-tape
+notes: |
+  MEASURED. Transcribed from spectral analysis of a personal copy of the
+  Gateway "Free Flow 21" track (see docs/tape-analysis/ in this
+  repository, particularly f21-results.json). Idealized: the master runs
+  -4.2 ppm (effectively correct speed, unlike Focus 12's 51.3 ppm-fast
+  lineage), so every carrier here is the round nominal to within 0.015 Hz.
+  An unexplained 276.676 Hz tone (near-antiphase between the ears, present
+  only in the 900-1980 s deep section, on no grid and not an
+  intermodulation product) is omitted -- unexplained is not the same as
+  designed. The 2280-2335 s gap, where the tape carries only its spoken
+  closing narration, is bridged here with the ground/delta pair rather
+  than silence, so playback does not drop to nothing mid-track.
+
+  Kept deliberately: the ear polarity starts left-high (intro, 0-220 s)
+  and flips to right-high across the 220 s seam, staying right-high for
+  the rest of the program including the exit block; the phase-locked
+  mono 50 Hz anchor riding under the 49.75/50.5 Hz sub-delta pair; the
+  16 Hz beta triplet's middle centre at 755 Hz (747/763 Hz pair), not
+  the folklore-cited 750; the 10 Hz alpha triplet's two separate
+  appearances (600-840 s and again 1980-2280 s) bracketing an 18-minute
+  16 Hz beta section (900-1980 s) rather than a continuous alpha band;
+  and the brown, strongly surf-modulated bed (28.9% envelope modulation
+  at a 0.099 Hz peak rate -- the slowest and deepest surf of the four
+  tapes measured so far), ping-pong crossfaded on a 9.90 s sinusoidal
+  LFO, 2.83 dB peak-to-peak, between two independent noise streams,
+  same production technique as Focus 12/15.
+
+  One known level deviation, disclosed rather than hidden: the mono
+  50 Hz anchor renders inside the ground group at that group's level
+  (-6.8 dB), but the tape measures it at -15.5 dB
+  (f21-results.json's mono_carriers) -- about 8.7 dB quieter than
+  rendered. The engine has no per-pair level inside a group, so the
+  anchor inherits the ground pair's level; kept as-is because splitting
+  it into its own group would complicate the seam-coherent layering for
+  a tone 9 dB under the pair it rides beneath.
+
+  Both stereo numbers are MEASURED, not inferred. Earlier drafts of this
+  preset carried 10.1 s / 3.5 dB, read off the bed's 0.099 Hz envelope
+  swell and given a depth by analogy with Focus 12/15; that was ambiguous,
+  because Focus 12's own analysis attributes its envelope swell to the pan
+  LFO's SECOND harmonic, and the same reading here would imply a 20.2 s
+  LFO. The ambiguity was settled by measuring the pan directly on the tape
+  (see noise_bed.pan in f21-results.json): the 1.5-8 kHz ILD trace carries
+  a line at 0.1010 Hz -- 9.90 s -- standing 70-235x over its local
+  spectral median, and a sinusoid fit at half that rate recovers under
+  1.5% of the fundamental's amplitude, so there is no 20 s component at
+  all. The swell sits at the fundamental (Focus 15's arrangement), not at
+  2*f0 (Focus 12's). Depth is the ILD trace's 97.5-2.5 percentile spread,
+  2.82-2.86 dB across five disjoint 120 s windows.
+
+  Bed loudness measured directly from the original tape against the
+  ground pair's 50.4987 Hz member (level -6.8 dB, the loudest layer
+  active in the deep beta section). A single window at this carrier's SNR is a phase lottery worth
+  +/-3 dB (the single-window reading, +18.3 dB at 1200-1320 s, is
+  retained in f21-results.json); the robust figure across six windows
+  spanning the voice-free 1100-1820 s stretch -- mean of the four windows
+  where tape wow doesn't smear the line out of its FFT bin, in physical
+  (bin-width-scaled) bed power -- is +14.34 dB in the acceptance test's
+  cross-rate convention, and this preset's bed level is calibrated to
+  it. Both measurements are recorded in f21-results.json with window,
+  reference carrier and estimator alongside. The
+  reference carrier only clears a presence guard at fine (full-window
+  FFT, 0.0083 Hz bin) resolution; at Welch's coarser averaged resolution
+  the same real tone is statistically indistinguishable from the bed's
+  own local floor, which is a resolution artifact of the measurement,
+  not an absence of the tone. Separately, the tape's bed continuum itself
+  carries extra low-frequency energy above the fitted -18.6 dB/decade
+  slope (+14 to +19 dB at 40-320 Hz) -- this render
+  matches the tape's overall broadband level and its fitted slope, not
+  that exact low-band excess shape. The two numbers below are different
+  quantities: 14.34 dB is the acceptance test's TARGET bed/carrier ratio
+  (bed power over the 50.4987 Hz reference carrier), while the bed
+  block's level_db: 19.45 is the calibrated bed LEVEL relative to the
+  tonal groups that renders to that ratio once the carrier's own
+  -6.8 dB and the layering geometry are accounted for; they are not the
+  same axis and are not expected to match numerically.
+sample_rate: 48000
+output:
+  peak_dbfs: -3.0
+
+defaults:
+  harmonics: [1.0]
+
+segments:
+  # resolved 0:00-3:40 -- intro: mono anchor + sub-delta + delta, left ear high
+  - duration: "3:55"
+    overlap: "0:15"
+    groups:
+      - {name: introground, high_ear: left, level_db: -7.8,
+         pairs: [{mono: 50.0}, {center: 50.125, beat: 0.75}]}
+      - {name: introdelta, high_ear: left, level_db: 0.5,
+         pairs: [{center: 100.0, beat: 1.5}]}
+    bed: &bed
+      level_db: 19.45
+      color: brown
+      slope_db_per_decade: -18.6
+      stereo: {mode: crossfade, lfo_period_s: 9.9, depth_db: 2.83}
+
+  # resolved 3:40-10:00 -- polarity flip: ground/delta continue right-high, theta enters
+  - duration: "6:35"
+    overlap: "0:15"
+    groups:
+      - {name: ground, high_ear: right, level_db: -6.8,
+         pairs: [{mono: 50.0}, {center: 50.125, beat: 0.75}]}
+      - {name: delta, high_ear: right, level_db: -9.1,
+         pairs: [{center: 100.0, beat: 1.5}]}
+      - {name: th200, high_ear: right, level_db: -30.5,
+         pairs: [{center: 200.0, beat: 4.0}]}
+      - {name: th250, high_ear: right, level_db: -31.0,
+         pairs: [{center: 250.0, beat: 4.0}]}
+      - {name: th300, high_ear: right, level_db: -34.9,
+         pairs: [{center: 300.0, beat: 4.0}]}
+    bed: *bed
+
+  # resolved 10:00-14:00 -- alpha bloom over the ground/delta/theta stack
+  - duration: "4:15"
+    overlap: "0:15"
+    groups:
+      - {name: ground, high_ear: right, level_db: -6.8,
+         pairs: [{mono: 50.0}, {center: 50.125, beat: 0.75}]}
+      - {name: delta, high_ear: right, level_db: -9.1,
+         pairs: [{center: 100.0, beat: 1.5}]}
+      - {name: th200, high_ear: right, level_db: -30.5,
+         pairs: [{center: 200.0, beat: 4.0}]}
+      - {name: th250, high_ear: right, level_db: -31.0,
+         pairs: [{center: 250.0, beat: 4.0}]}
+      - {name: th300, high_ear: right, level_db: -34.9,
+         pairs: [{center: 300.0, beat: 4.0}]}
+      - {name: al400, high_ear: right, level_db: -27.7,
+         pairs: [{center: 400.0, beat: 10.0}]}
+      - {name: al500, high_ear: right, level_db: -26.5,
+         pairs: [{center: 500.0, beat: 10.0}]}
+      - {name: al600, high_ear: right, level_db: -28.5,
+         pairs: [{center: 600.0, beat: 10.0}]}
+    bed: *bed
+
+  # resolved 14:00-15:00 -- handover: alpha drops out ahead of the beta section
+  - duration: "1:15"
+    overlap: "0:15"
+    groups:
+      - {name: ground, high_ear: right, level_db: -6.8,
+         pairs: [{mono: 50.0}, {center: 50.125, beat: 0.75}]}
+      - {name: delta, high_ear: right, level_db: -9.1,
+         pairs: [{center: 100.0, beat: 1.5}]}
+      - {name: th200, high_ear: right, level_db: -30.5,
+         pairs: [{center: 200.0, beat: 4.0}]}
+      - {name: th250, high_ear: right, level_db: -31.0,
+         pairs: [{center: 250.0, beat: 4.0}]}
+      - {name: th300, high_ear: right, level_db: -34.9,
+         pairs: [{center: 300.0, beat: 4.0}]}
+    bed: *bed
+
+  # resolved 15:00-33:00 -- the 18-minute deep section: 16 Hz beta triplet enters
+  - duration: "18:15"
+    overlap: "0:15"
+    groups:
+      - {name: ground, high_ear: right, level_db: -6.8,
+         pairs: [{mono: 50.0}, {center: 50.125, beat: 0.75}]}
+      - {name: delta, high_ear: right, level_db: -9.1,
+         pairs: [{center: 100.0, beat: 1.5}]}
+      - {name: th200, high_ear: right, level_db: -30.5,
+         pairs: [{center: 200.0, beat: 4.0}]}
+      - {name: th250, high_ear: right, level_db: -31.0,
+         pairs: [{center: 250.0, beat: 4.0}]}
+      - {name: th300, high_ear: right, level_db: -34.9,
+         pairs: [{center: 300.0, beat: 4.0}]}
+      - {name: bt600, high_ear: right, level_db: -40.2,
+         pairs: [{center: 600.0, beat: 16.0}]}
+      - {name: bt755, high_ear: right, level_db: -55.2,
+         pairs: [{center: 755.0, beat: 16.0}]}
+      - {name: bt900, high_ear: right, level_db: -51.2,
+         pairs: [{center: 900.0, beat: 16.0}]}
+    bed: *bed
+
+  # resolved 33:00-38:00 -- return: beta out, sub-delta/delta/theta/alpha back
+  - duration: "5:15"
+    overlap: "0:15"
+    groups:
+      - {name: ground, high_ear: right, level_db: -6.8,
+         pairs: [{mono: 50.0}, {center: 50.125, beat: 0.75}]}
+      - {name: delta, high_ear: right, level_db: -9.1,
+         pairs: [{center: 100.0, beat: 1.5}]}
+      - {name: th200, high_ear: right, level_db: -30.5,
+         pairs: [{center: 200.0, beat: 4.0}]}
+      - {name: th250, high_ear: right, level_db: -31.0,
+         pairs: [{center: 250.0, beat: 4.0}]}
+      - {name: th300, high_ear: right, level_db: -34.9,
+         pairs: [{center: 300.0, beat: 4.0}]}
+      - {name: al400, high_ear: right, level_db: -27.7,
+         pairs: [{center: 400.0, beat: 10.0}]}
+      - {name: al500, high_ear: right, level_db: -26.5,
+         pairs: [{center: 500.0, beat: 10.0}]}
+      - {name: al600, high_ear: right, level_db: -28.5,
+         pairs: [{center: 600.0, beat: 10.0}]}
+    bed: *bed
+
+  # resolved 38:00-38:55 -- bridge over the tape's spoken closing narration
+  - duration: "1:10"
+    overlap: "0:15"
+    groups:
+      - {name: ground, high_ear: right, level_db: -6.8,
+         pairs: [{mono: 50.0}, {center: 50.125, beat: 0.75}]}
+      - {name: delta, high_ear: right, level_db: -9.1,
+         pairs: [{center: 100.0, beat: 1.5}]}
+    bed: *bed
+
+  # resolved 38:55-40:06 -- exit block, right ear high
+  - duration: "1:11"
+    groups:
+      - {name: x475, high_ear: right, level_db: -8.6,
+         pairs: [{center: 475.0, beat: 16.0}]}
+      - {name: x600, high_ear: right, level_db: -15.7,
+         pairs: [{center: 600.0, beat: 16.0}]}
+      - {name: x64, high_ear: right, level_db: -14.7,
+         pairs: [{center: 600.0, beat: 64.0}]}
+    bed: *bed
+
+emerge: false

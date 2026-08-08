@@ -1,0 +1,1552 @@
+{
+ "provenance": {
+  "source": "personal Monroe Sound Science 3D remaster mp3s, 320 kbps CBR, 48 kHz stereo",
+  "files": [
+   "Freeflow 10 — MSS3D (personal copy, 2622.05 s)",
+   "Freeflow 12 — MSS3D (personal copy, 2695.06 s)",
+   "Free Flow 15 — MSS3D (personal copy, 2575.06 s)",
+   "Freeflow 21 — MSS3D (personal copy, 2400.05 s)"
+  ],
+  "companion": "results.json / f21-results.json hold the Hemi-Sync-era tape measurements of the same four programs",
+  "note": "Every number below is MEASURED unless its key says derived or guess. Frequencies are given with the per-window scatter that produced them."
+ },
+ "method": {
+  "decimation": "48 kHz -> 4 kHz (ffmpeg swresample, 512-tap, cutoff 0.90*Nyquist) for all sub-1.9 kHz work; full-rate 180 s windows for bed/spatial; 2.8-6.3 kHz bandpassed 1500 s windows at 16 kHz for the bed LFO.",
+  "line_census": "60 s coherent Hann FFT per 60 s block and channel (0.0167 Hz bins), 12 dB local-median tonality gate, clustered across blocks.",
+  "carrier_frequencies": "120-240 s coherent windows, 3-bin quadratic interpolation, 2-6 disjoint voice-free windows per track; the reported freq_sd_mHz is the spread ACROSS those windows.",
+  "beats": "verified independently by Hilbert-envelope spectrum of the band-passed signal, computed separately for L, R and L+R (the per-ear computation is what distinguishes monaural from binaural beating).",
+  "continuum": "Welch, nperseg 2^17 (0.366 Hz bins), median-per-band times bandwidth. Lines and continua are never measured with the same estimator (see report.md's bin-width note).",
+  "spatial": "per-tone 6 s sliding coherent projection for ILD/IPD traces; whole-window complex projection at f0 and f0+-f_m on the mid (L+R)/2 and side (L-R)/2 channels for the modulation decomposition.",
+  "modulation_decomposition": {
+   "definition": "r_u = S(f0+f_m)/M(f0), r_l = S(f0-f_m)/M(f0) as complex projections.",
+   "identity": "a = (r_u + conj(r_l))/2 is the pure amplitude-pan component (-i*(eps/2)*e^{i psi}); b = (r_u - conj(r_l))/2 is the pure antiphase-phase-modulation (SAM) component ((phi_p/2)*e^{i psi}). eps = 2|a|, phi_p = 2|b|. This separation is exact for any modulator phase, which is why the naive 'are the sidebands real or imaginary' test fails: both mechanisms produce sidebands of either character depending on the unknown LFO phase.",
+   "note": "An earlier pass that summed the 3-bin Hann core as complex values gave nonsense (the -0.5 side lobes cancel the centre bin); all figures here use single-frequency projections."
+  }
+ },
+ "mp3_artifact_check": {
+  "question": "could joint-stereo M/S coding have manufactured the near-zero interaural differences on the mid-band tones?",
+  "answer": "no",
+  "evidence": [
+   "the side channel carries bed noise only 3.0-6.5 dB below the mid channel at 194 Hz, so side information is being coded there",
+   "the +-0.0333 Hz pan sidebands of those same tones are recovered from the side channel at 37-40 dB over the local side floor",
+   "the 48.850/49.150 pair's 29-49 dB interchannel isolation and the 97.25/98.75 pair's +-33-48 deg IPD survive intact in the same files"
+  ],
+  "encoder_lowpass_hz": 16000,
+  "encoder_lowpass_note": "MEASURED: continuum falls from -88.7 dB (12.8 kHz band) to -104 dB (16.1 kHz) and to -188 dB by 20 kHz. Bandwidth-limited source or encoder setting; not relevant to any layer claim."
+ },
+ "tuning_system": {
+  "verdict": "MEASURED: 12-tone equal temperament, A4 = 440 Hz. Every carrier pair is centred on a note of a G major triad (G-B-D) in successive octaves, split by +-half the beat.",
+  "residuals_vs_12tet_mHz": "all pair centres fall within +-4 mHz (<= 7 ppm) of the exact 12-TET frequency; per-window scatter is 0.0-0.6 mHz",
+  "just_intonation_ruled_out": "just major third on G = 245.00 Hz and just fifth = 294.00 Hz; measured 246.9416 and 293.6649, which are the equal-tempered values (246.94165, 293.66477)",
+  "relation_to_tape_grid": "DERIVED: the Hemi-Sync tapes used round decimal centres (50, 100, 200, 250, 300, 400, 500, 600, 755, 900). MSS moved each centre to the nearest 12-TET pitch of a G major chord. This is why the grid reads ~2% flat at 196 vs 200 while the beats are unchanged at 4.000 Hz: it is a retune, not a speed change.",
+  "notes_used": {
+   "G1": 48.99943,
+   "G2": 97.99886,
+   "G3": 195.99772,
+   "B3": 246.94165,
+   "D4": 293.66477,
+   "G4": 391.99544,
+   "Bb4": 466.16376,
+   "B4": 493.8833,
+   "D5": 587.32954,
+   "G5": 783.99087,
+   "B5": 987.7666
+  }
+ },
+ "shared_layer_vocabulary": {
+  "note": "MEASURED: all four programs are built from the same six layers with identical frequencies. Frequencies agree across the four tracks to under 1 mHz. Levels are mid-channel RMS in dBFS, measured in the windows listed per track.",
+  "layers": {
+   "ground_G1": {
+    "left_hz": 48.85,
+    "right_hz": 49.15,
+    "uncertainty_hz": 0.002,
+    "centre_hz": 49.0,
+    "centre_note": "G1",
+    "centre_dev_mHz": 0.6,
+    "beat_hz": 0.3,
+    "beat_kind": "binaural",
+    "crossfeed_db": [
+     -29,
+     -49
+    ],
+    "crossfeed_note": "hard-panned; the four tracks and six windows span this range",
+    "amplitude_modulation": {
+     "left_rate_hz": 0.25,
+     "right_rate_hz": 0.5,
+     "index": 0.83,
+     "index_sd": 0.02,
+     "sidebands": "symmetric pairs at 48.600/49.100 in L and 48.650/49.650 in R, each 8.0-8.5 dB below its carrier",
+     "kind": "per-ear tremolo at different rates in each ear; NOT a pan (the sidebands sit in each channel's own spectrum)"
+    },
+    "pan_lfo": "none (ILD amplitude at 1/30 Hz = 0.9-1.2 dB, i.e. noise)",
+    "level_dbfs": [
+     -40.5,
+     -35.1
+    ]
+   },
+   "delta_G2": {
+    "left_hz": 97.2484,
+    "right_hz": 98.7492,
+    "freq_sd_mHz": 0.3,
+    "centre_hz": 97.9988,
+    "centre_note": "G2",
+    "centre_dev_mHz": -0.1,
+    "beat_hz": 1.5008,
+    "beat_sd_hz": 0.0002,
+    "beat_kind": "binaural with heavy crossfeed",
+    "crossfeed_db": -3.4,
+    "crossfeed_sd_db": 0.3,
+    "static_placement": {
+     "ild_db_low_member": 3.5,
+     "ild_db_high_member": -3.4,
+     "ipd_deg_low_member": 34.3,
+     "ipd_deg_high_member": -47.6,
+     "ipd_sd_deg": 1.2,
+     "equivalent_itd_us": [
+      980,
+      1340
+     ],
+     "note": "MEASURED. The equivalent ITD exceeds the maximum physical interaural delay (~700 us), so this is a stereo widening / crossfeed network, not an HRTF placement."
+    },
+    "pan_lfo": "none (ILD amplitude at 1/30 Hz = 0.4 dB)",
+    "beat_present_in": "L, R and L+R envelopes at 1.4954 Hz (envelope-bin-limited); a genuinely binaural pair would show it only in L+R, so the -3.4 dB crossfeed makes this beat partly monaural in each ear",
+    "level_dbfs": [
+     -40.4,
+     -35.0
+    ]
+   },
+   "theta": {
+    "pairs": [
+     {
+      "low_hz": 193.9976,
+      "high_hz": 197.9982,
+      "freq_sd_mHz": 0.1,
+      "beat_hz": 4.0007,
+      "centre_hz": 195.9979,
+      "note": "G3",
+      "centre_dev_mHz": 0.2,
+      "level_dbfs": -39.3
+     },
+     {
+      "low_hz": 244.941,
+      "high_hz": 248.9422,
+      "freq_sd_mHz": 0.1,
+      "beat_hz": 4.0012,
+      "centre_hz": 246.9416,
+      "note": "B3",
+      "centre_dev_mHz": -0.1,
+      "level_dbfs": -41.5
+     },
+     {
+      "low_hz": 291.6647,
+      "high_hz": 295.6651,
+      "freq_sd_mHz": 0.1,
+      "beat_hz": 4.0004,
+      "centre_hz": 293.6649,
+      "note": "D4",
+      "centre_dev_mHz": 0.1,
+      "level_dbfs": -44.1
+     }
+    ],
+    "beat_hz_nominal": 4.001,
+    "beat_verification": "envelope line at 3.9978 Hz (Welch bin 0.015 Hz) in L, R and L+R, plus its 2nd harmonic at 7.9956 Hz",
+    "spatial": "rotating (see rotation block)"
+   },
+   "alpha": {
+    "pairs": [
+     {
+      "low_hz": 386.9951,
+      "high_hz": 396.995,
+      "freq_sd_mHz": 0.3,
+      "beat_hz": 9.9999,
+      "centre_hz": 391.9951,
+      "note": "G4",
+      "centre_dev_mHz": -0.3,
+      "level_dbfs": -49.7
+     },
+     {
+      "low_hz": 488.8829,
+      "high_hz": 498.8806,
+      "freq_sd_mHz": 0.4,
+      "beat_hz": 9.9977,
+      "centre_hz": 493.8818,
+      "note": "B4",
+      "centre_dev_mHz": -1.5,
+      "level_dbfs": -51.9
+     },
+     {
+      "low_hz": 582.3309,
+      "high_hz": 592.3318,
+      "freq_sd_mHz": 0.1,
+      "beat_hz": 10.0009,
+      "centre_hz": 587.3314,
+      "note": "D5",
+      "centre_dev_mHz": 1.9,
+      "level_dbfs": -54.4
+     }
+    ],
+    "beat_hz_nominal": 10.0,
+    "beat_verification": "envelope line at 9.9945 Hz in L, R and L+R plus 2nd harmonic at 20.00 Hz",
+    "spatial": "rotating"
+   },
+   "theta_733": {
+    "pairs": [
+     {
+      "low_hz": 490.2186,
+      "high_hz": 497.5476,
+      "freq_sd_mHz": 0.5,
+      "beat_hz": 7.329,
+      "centre_hz": 493.8831,
+      "note": "B4",
+      "centre_dev_mHz": -0.2,
+      "level_dbfs": -52.6
+     },
+     {
+      "low_hz": 583.6631,
+      "high_hz": 590.9992,
+      "freq_sd_mHz": 0.1,
+      "beat_hz": 7.3361,
+      "centre_hz": 587.3311,
+      "note": "D5",
+      "centre_dev_mHz": 1.6,
+      "level_dbfs": -54.8
+     },
+     {
+      "low_hz": 780.3283,
+      "high_hz": 787.658,
+      "freq_sd_mHz": 0.1,
+      "beat_hz": 7.3297,
+      "centre_hz": 783.9931,
+      "note": "G5",
+      "centre_dev_mHz": 2.2,
+      "level_dbfs": -56.7
+     }
+    ],
+    "beat_hz_nominal": 7.333,
+    "beat_hz_spread": "the D5 pair reads 7.336 against 7.329 for the other two, consistently in both tracks that carry this layer; real, 7 mHz",
+    "beat_verification": "envelope line at 7.3242/7.3395 Hz in L, R and L+R plus 2nd harmonic at 14.66 Hz",
+    "provenance_note": "DERIVED: this is the Hemi-Sync F15 deep section's unexplained 7.3 Hz split, kept and moved onto the G-major grid.",
+    "spatial": "rotating"
+   },
+   "beta_165": {
+    "pairs": [
+     {
+      "low_hz": 579.0818,
+      "high_hz": 595.5797,
+      "freq_sd_mHz": 0.0,
+      "beat_hz": 16.4979,
+      "centre_hz": 587.3308,
+      "note": "D5",
+      "centre_dev_mHz": 1.2,
+      "level_dbfs": -52.7
+     },
+     {
+      "low_hz": 775.7445,
+      "high_hz": 792.245,
+      "freq_sd_mHz": 0.0,
+      "beat_hz": 16.5005,
+      "centre_hz": 783.9948,
+      "note": "G5",
+      "centre_dev_mHz": 3.9,
+      "level_dbfs": -54.8
+     },
+     {
+      "low_hz": 979.5153,
+      "high_hz": 996.0215,
+      "freq_sd_mHz": 0.0,
+      "beat_hz": 16.5062,
+      "centre_hz": 987.7684,
+      "note": "B5",
+      "centre_dev_mHz": 1.8,
+      "level_dbfs": -56.8
+     }
+    ],
+    "beat_hz_nominal": 16.5,
+    "beat_verification": "envelope line at 16.4948/16.51 Hz in L, R and L+R plus 2nd harmonic at 33.00 Hz",
+    "provenance_note": "DERIVED: the tape era's 16.0 Hz beta layer, moved to 16.5 and onto the G grid. The tape's odd 755 Hz beta centre is gone, replaced by G5.",
+    "spatial": "rotating"
+   },
+   "exit": {
+    "present_on": [
+     "ff12",
+     "ff15",
+     "ff21"
+    ],
+    "tones": [
+     {
+      "hz": 458.167,
+      "ild_db": 2.8,
+      "ipd_deg": 84.1,
+      "level_rel_db": 0.0
+     },
+     {
+      "hz": 474.167,
+      "ild_db": -4.1,
+      "ipd_deg": -75.4,
+      "level_rel_db": -2.1
+     },
+     {
+      "hz": 567.333,
+      "ild_db": 5.2,
+      "ipd_deg": 86.4,
+      "level_rel_db": -2.4
+     },
+     {
+      "hz": 588.188,
+      "ild_db": 3.4,
+      "ipd_deg": 114.2,
+      "level_rel_db": -8.3
+     },
+     {
+      "hz": 607.333,
+      "ild_db": -6.9,
+      "ipd_deg": -138.8,
+      "level_rel_db": 0.2
+     },
+     {
+      "hz": 629.656,
+      "ild_db": -2.9,
+      "ipd_deg": -106.2,
+      "level_rel_db": -10.1
+     }
+    ],
+    "pairs_by_level_and_ear": [
+     {
+      "left_hz": 458.167,
+      "right_hz": 474.167,
+      "beat_hz": 16.0,
+      "centre_hz": 466.167,
+      "note": "Bb4",
+      "centre_dev_mHz": 3
+     },
+     {
+      "left_hz": 567.333,
+      "right_hz": 607.333,
+      "beat_hz": 40.0,
+      "centre_hz": 587.333,
+      "note": "D5",
+      "centre_dev_mHz": 4
+     },
+     {
+      "left_hz": 588.188,
+      "right_hz": 629.656,
+      "beat_hz": 41.468,
+      "centre_hz": 608.922,
+      "note": null,
+      "centre_dev_mHz": null
+     }
+    ],
+    "beat_verification": "envelope lines at 15.991 Hz (420-520 Hz band, present in L, R and L+R) and 40.009 Hz (540-660 Hz band, present in L, R and L+R), plus 62.35, 22.34, 20.87 and 19.14 Hz difference tones from the four coexisting 540-660 Hz carriers",
+    "unexplained": "the 588.188/629.656 pair's centre (608.92 Hz) is on no 12-TET pitch. Its frequency ratio (1.070500) equals the 567.333/607.333 pair's (1.070506) to 6 ppm, so it is the same interval transposed up by 62.5 cents. No generating rule found. Reported as measured.",
+    "vs_tape": "DERIVED: the tape exit block was 467/483 (16 Hz) and 568/632 (64 Hz). MSS keeps 16 Hz on a Bb4 centre and replaces the 64 Hz pair with 40.000 Hz on a D5 centre.",
+    "spatial": "no 1/30 Hz rotation; statically placed, both members of every pair audible in both ears (so the beats are monaural in each ear as well as binaural)"
+   }
+  }
+ },
+ "rotation": {
+  "verdict": "MEASURED. Every carrier from the theta layer upward is swept left-right by a pure sinusoidal amplitude pan. This is the single biggest structural difference from the tape era and it is identical on all four programs.",
+  "f_m_hz": 0.033333,
+  "period_s": 30.0,
+  "period_uncertainty_s": 0.02,
+  "pan_depth_eps": 0.8,
+  "pan_depth_eps_sd": 0.011,
+  "pan_depth_note": "eps is the linear-pan modulation index from the sideband/carrier ratio (|r_u| = |r_l| = 0.400 +- 0.005 on 30 measured tones). Corresponding peak ILD 18.6-20.4 dB.",
+  "measured_ild_trace": {
+   "fitted_sinusoid_amplitude_db": [
+    18.0,
+    20.1
+   ],
+   "p1_p99_spread_db": [
+    57,
+    68
+   ],
+   "second_harmonic_ratio": 0.001,
+   "note": "the ILD trace is sinusoidal in LINEAR amplitude, not in dB, which is why its dB excursion runs well past twice the fitted amplitude near the pan extremes",
+   "fitted_sinusoid_amplitude_db_remeasured": 14.44,
+   "percentile_5_95_db_remeasured": [
+    -17.86,
+    16.78
+   ],
+   "remeasure_note": "Re-measured on ff10 1300-1400 s with 250 ms demod blocks and a 30 s least-squares sinusoid fit -- the estimator the engine's acceptance test uses. The earlier 18.0-20.1 dB figures are peak-ish readings of the same trace; the fitted-amplitude figure is the one presets calibrate against because a dB trace of a linear-amplitude sinusoid is not itself sinusoidal and its fitted amplitude reads below its extremes."
+  },
+  "power_preserving": {
+   "sum_power_L2_plus_R2_sd_db": 0.45,
+   "note": "MEASURED: total power is constant to under 0.5 dB across the cycle, so this is a pan and not two independent tremolos"
+  },
+  "pair_phasing": "MEASURED: the two members of every pair are 179.5-180.9 deg apart in LFO phase, i.e. they counter-rotate. When the low member is hard left the high member is hard right, and 15 s later they have swapped ears.",
+  "layer_phasing": "MEASURED: different pairs sit at different points in the cycle. ff10 theta pairs: -57.6, -102.9, -147.3 deg (45 deg apart, 3.75 s). ff12: 194 pair -57.3, G4 -79.8, B4 -125.5, D5 -170.5. ff21: 194 +61.4, D5 +39.4, G5 -13.7, B5 -51.4. No single rule fits all layers; measured values are per-track.",
+  "consequence": "DERIVED: the binaural beat's ear polarity reverses every 15 s. The Hemi-Sync tapes used a single mid-session polarity flip (F15, F21) as a deepening cue; MSS turned that device into a continuous 30 s rotation.",
+  "not_present_on": [
+   "ground_G1",
+   "delta_G2",
+   "exit tones"
+  ],
+  "pan_law": "equal-power (constant summed power), chosen on the power measurement; see pan_law_residual for what it does not explain",
+  "pan_law_detail": "The sideband-derived index eps = 0.400*2 = 0.8 assumed a LINEAR pan (L,R proportional to 1 +/- eps*s). Direct measurement of the summed power L^2+R^2 on the 197.9985 Hz member (ff10, 1300-1400 s, 250 ms blocks) refutes that model: the summed power carries only 0.12 dB at the 30 s LFO rate and 0.16 dB at 2*f_lfo, where a linear pan of that index would swing 2.15 dB at 2*f_lfo. The pan is therefore equal-power / constant-power, and eps=0.8 is NOT its depth parameter: under the equal-power law (gains sqrt((1 +/- d*s)/2)) a depth of 0.8 would reach only 9.54 dB peak ILD against the measured ~18. The equivalent equal-power depth, solved against the same ILD estimator, is d = 0.98 (predicted fitted-sinusoid amplitude 14.31 dB and p5/p95 -17.88/+17.93 dB, against the tape's measured 14.44 dB and -17.86/+16.78 dB). Presets are written with depth 0.98.",
+  "pan_depth_equal_power_d": 0.98,
+  "pan_law_residual": "HONEST RESIDUAL: the equal-power law does not reproduce the sideband ratio this section's original eps came from. |r_u| = |r_l| = 0.400 +/- 0.005 is a raw measurement, not an artifact of the linear model; an equal-power pan at the depth that matches the measured ILD predicts about 0.315, which the measurement excludes decisively. So neither pure law explains every figure: the linear law matches the sidebands and fails the summed power by ~2 dB, the equal-power law matches the power and the ILD and misses the sidebands. Presets use equal-power because the power and ILD figures are the ones a listener hears, but the pan's true shape is somewhere between the two and is not settled."
+ },
+ "sam_verdict": {
+  "verdict": "ABSENT",
+  "summary": "No Spatial Angle Modulation is present in any of the four programs. The modulation that IS present on every mid-band carrier is a pure amplitude pan (see rotation); its SAM component is at or below the measurement noise floor.",
+  "at_the_measured_modulation_rate": {
+   "f_m_hz": 0.033333,
+   "phi_p_measured_rad": {
+    "min": 0.0021,
+    "max": 0.0155,
+    "median": 0.0075,
+    "n_tones": 30
+   },
+   "phi_p_noise_floor_rad": {
+    "min": 0.0079,
+    "max": 0.0128,
+    "note": "side-channel bed power in one bin referred to the mid carrier amplitude"
+   },
+   "conclusion": "phi_p sits inside its own noise floor on 24 of 30 tones and within 1.5x of it on the rest; the pan component eps = 0.80 is 50-380x larger. There is no phase-modulation component.",
+   "equivalent_swept_itd_us": {
+    "max": 24,
+    "typical": 6
+   }
+  },
+  "wideband_search": {
+   "f_m_range_hz": [
+    1,
+    100
+   ],
+   "method": "strongest non-carrier side-channel line within +-100 Hz of each carrier, referred to the mid carrier",
+   "phi_p_bound_rad": {
+    "min": 0.045,
+    "max": 0.123
+   },
+   "equivalent_swept_itd_bound_us": {
+    "min": 26,
+    "max": 108
+   },
+   "conclusion": "no coherent sideband pair exists at any gamma rate. The patents' full ear-to-ear arc needs phi_p ~ 0.48 rad at 300 Hz; the bound here is 4-10x tighter than that, and 30-60x tighter at the 1/30 Hz rate."
+  },
+  "itd_tracking": {
+   "method": "GCC-PHAT, 350 ms windows, 50 ms hop, on 200-700, 300-1500 and 1500-4000 Hz",
+   "result": "no periodic ITD anywhere. Fitted sinusoid amplitude 3-8 us at random rates against a 40-96 us frame-to-frame scatter, on all four tracks.",
+   "note": "for comparison the bed's ILD pan at 7.5 s is recovered from the same data at 4.6-4.9 dB with H2/H1 = 0.0001, so the method is not insensitive"
+  },
+  "mono_sum_test": {
+   "result": "the mono-sum envelope shows the layers' own beats (0.305, 1.495, 4.00, 7.33, 10.00, 16.50 Hz) and the difference tones between coexisting layers, and nothing else",
+   "gamma_band_floor": "in the 350-700 and 700-1200 Hz bands, where no two layers coexist to make difference tones, the largest 25-90 Hz envelope line is 4.4-14x the local median against 10^5-10^6x for the real beat lines",
+   "trap_note": "in the 30-120 and 120-350 Hz bands the envelope carries strong lines at 46.9, 48.1, 48.4, 49.6, 49.9, 50.9, 54.9, 93.7, 97.7 and 101.7 Hz. Every one is an exact difference between two carriers present in that band (e.g. 97.25-48.85 = 48.40). These are envelope-detector intermodulation, not gamma, and they are the same trap f21-results.json documents as the 'phantom 40 Hz'."
+  },
+  "gamma_content_that_does_exist": "the exit block's 567.333/607.333 pair beats at exactly 40.000 Hz, and 588.188/629.656 at 41.468 Hz, verified in the L, R and L+R envelopes. These are ordinary binaural/monaural beats on separate carriers, not SAM on a shared one."
+ },
+ "bed": {
+  "verdict": "MEASURED: one bed design, shared by all four programs. Every figure below agrees across the four tracks to within 0.2 dB unless noted.",
+  "level_rms_dbfs_150_8000": -53.65,
+  "level_estimator": "median Welch PSD (0.366 Hz bins) x bandwidth, tones excised by the median; carriers measured by coherent projection. Split estimator, per report.md's bin-width rationale.",
+  "bed_vs_carrier_db": {
+   "vs_194_hz_theta": -8.6,
+   "vs_97_25_hz": -12.9,
+   "vs_490_219_hz": 3.8,
+   "vs_579_079_hz": 5.3,
+   "note": "unlike the tapes (F12 +7.8 dB, F15 +34.6 dB on their own Welch footing) the MSS bed sits BELOW the loud low layers and above the quiet high ones; the low carriers dominate the mix",
+   "superseded_by": "bed_vs_carrier_db_v2. vs_194_hz_theta = -8.6 is a median-PSD-times-bandwidth reading of the 150-8000 Hz band against a coherent-projection carrier; it is roughly 18 dB under the same band's integral and 24 dB under the 20-20000 Hz integral, and the focus-*-mss presets were calibrated against it as if it were the broadband ratio. That left the rendered bed about 21 dB too quiet."
+  },
+  "spectrum_shape": {
+   "peak_hz": 100,
+   "peak_level_dbfs": -35.2,
+   "slope_below_150_db_per_decade": 7.7,
+   "slope_150_8000_db_per_decade": -26.3,
+   "note": "not a straight-line pink or brown bed: a broad low-frequency hump peaking near 100 Hz with a brown-ish fall above it. The 20-150 Hz rise is what makes total RMS (-27.3 dBFS) sit 26 dB above the 150-8000 Hz band.",
+   "superseded_by": "spectrum_shape_v2. peak_hz 100 and the +7.7 / -26.3 slopes were straight-line fits either side of 150 Hz; the argmax is 88.1 Hz and neither side is a single straight line."
+  },
+  "stereo_construction": {
+   "coherence_20_60": 0.94,
+   "coherence_60_150": 0.7,
+   "coherence_150_300": 0.28,
+   "coherence_300_700": 0.07,
+   "coherence_700_1500": 0.06,
+   "coherence_1500_3000": 0.07,
+   "coherence_3000_6000": 0.28,
+   "coherence_6000_10000": 0.11,
+   "coherence_10000_16000": 0.1,
+   "reading": "DERIVED: two independent noise streams (the tape era's F12/F15/F21 construction) across 300-3000 Hz; the high coherence below 150 Hz is the carriers, and the 3-6 kHz bump is the panned texture element",
+   "static_interaural_delay": "none (cross-correlation of the 500-5000 Hz bed is even in lag and peaks at 0.15 normalized, no delayed copy; contrast F10's tape bed which had a fixed 145 us left lead)",
+   "coherence_note_v2": "re-measured with Welch MSC (nperseg 2^14) over nine windows: 0.03-0.15 below 2.2 kHz, 0.24-0.38 across 2.8-5.6 kHz, 0.07-0.19 above. The first pass's per-band numbers stand; what is new is the reading of the 3-6 kHz bump, which is not 'a panned texture' raising coherence but a SECOND pair of independent streams -- see panned_hf_element.two_stream_construction."
+  },
+  "panned_hf_element": {
+   "verdict": "MEASURED: a separate band-limited texture, roughly 2-8 kHz and centred 4.5-5.7 kHz, panned sinusoidally. Identical setting on all four programs.",
+   "lfo_period_s": 7.5,
+   "lfo_period_sd_s": 0.0001,
+   "lfo_frequency_hz": 0.133333,
+   "ild_amplitude_db_2800_6300": [
+    4.59,
+    4.95
+   ],
+   "ild_p_p_db_3000_6000": 12.0,
+   "second_harmonic_ratio": 0.0001,
+   "ild_amplitude_by_third_octave_db": {
+    "891": 0.72,
+    "1122": 0.66,
+    "1414": 0.67,
+    "1782": 1.41,
+    "2245": 2.8,
+    "2828": 4.23,
+    "3564": 7.01,
+    "4490": 8.17,
+    "5657": 3.45,
+    "7127": 0.79,
+    "superseded_by": "ild_amplitude_by_band_db_v2"
+   },
+   "below_1500_hz_ild_amplitude_db": "0.05-0.4 (no pan)",
+   "sum_level_modulation_db": "< 1 dB (a pan, not a tremolo)",
+   "cross_track_identity": "the four tracks share the LFO rate and depth but not the audio: raw cross-track correlation of the 2.8-6.3 kHz band is |r| < 0.003, and the LFO phase at t = 600 s differs (-69.5, -124.3, -13.0, +160.2 deg). Same production setting, four renders.",
+   "not_hrtf": "the pan is ILD-only: the ITD trace over the same windows shows no periodic component at 7.5 s or any other rate (3-8 us fitted against 40-96 us scatter). A real head-related pan would sweep ITD to +-600 us in step with the ILD.",
+   "ild_amplitude_by_band_db_v2": {
+    "estimator": "4th-order Butterworth band, 1 s power blocks at 0.25 s hop, least-squares 7.5 s sinusoid fit; the off-period fits at 5, 6, 9 and 11 s give the noise floor quoted as null.",
+    "windows": "nine voice-free windows across all four tracks: ff10 at 700, 1500, 2100 s; ff12 at 1000, 1600 s; ff15 at 1300, 1500 s; ff21 at 1210, 1500 s; 120 s each",
+    "bands_hz_amplitude_db_null_db": [
+     [
+      "355-447",
+      0.11,
+      0.17
+     ],
+     [
+      "447-562",
+      0.11,
+      0.14
+     ],
+     [
+      "562-708",
+      0.12,
+      0.16
+     ],
+     [
+      "708-891",
+      0.27,
+      0.13
+     ],
+     [
+      "891-1122",
+      0.58,
+      0.11
+     ],
+     [
+      "1122-1413",
+      0.58,
+      0.11
+     ],
+     [
+      "1413-1778",
+      0.62,
+      0.1
+     ],
+     [
+      "1778-2239",
+      1.37,
+      0.16
+     ],
+     [
+      "2239-2818",
+      2.66,
+      0.29
+     ],
+     [
+      "2818-3548",
+      4.09,
+      0.44
+     ],
+     [
+      "3548-4467",
+      6.7,
+      0.72
+     ],
+     [
+      "4467-5623",
+      7.8,
+      0.84
+     ],
+     [
+      "5623-7079",
+      3.52,
+      0.38
+     ],
+     [
+      "7079-8913",
+      0.88,
+      0.11
+     ],
+     [
+      "8913-11220",
+      1.77,
+      0.2
+     ],
+     [
+      "11220-14130",
+      0.54,
+      0.07
+     ]
+    ],
+    "cross_window_sd_db": "0.02-0.14",
+    "width": "MEASURED, and WIDER than the first pass reported: the moving band runs from about 700 Hz to about 9 kHz with one common LFO phase (the fitted phase agrees to +-3 deg from 891 Hz to 7 kHz within a window), peaking in 4467-5623 Hz. The 7079-8913 and 11220-14130 Hz bands fit ANTIPHASE at 0.5-0.9 dB; unexplained, reported as measured, not modelled.",
+    "moving_power_fraction": "DERIVED from the same numbers: for an equal-power moving component of intrinsic amplitude A on a static rest, the extreme-of-cycle mix ILD gives (L-R)/(L+R) = p*tanh(A*ln10/20), so the moving fraction p is at least 0.72 in 4467-5623 Hz, 0.65 at 3548-4467, 0.44 at 2818-3548 and 0.067 at 891-1122. The tape's moving element DOMINATES its peak band; it is not a quiet sprinkle on top."
+   },
+   "two_stream_construction": {
+    "verdict": "MEASURED: the moving band is substantially DECORRELATED between the ears, so it is two independent streams crossfaded, not one mono source panned.",
+    "magnitude_squared_coherence": {
+     "355-447": 0.066,
+     "447-562": 0.034,
+     "562-708": 0.132,
+     "708-891": 0.116,
+     "891-1122": 0.045,
+     "1122-1413": 0.07,
+     "1413-1778": 0.06,
+     "1778-2239": 0.056,
+     "2239-2818": 0.15,
+     "2818-3548": 0.383,
+     "3548-4467": 0.352,
+     "4467-5623": 0.241,
+     "5623-7079": 0.135,
+     "7079-8913": 0.144,
+     "8913-11220": 0.071,
+     "11220-14130": 0.194
+    },
+    "estimator": "Welch magnitude-squared coherence, nperseg 2^14, averaged over each band; cross-window sd under 0.01",
+    "reading": "a panned MONO source reads close to 1.0 and two independent streams read close to 0.0. The tape reads 0.24-0.38 through the moving band -- far closer to two streams than to one. This is the mechanism behind the listening report that the bed 'goes left to right and then reappears from the left': with decorrelated streams the ear does not fuse the outgoing and incoming sound into one object crossing the middle, so the gesture wraps instead of retracing. The trajectory itself is a sinusoid either way (see second_harmonic_ratio above), so the wrap is not a sawtooth.",
+    "retracts": "this retires the claim, carried in all four preset notes as unresolvable, that a large ILD swing and low coherence could not coexist and that the texture had to be run at about half depth. That followed only from modelling the texture as one mono panned band. A two-stream crossfade delivers both at once.",
+    "render_v2": "DERIVED: the presets render band_hz 1000-4800, level_db -54.0, intrinsic ild_amplitude_db 8.5, which measures 7.3-7.4 dB of mix ILD in the tape's peak band (tape 7.80) at a coherence of 0.001-0.002. Our profile is broader than the tape's -- 2.6 dB at 1413-1778 and 5.9 dB at 5623-7079 against the tape's 0.62 and 3.52 -- because a 4th-order Butterworth band over a two-slope bed cannot make skirts as steep as the tape's. Disclosed, not faked."
+   }
+  },
+  "surf": "SUPERSEDED, see surf_v2. Read as record: \"none. Hilbert-envelope modulation of the 1.5-8 kHz mono sum is 53.1%, against 52.3% expected for stationary Gaussian noise. Contrast the tapes: F12 13.8%, F21 28.9% smoothed-envelope surf.\"",
+  "reverb": "none detectable. Envelope autocorrelation of the 1.5-8 kHz mono sum is 0.012-0.022 at 5, 10, 20, 50, 100 and 200 ms.",
+  "level_rms_dbfs_150_8000_note": "CAUTION: this is a median-PSD-times-bandwidth figure. On a band that slopes as steeply as 150-8000 Hz does here, median x bandwidth sits about 18 dB BELOW the band's actual integral, so this number must not be read as band energy. See bed_vs_carrier_db_v2.",
+  "spectrum_shape_v2": {
+   "estimator": "Welch nperseg 2^17 (0.366 Hz bins) per ear, averaged, carriers excised by a 101-bin (37 Hz) running median; third-octave band energies referenced to the 194 Hz theta carrier measured by whole-window coherent projection (power, |A|^2/2).",
+   "windows": "nine voice-free windows across all four tracks: ff10 at 700, 1500, 2100 s; ff12 at 1000, 1600 s; ff15 at 1300, 1500 s; ff21 at 1210, 1500 s; 120 s each",
+   "peak_hz": 88.1,
+   "peak_hz_sd": 1.5,
+   "peak_hz_note": "MEASURED: argmax of the median-Welch continuum over 25-400 Hz. Supersedes the earlier 100 Hz.",
+   "third_octave_band_level_rel_194_hz_carrier_db": {
+    "25": -4.71,
+    "31.5": -0.61,
+    "40": 1.89,
+    "50": 3.94,
+    "63": 5.87,
+    "80": 8.0,
+    "100": 8.86,
+    "125": 7.15,
+    "160": 4.6,
+    "200": 2.11,
+    "250": -0.12,
+    "315": -3.02,
+    "400": -5.82,
+    "500": -8.98,
+    "630": -11.65,
+    "800": -12.68,
+    "1000": -13.42,
+    "1250": -15.5,
+    "1600": -17.54,
+    "2000": -17.74,
+    "2500": -16.74,
+    "3150": -16.76,
+    "4000": -18.54,
+    "5000": -21.73,
+    "6300": -26.02,
+    "8000": -33.38,
+    "10000": -37.65,
+    "12500": -42.58,
+    "16000": -53.86
+   },
+   "third_octave_sd_db": "0.12-0.58 across the nine windows",
+   "straight_line_fits_under_the_acceptance_estimator": {
+    "slope_25_150_db_per_decade": 1.84,
+    "slope_25_150_sd": 0.46,
+    "slope_150_8000_db_per_decade": -27.3,
+    "slope_150_8000_sd": 0.06,
+    "note": "MEASURED, and NOT the same numbers as spectrum_shape's +7.7 / -26.3: those came from the original analysis's own fit bands and estimator. These are what tests/test_mss_acceptance.py's fit reads on the tape, so they are the like-for-like targets for the rendered bed."
+   },
+   "shape_is_not_two_straight_lines": "MEASURED: the fall is steep just above the knee (about -37 dB/decade PSD over 160-630 Hz), shallower through 630-1600, lifted by the moving texture over 2-4 kHz, and falls off a cliff above 6.3 kHz (-55 dB/decade band, i.e. -65 PSD, over 6.3-12.5 kHz). The 16 kHz third octave is inside the encoder lowpass (see mp3_artifact_check) and carries no information about the master.",
+   "preset_fit": "DERIVED: the focus-*-mss beds render peak_hz 88.0, rise 16.0, fall -35.0 dB/decade, fitted to the third-octave table above over the two regions where the moving texture is measurably absent (25-800 Hz and 8-12.5 kHz). Rendered, that plus the texture sits within 1.3 dB rms of the whole 25 Hz-12.5 kHz table and fits -29.2 dB/decade over 150-8000 against the tape's -27.30."
+  },
+  "bed_vs_carrier_db_v2": {
+   "definition": "continuum energy INTEGRATED over the stated band, divided by the 194 Hz theta carrier's power (|A|^2/2) from a whole-window coherent projection. Split estimator: Welch+median for the continuum, projection for the line.",
+   "windows": "nine voice-free windows across all four tracks: ff10 at 700, 1500, 2100 s; ff12 at 1000, 1600 s; ff15 at 1300, 1500 s; ff21 at 1210, 1500 s; 120 s each",
+   "bed_20_20000_vs_194_hz_theta_db": 15.4,
+   "bed_20_20000_range_db": [
+    15.03,
+    16.09
+   ],
+   "bed_150_8000_vs_194_hz_theta_db": 7.5,
+   "bed_150_8000_range_db": [
+    7.28,
+    7.89
+   ],
+   "second_estimator": {
+    "what": "Free Flow 10 carries no carrier above 300 Hz for the whole session, so a plain 350 Hz-20 kHz band RMS of the tape is the bed alone -- no Welch, no median, no line/continuum split.",
+    "tape_350_20000_vs_194_hz_db": -1.04,
+    "tape_range_db": [
+     -1.09,
+     -0.98
+    ],
+    "render_before_fix_db": -14.66,
+    "render_before_fix_range_db": [
+     -14.67,
+     -14.64
+    ],
+    "agreement": "the two estimators put the same verdict on the same side and within a few dB of each other: the presets' bed was 13.6 dB short over 350 Hz-20 kHz and 20.8 dB short over 20 Hz-20 kHz."
+   },
+   "whole_mix_check": {
+    "what": "total continuum (20-20000 Hz) over the summed power of every carrier active in the window, tape against render, same estimator both sides.",
+    "tape_db": [
+     4.45,
+     9.07
+    ],
+    "render_before_fix_db": [
+     -15.89,
+     -11.76
+    ],
+    "render_exact_split_db": [
+     -15.89,
+     -11.76
+    ],
+    "note": "the render figure was computed twice, once by the same median-Welch route used on the tape and once from the exact tones/bed render split; they agree to 0.04 dB, so the gap is not an estimator artifact."
+   },
+   "verdict": "CONFIRMED: the four focus-*-mss presets were carrier-heavy. The bed level_db moved from -48.8 to -28.3 on this measurement."
+  },
+  "surf_superseded_why": "The estimator could not see what it was asked about. It took an UNSMOOTHED, full-bandwidth Hilbert envelope of the MONO SUM and reported its modulation index. That statistic is dominated by the noise's own sample-to-sample fluctuation -- which is why stationary Gaussian noise already reads 52.3% -- and a 7.5 s swell of a few percent moves it by fractions of a percent, well inside its scatter. The mono sum compounds it: (L+R)^2 carries a cross term 2LR that a swell does not modulate at the fundamental, so even the part of the signal that does breathe is diluted. Nothing about 'none' was a measurement of slow amplitude structure; it was a measurement of fast noise. The fix is 0.25-0.30 s smoothing plus a PER-EAR decomposition, which separates a swell from a pan instead of summing them.",
+  "surf_v2": {
+   "verdict": "MEASURED, and it CORRECTS bed.surf's 'none'. The bed swells at the texture layer's own 7.5000 s rate, in exact quadrature with its pan.",
+   "estimator": "per-ear: 4th-order Butterworth band, instantaneous power, 0.30 s Hann smoothing, decimated to 20 Hz, least-squares sinusoid fit at 7.5 s on the AMPLITUDE envelope (sqrt of the smoothed power). The two ears' complex fits are then split into S = (L+R)/2, the common mode, and P = (L-R)/2, the pan. An ideal equal-power crossfade gives S = 0 identically, so S is a clean readout of the swell with no pan leakage: verified on our own equal-power render, which measures S = 0.1-1.0% against P = 33%.",
+   "windows": "22 voice-free 120 s windows across all four tracks (the tracks[*].voice_free_windows_used_s sets, minus ff12 at 300 s and ff21 at 250 s, which abut music spans)",
+   "broadband_20_20000_amplitude_am_percent": {
+    "ff10": 3.51,
+    "ff12": 3.0,
+    "ff15": 3.31,
+    "ff21": 3.78,
+    "range": "2.55-4.55",
+    "grand_mean": 3.35
+   },
+   "by_band_amplitude_am_percent": {
+    "20-300": "2.2-4.7 (this band carries almost all the energy, so it sets the broadband figure)",
+    "300-1500": "3.8-8.9",
+    "1500-3000": "1.8-2.8",
+    "3000-4500": "8.0-8.9, in ANTIPHASE to every other band -- see unexplained",
+    "4500-6000": "5.4-6.2. The cleanest band in the whole measurement: inside the moving element's own peak (its ILD peaks at 4467-5623 Hz), clear of the >6.3 kHz encoder noise, and agreeing to +-0.4 points across 22 windows on four tracks. Used as the calibration target for the moving element's swell depth.",
+    "1500-8000": "0.5-2.0 -- NOT a small swell but a cancellation: the 3000-4500 lobe is antiphase to the 1500-3000 and 4500-6000 ones and the aggregate nearly nulls. Any figure quoted over this whole band is meaningless."
+   },
+   "by_third_octave_ff10_amplitude_am_percent": {
+    "250": 2.4,
+    "315": 3.1,
+    "400": 9.9,
+    "500": 9.8,
+    "630": 8.8,
+    "800": 7.2,
+    "1000": 6.5,
+    "1250": 5.2,
+    "1600": 4.4,
+    "2000": 3.8,
+    "2500": 2.3,
+    "3150": "6.1 (ANTIPHASE)",
+    "4000": "9.5 (ANTIPHASE)",
+    "5000": 3.0,
+    "6300": "26.3 -- see mp3_caveat",
+    "8000": "13.9 -- see mp3_caveat",
+    "10000": "33.3 -- see mp3_caveat",
+    "note": "the swell is SPECTRALLY SHAPED: ~3.4% below 300 Hz, a 10% peak at 400-630 Hz, back to 2.3% by 2.5 kHz. Free Flow 10 is the clean track for this because it carries no carrier above 300 Hz all session."
+   },
+   "phase_relative_to_the_texture_pan_deg": {
+    "ff10": "+85.7 +- 1.3 over six windows",
+    "all_tracks": "+72 to +103 over 22 windows",
+    "reading": "S LEADS P by a quarter cycle, on every track."
+   },
+   "mean_ild_in_the_moving_band_db": "-0.04 to -0.19, i.e. zero",
+   "mechanism": "Two mechanisms can modulate total power at the pan FUNDAMENTAL (2x is what an amplitude-preserving a+b=1 crossfade gives, and it is not what is here). (1) Unequal stream levels under an exactly counter-phased crossfade: total = a^2 P1 + b^2 P2, which moves at the fundamental but exactly IN PHASE or ANTIPHASE with the ILD, and leaves a DC offset of 10log10(P1/P2) on the ILD trace. (2) Two per-ear gain LFOs at one rate whose phase offset departs from 180 deg: with A = 1+m sin(t+p1) and B = 1+m sin(t+p2), the sum goes as cos((p1-p2)/2) sin(t+(p1+p2)/2) and the difference as sin((p1-p2)/2) cos(t+(p1+p2)/2), which are 90 deg apart for ANY offset. The measurement picks (2) without ambiguity: the lead is +90 deg to within a few degrees on all four tracks, and the ILD carries no DC offset. Mechanism (1) is ruled out.",
+   "mp3_caveat": "Above 6 kHz the common mode reads 13-33% at continuum levels 70-85 dB down. That is not content: it is encoder bit-allocation noise tracking programme loudness, and it is the same order on all four tracks regardless of what they contain. Excluded from every figure above except the by-third table, where it is labelled.",
+   "unexplained": "the 3.15-4 kHz thirds carry a common mode of 0.25x the pan amplitude in ANTIPHASE, reproducible to three figures across four independent tracks. That ratio is deterministic in the pan, so it is a property of the tape's own pan law rather than a separate gesture, but which departure from equal power produces it is not established. Not modelled by the presets.",
+   "contrast_with_the_tapes": "The Hemi-Sync-era tapes' surf was a much deeper, slower whole-bed gesture: F12 13.8% and F21 28.9% at 9.65-9.90 s, moving the entire bed. The MSS swell is 3.4% at 7.5 s and is locked to the texture pan. 'Surf' is still the right word for the mechanism and the wrong word for the depth.",
+   "which_element_carries_which_band": {
+    "method": "render the preset three ways -- tones only, tones+bed, full -- and difference. The mix is exactly linear, so this gives each element alone, and each element's own swell and power share can be read per band.",
+    "power_share_of_the_rendered_mix": {
+     "20-300": "tones 27%, bed 73%, texture 0%",
+     "300-1500": "tones 13%, bed 87%, texture 1%",
+     "1500-3000": "bed 38%, texture 62%",
+     "3000-4500": "bed 8%, texture 92%",
+     "4500-6000": "bed 8%, texture 92%",
+     "6000-8000": "bed 34%, texture 66%"
+    },
+    "consequence": "1.5-8 kHz is the TEXTURE's band, not the bed's, so a swell applied to the bed alone cannot reach it: with the bed swelling at 4.7% and the texture not at all, 4500-6000 Hz measured 0.2-0.6% against the tape's 5.4-6.2%. The texture needs its own swell, at the same rate and the same quadrature relationship to its own pan. Verified rather than assumed: with it, the rendered common mode leads the pan by +87 to +97 deg, against the tape's +85 to +100.",
+    "depths": "the bed's fractional amplitude AM is 4.7% (surf depth 0.090), fitted to the broadband and 20-300 Hz figures; the texture's is 6.0% (surf depth 0.114), fitted to 4500-6000 Hz. They are different numbers because the tape's swell is spectrally shaped and the two elements occupy different parts of that shape."
+   },
+   "does_the_shape_fall_out_of_the_two_elements": "NO, and this was tested rather than assumed. If the tape's swell shape were just two flat-depth elements in different proportions, the bed-only region would read one constant depth. It does not: on Free Flow 10, which carries no carrier above 300 Hz and no moving element below about 800 Hz, the 250 and 315 Hz thirds read 2.4% and 3.1% while the 400, 500 and 630 Hz thirds read 9.9%, 9.8% and 8.8% -- a 3x range inside a band where only the bed exists. So the bed's own swell is itself spectrally shaped, and a two-element model with one depth each cannot produce the tape's profile. Reproducing it would need a frequency-dependent swell depth, i.e. a swelling element with its own band shape, and none is invented here."
+  }
+ },
+ "music": {
+  "verdict": "MEASURED: these remasters contain actual music, which the tapes did not. It is intermittent, not a continuous pad.",
+  "intro_pad": {
+   "span_s": {
+    "ff10": [
+     260,
+     400
+    ],
+    "ff12": [
+     150,
+     300
+    ],
+    "ff15": [
+     150,
+     300
+    ],
+    "ff21": [
+     150,
+     300
+    ]
+   },
+   "pitches_hz": [
+    392.0,
+    523.1,
+    588.4,
+    654.0,
+    784.4,
+    915.5,
+    1099.7
+   ],
+   "reading": "G4, C5, D5, E5, G5 (a G-based pentatonic pad) plus a 915.5 Hz partial on no 12-TET pitch",
+   "level": "the 300-420 s window's tone-excised continuum sits 5.2 dB above the body's, and peak-to-median in every third octave above 300 Hz runs 13-36 dB against 2-4 dB in the body"
+  },
+  "body_pad": {
+   "verdict": "an A major sonority (440.0, 659.0, 823.8, 879.6, 988.6, 1099.7 Hz = A4, E5, G#5, A5, B5, C#6) appears briefly mid-session",
+   "occurrences_s": {
+    "ff12": [
+     1560,
+     1860,
+     2280
+    ],
+    "ff21": [
+     1110
+    ]
+   },
+   "note": "unrelated to the G-major beat grid; a musical event, not a layer"
+  },
+  "separation_from_bed": "the music is confined to these windows; the body windows used for every bed and carrier figure above contain no tonal content beyond the listed carriers (unexplained-line count is 0 per 30 s block outside the music spans)"
+ },
+ "tracks": {
+  "ff10": {
+   "title": "Freeflow 10 — MSS3D",
+   "duration_s": 2622.05,
+   "hemi_sync_counterpart": "Free Flow 10 (results.json 'focus10')",
+   "narration_spans_s": [
+    [
+     127,
+     152
+    ],
+    [
+     266,
+     278
+    ],
+    [
+     306,
+     312
+    ],
+    [
+     327,
+     348
+    ],
+    [
+     396,
+     400
+    ],
+    [
+     971,
+     981
+    ],
+    [
+     1021,
+     1026
+    ],
+    [
+     1038,
+     1051
+    ],
+    [
+     1373,
+     1385
+    ],
+    [
+     1653,
+     1658
+    ],
+    [
+     1663,
+     1667
+    ],
+    [
+     2014,
+     2018
+    ],
+    [
+     2026,
+     2030
+    ],
+    [
+     2379,
+     2443
+    ],
+    [
+     2477,
+     2502
+    ],
+    [
+     2540,
+     2558
+    ],
+    [
+     2576,
+     2584
+    ],
+    [
+     2597,
+     2602
+    ]
+   ],
+   "voice_free_windows_used_s": [
+    [
+     500,
+     620
+    ],
+    [
+     700,
+     820
+    ],
+    [
+     1100,
+     1220
+    ],
+    [
+     1500,
+     1620
+    ],
+    [
+     1700,
+     1820
+    ],
+    [
+     2100,
+     2220
+    ]
+   ],
+   "layer_schedule_s": {
+    "ground_G1": [
+     [
+      0,
+      2480
+     ]
+    ],
+    "delta_G2": [
+     [
+      0,
+      2480
+     ]
+    ],
+    "theta": [
+     [
+      480,
+      2500
+     ]
+    ]
+   },
+   "layers_absent": [
+    "alpha",
+    "theta_733",
+    "beta_165"
+   ],
+   "exit": "only a residual 607.33 Hz tone (17 dB prominence) at 2500-2600 s; the full six-tone exit block is not present",
+   "music_spans_s": [
+    [
+     260,
+     400
+    ],
+    [
+     2570,
+     2600
+    ]
+   ],
+   "summary": "the simplest of the four: two low pairs plus the rotating theta triad, nothing above 300 Hz for the whole session"
+  },
+  "ff12": {
+   "title": "Freeflow 12 — MSS3D",
+   "duration_s": 2695.06,
+   "hemi_sync_counterpart": "Free Flow 12 (results.json 'focus12')",
+   "narration_spans_s": [
+    [
+     82,
+     107
+    ],
+    [
+     161,
+     169
+    ],
+    [
+     197,
+     203
+    ],
+    [
+     218,
+     239
+    ],
+    [
+     684,
+     691
+    ],
+    [
+     740,
+     746
+    ],
+    [
+     799,
+     805
+    ],
+    [
+     850,
+     873
+    ],
+    [
+     880,
+     916
+    ],
+    [
+     2286,
+     2351
+    ],
+    [
+     2356,
+     2368
+    ],
+    [
+     2429,
+     2440
+    ],
+    [
+     2490,
+     2497
+    ],
+    [
+     2522,
+     2586
+    ],
+    [
+     2594,
+     2612
+    ]
+   ],
+   "voice_free_windows_used_s": [
+    [
+     300,
+     420
+    ],
+    [
+     1000,
+     1120
+    ],
+    [
+     1300,
+     1420
+    ],
+    [
+     1600,
+     1720
+    ],
+    [
+     1900,
+     2020
+    ],
+    [
+     2100,
+     2220
+    ]
+   ],
+   "layer_schedule_s": {
+    "ground_G1": [
+     [
+      0,
+      2600
+     ]
+    ],
+    "delta_G2": [
+     [
+      0,
+      2600
+     ]
+    ],
+    "theta": [
+     [
+      240,
+      2600
+     ]
+    ],
+    "alpha": [
+     [
+      780,
+      2460
+     ]
+    ],
+    "exit": [
+     [
+      2600,
+      2690
+     ]
+    ]
+   },
+   "layers_absent": [
+    "theta_733",
+    "beta_165"
+   ],
+   "music_spans_s": [
+    [
+     150,
+     300
+    ],
+    [
+     1550,
+     1580
+    ],
+    [
+     1850,
+     1880
+    ],
+    [
+     2270,
+     2300
+    ],
+    [
+     2630,
+     2690
+    ]
+   ],
+   "summary": "theta throughout, alpha for the 28-minute middle, full exit block"
+  },
+  "ff15": {
+   "title": "Free Flow 15 — MSS3D",
+   "duration_s": 2575.06,
+   "hemi_sync_counterpart": "Exploring Focus 15 (results.json 'focus15')",
+   "narration_spans_s": [
+    [
+     86,
+     108
+    ],
+    [
+     166,
+     174
+    ],
+    [
+     202,
+     208
+    ],
+    [
+     216,
+     244
+    ],
+    [
+     292,
+     296
+    ],
+    [
+     668,
+     694
+    ],
+    [
+     746,
+     759
+    ],
+    [
+     827,
+     851
+    ],
+    [
+     921,
+     942
+    ],
+    [
+     972,
+     990
+    ],
+    [
+     996,
+     1026
+    ],
+    [
+     1995,
+     2001
+    ],
+    [
+     2028,
+     2053
+    ],
+    [
+     2078,
+     2093
+    ],
+    [
+     2104,
+     2117
+    ],
+    [
+     2258,
+     2284
+    ],
+    [
+     2374,
+     2460
+    ],
+    [
+     2476,
+     2490
+    ]
+   ],
+   "voice_free_windows_used_s": [
+    [
+     1100,
+     1220
+    ],
+    [
+     1300,
+     1420
+    ],
+    [
+     1500,
+     1620
+    ],
+    [
+     1700,
+     1820
+    ],
+    [
+     1850,
+     1970
+    ]
+   ],
+   "layer_schedule_s": {
+    "ground_G1": [
+     [
+      0,
+      860
+     ],
+     [
+      2060,
+      2420
+     ]
+    ],
+    "delta_G2": [
+     [
+      0,
+      2460
+     ]
+    ],
+    "theta": [
+     [
+      240,
+      2420
+     ]
+    ],
+    "alpha": [
+     [
+      720,
+      860
+     ],
+     [
+      2060,
+      2300
+     ]
+    ],
+    "theta_733": [
+     [
+      860,
+      2060
+     ]
+    ],
+    "exit": [
+     [
+      2470,
+      2570
+     ]
+    ]
+   },
+   "layers_absent": [
+    "beta_165"
+   ],
+   "music_spans_s": [
+    [
+     150,
+     300
+    ],
+    [
+     2470,
+     2570
+    ]
+   ],
+   "summary": "the 7.333 Hz layer owns the 20-minute deep section (860-2060 s), handed off from and back to alpha; the ground pair drops out for exactly that stretch"
+  },
+  "ff21": {
+   "title": "Freeflow 21 — MSS3D",
+   "duration_s": 2400.05,
+   "hemi_sync_counterpart": "Free Flow Journey in Focus 21 (f21-results.json)",
+   "narration_spans_s": [
+    [
+     83,
+     108
+    ],
+    [
+     200,
+     206
+    ],
+    [
+     221,
+     242
+    ],
+    [
+     444,
+     453
+    ],
+    [
+     507,
+     519
+    ],
+    [
+     554,
+     575
+    ],
+    [
+     627,
+     642
+    ],
+    [
+     691,
+     701
+    ],
+    [
+     1069,
+     1085
+    ],
+    [
+     1101,
+     1125
+    ],
+    [
+     1165,
+     1202
+    ],
+    [
+     1806,
+     1865
+    ],
+    [
+     1903,
+     1941
+    ],
+    [
+     2028,
+     2039
+    ],
+    [
+     2076,
+     2103
+    ],
+    [
+     2169,
+     2185
+    ],
+    [
+     2237,
+     2248
+    ],
+    [
+     2281,
+     2291
+    ],
+    [
+     2324,
+     2351
+    ]
+   ],
+   "voice_free_windows_used_s": [
+    [
+     250,
+     370
+    ],
+    [
+     1210,
+     1330
+    ],
+    [
+     1350,
+     1470
+    ],
+    [
+     1500,
+     1620
+    ],
+    [
+     1650,
+     1770
+    ]
+   ],
+   "layer_schedule_s": {
+    "ground_G1": [
+     [
+      0,
+      580
+     ],
+     [
+      2120,
+      2320
+     ]
+    ],
+    "delta_G2": [
+     [
+      0,
+      720
+     ],
+     [
+      1920,
+      2320
+     ]
+    ],
+    "theta": [
+     [
+      220,
+      2340
+     ]
+    ],
+    "alpha": [
+     [
+      500,
+      600
+     ],
+     [
+      2120,
+      2260
+     ]
+    ],
+    "theta_733": [
+     [
+      580,
+      720
+     ],
+     [
+      1900,
+      2140
+     ]
+    ],
+    "beta_165": [
+     [
+      1040,
+      1960
+     ]
+    ],
+    "exit": [
+     [
+      2320,
+      2395
+     ]
+    ]
+   },
+   "layers_absent": [],
+   "music_spans_s": [
+    [
+     150,
+     300
+    ],
+    [
+     1100,
+     1130
+    ],
+    [
+     2330,
+     2395
+    ]
+   ],
+   "summary": "the fullest architecture: a ladder G1 -> G2 -> theta -> alpha -> 7.333 -> 16.5 on the way in, the 16.5 Hz beta layer owning 1040-1960 s, and the reverse ladder on the way out"
+  }
+ },
+ "versus_hemi_sync": {
+  "kept": [
+   "the 4.0 Hz theta triplet (three pairs, one beat) and the 10.0 Hz alpha triplet, beat-for-beat",
+   "the 1.5 Hz delta pair on a ~98 Hz centre",
+   "F15's unexplained 7.3 Hz split (now 7.333, on B4/D5/G5)",
+   "a 16 Hz exit pair",
+   "the three-pairs-per-layer, one-beat-per-layer architecture",
+   "the two-independent-noise-streams stereo bed with a shared pan LFO"
+  ],
+  "retuned": [
+   "every carrier centre from round decimals to 12-TET A440 pitches of a G major triad (200 -> 195.998, 250 -> 246.942, 300 -> 293.665, 400 -> 391.995, 500 -> 493.883, 600 -> 587.330, 755 -> 783.991, 900 -> 987.767, 100 -> 97.999, 50 -> 48.999, 467/483 -> 458.167/474.167 on Bb4)",
+   "the sub-delta beat: the tapes' 0.75 Hz on a 50 Hz centre becomes 0.300 Hz on G1",
+   "the beta beat: 16.0 -> 16.500",
+   "the 64 Hz exit beat: 568/632 -> 567.333/607.333 at 40.000 Hz",
+   "the bed pan LFO: 9.65-9.90 s -> 7.5000 s, and it now moves a band-limited 3-6 kHz texture rather than the whole bed"
+  ],
+  "added": [
+   "a 30.000 s counter-rotating amplitude pan on every carrier from theta up, +-19 dB, pair members 180 deg apart (the tape era had at most one polarity flip per session)",
+   "per-ear tremolo on the ground pair: index 0.83 at 0.250 Hz left and 0.500 Hz right",
+   "a crossfeed/widening treatment on the 98 Hz pair (-3.4 dB crossfeed, +-33-48 deg IPD)",
+   "music: a G pentatonic intro pad and intermittent A major body events",
+   "a 40.000 Hz exit beat (the only gamma-rate content in any of the four)"
+  ],
+  "removed": [
+   "the 50.000 Hz mono anchor and its 0.25/0.5/0.75 Hz monaural beats (F12, F21)",
+   "mid-session ear-polarity flips (F15, F21) - superseded by continuous rotation",
+   "all beat and carrier glides (F10's whole design)",
+   "F10's tape recipe entirely: 100/104, 298.6/302.5 and 497/493.3 are gone. MSS Freeflow 10 is built from the shared MSS layer vocabulary, not from the F10 tape's structure.",
+   "F15's 304.8/300.0 (4.8 Hz) deep pair",
+   "F21's 755 Hz beta centre and its unexplained 276.676 Hz tone",
+   "the tapes' surf modulation (F12 13.8%, F21 28.9%)",
+   "F10's fixed 145 us interaural bed delay",
+   "the 64 Hz exit beat"
+  ],
+  "unchanged_puzzles": [
+   "the 7.3 Hz split survives the retune, so whatever produced it in 1980s F15 was deliberate enough to carry forward 35 years later - but MSS gives no more clue to its origin than the tape did",
+   "the exit block's 588.188/629.656 pair sits on no pitch of the grid the rest of the release obeys"
+  ]
+ },
+ "engine_support": {
+  "already_renderable": [
+   "free per-pair carriers (PairSpec kind 'explicit') - the whole G-major grid is expressible today",
+   "per-ear high/low assignment (Group.high_ear)",
+   "same-ear tremolo with independent rate and depth (Tremolo) - covers the ground pair's 0.25/0.5 Hz modulation, though the two ears would need to be separate groups to get different rates",
+   "brown-ish noise beds with a slope override (PinkSpec.slope_db_per_decade = -26.3)",
+   "two-independent-streams stereo with a shared LFO (PinkSpec stereo_mode 'crossfade', lfo_period_s 7.5)"
+  ],
+  "not_renderable_today": [
+   {
+    "feature": "per-group carrier pan LFO",
+    "need": "a sinusoidal amplitude pan per pair with a per-member phase offset (180 deg apart) and a per-group phase offset, rate 1/30 Hz, depth eps = 0.80",
+    "size": "small - the oscillator bank already produces per-ear amplitudes; this multiplies them by 1 +- eps*sin(2 pi f t + phi)",
+    "value": "high. This is the defining MSS gesture and nothing in the current engine approximates it."
+   },
+   {
+    "feature": "static per-pair crossfeed / placement",
+    "need": "a per-group (ILD dB, IPD deg) pair, or equivalently a crossfeed gain with a phase term, to reproduce the 98 Hz pair's -3.4 dB / +-33-48 deg placement",
+    "size": "small",
+    "value": "medium - it is what turns a clean binaural pair into MSS's partly-monaural one"
+   },
+   {
+    "feature": "band-limited panned texture layer",
+    "need": "a second noise element, bandpassed roughly 2-8 kHz, with its own pan LFO independent of the main bed's stereo mode",
+    "size": "medium - PinkSpec currently describes one bed with one stereo behaviour",
+    "value": "medium - this is the audible '3D' of the MSS remasters"
+   },
+   {
+    "feature": "non-monotonic bed spectrum",
+    "need": "a bed shaped as a hump peaking near 100 Hz (+7.7 dB/decade below, -26.3 above) rather than a single slope",
+    "size": "small (a shelf or a two-slope shaping filter)",
+    "value": "medium - the current single-slope colours cannot produce it, and the low hump carries most of the mix energy"
+   },
+   {
+    "feature": "music/pad layers",
+    "need": "arbitrary pitched material scheduled alongside the beat layers",
+    "size": "large, and arguably out of scope",
+    "value": "low for signal fidelity, high for resemblance"
+   },
+   {
+    "feature": "SAM",
+    "need": "none for these recordings",
+    "size": "n/a",
+    "value": "none on the evidence here. The four MSS3D programs contain no SAM; implementing it would be implementing the patents, not these releases."
+   }
+  ]
+ }
+}

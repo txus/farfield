@@ -1,0 +1,121 @@
+name: focus-12
+title: "Focus 12 — measured free flow"
+fidelity: measured-tape
+notes: |
+  MEASURED. Transcribed from spectral analysis of a personal copy of the
+  Gateway "Free Flow 12" track (see docs/tape-analysis/ in this
+  repository). Idealized: the master runs 51.3 ppm fast (it carries an
+  NTSC pilot tone from a video-based PCM adaptor), so every carrier here
+  is the de-scaled round nominal; second harmonics (-29 dB mastering
+  residue) are omitted. Kept deliberately: the left ear carries the high
+  member throughout; the phase-locked mono 50 Hz anchor that beats
+  monaurally against the 50.5/49.75 pair; per-pair level differences; the
+  +12 dB 16/64 Hz exit block; the fully decorrelated (two independent noise
+  streams, not one panned) brown bed, ping-pong crossfaded on a ~9.82 s
+  sinusoidal LFO. The earlier report's "surf at 0.21 Hz" was not a second,
+  independent oscillator: it is the pan LFO's second harmonic (measured
+  f0 = 0.10181 Hz, 2*f0 = 0.2036 Hz), so bed level swell and the L/R
+  crossfade share one oscillator and are not tunable independently. Bed
+  loudness measured (docs/tape-analysis/bed-results.json): +7.8 dB
+  relative to the strongest carrier, far louder than earlier estimates.
+
+  Small rounding, disclosed: the bed slope renders -23.0 dB/decade
+  against the measured -23.4.
+sample_rate: 48000
+output:
+  peak_dbfs: -3.0
+
+defaults:
+  harmonics: [1.0]
+
+segments:
+  # resolved 0:00-5:55 — ground + delta only (voice intro on the tape)
+  - duration: "6:10"
+    overlap: "0:15"
+    groups:
+      - {name: ground, high_ear: left, level_db: -1.0,
+         pairs: [{mono: 50.0}, {center: 50.125, beat: 0.75}]}
+      - {name: delta, high_ear: left, level_db: 0.0,
+         pairs: [{center: 100.0, beat: 1.5}]}
+    bed: &bed
+      level_db: 4.9
+      color: brown
+      slope_db_per_decade: -23.0
+      stereo: {mode: crossfade, lfo_period_s: 9.82, depth_db: 3.25}
+
+  # resolved 5:55-9:55 — theta layer enters
+  - duration: "4:15"
+    overlap: "0:15"
+    groups:
+      - {name: ground, high_ear: left, level_db: -1.0,
+         pairs: [{mono: 50.0}, {center: 50.125, beat: 0.75}]}
+      - {name: delta, high_ear: left, level_db: 0.0,
+         pairs: [{center: 100.0, beat: 1.5}]}
+      - {name: th200, high_ear: left, level_db: -7.0,
+         pairs: [{center: 200.0, beat: 4.0}]}
+      - {name: th250, high_ear: left, level_db: -14.0,
+         pairs: [{center: 250.0, beat: 4.0}]}
+      - {name: th300, high_ear: left, level_db: -16.0,
+         pairs: [{center: 300.0, beat: 4.0}]}
+    bed: *bed
+
+  # resolved 9:55-29:05 — full stack: alpha layer over theta
+  - duration: "19:25"
+    overlap: "0:15"
+    groups:
+      - {name: ground, high_ear: left, level_db: -1.0,
+         pairs: [{mono: 50.0}, {center: 50.125, beat: 0.75}]}
+      - {name: delta, high_ear: left, level_db: 0.0,
+         pairs: [{center: 100.0, beat: 1.5}]}
+      - {name: th200, high_ear: left, level_db: -7.0,
+         pairs: [{center: 200.0, beat: 4.0}]}
+      - {name: th250, high_ear: left, level_db: -14.0,
+         pairs: [{center: 250.0, beat: 4.0}]}
+      - {name: th300, high_ear: left, level_db: -16.0,
+         pairs: [{center: 300.0, beat: 4.0}]}
+      - {name: al400, high_ear: left, level_db: -20.0,
+         pairs: [{center: 400.0, beat: 10.0}]}
+      - {name: al500, high_ear: left, level_db: -18.5,
+         pairs: [{center: 500.0, beat: 10.0}]}
+      - {name: al600, high_ear: left, level_db: -24.0,
+         pairs: [{center: 600.0, beat: 10.0}]}
+    bed: *bed
+
+  # resolved 29:05-32:05 — alpha exits, theta remains
+  - duration: "3:15"
+    overlap: "0:15"
+    groups:
+      - {name: ground, high_ear: left, level_db: -1.0,
+         pairs: [{mono: 50.0}, {center: 50.125, beat: 0.75}]}
+      - {name: delta, high_ear: left, level_db: 0.0,
+         pairs: [{center: 100.0, beat: 1.5}]}
+      - {name: th200, high_ear: left, level_db: -7.0,
+         pairs: [{center: 200.0, beat: 4.0}]}
+      - {name: th250, high_ear: left, level_db: -14.0,
+         pairs: [{center: 250.0, beat: 4.0}]}
+      - {name: th300, high_ear: left, level_db: -16.0,
+         pairs: [{center: 300.0, beat: 4.0}]}
+    bed: *bed
+
+  # resolved 32:05-32:30 — ground alone before the exit
+  - duration: "0:40"
+    overlap: "0:15"
+    groups:
+      - {name: ground, high_ear: left, level_db: -1.0,
+         pairs: [{mono: 50.0}, {center: 50.125, beat: 0.75}]}
+      - {name: delta, high_ear: left, level_db: 0.0,
+         pairs: [{center: 100.0, beat: 1.5}]}
+    bed: *bed
+
+  # resolved 32:30-35:10 — the wake-up block
+  - duration: "2:40"
+    groups:
+      - {name: x475, high_ear: left, level_db: 12.0,
+         pairs: [{center: 475.0, beat: 16.0}]}
+      - {name: x600, high_ear: left, level_db: 4.0,
+         pairs: [{center: 600.0, beat: 16.0}]}
+      - {name: x64, high_ear: left, level_db: 3.0,
+         pairs: [{center: 600.0, beat: 64.0}]}
+    bed: *bed
+
+emerge: false

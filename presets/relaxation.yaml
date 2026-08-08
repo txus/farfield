@@ -1,0 +1,31 @@
+name: relaxation
+title: "Relaxation — alpha"
+fidelity: original
+notes: |
+  One of the four Mood Minder modes named in US5356368A. The patent names the
+  mode but publishes no frequencies, so the 10 Hz alpha target here is ours,
+  chosen inside the patent's own alpha definition of 8-12 Hz. Tune it freely.
+sample_rate: 48000
+default_total: "20:00"
+output:
+  peak_dbfs: -3.0
+
+defaults:
+  carrier_base: 200.0
+  pairs: 3
+  harmonics: [1.0, 0.35, 0.15]
+
+segments:
+  - duration: "3:00"
+    overlap: "0:20"
+    groups:
+      - {name: entry, beat: {from: 14.0, to: 10.0}, level_db: 0.0}
+    pink: {level_db: -18.0}
+  - duration: hold
+    groups:
+      - {name: hold, beat: 10.0, level_db: 0.0}
+    pink: {level_db: -18.0}
+
+emerge:
+  duration: "3:00"
+  target_beat: 15.0

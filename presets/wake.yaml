@@ -1,0 +1,30 @@
+name: wake
+title: "Wake sequence — beta"
+fidelity: patent
+notes: |
+  The wake sequence from US5356368A. This is the one place the patent gives
+  explicit carrier frequencies rather than a band: a 400 Hz / 416 Hz envelope,
+  producing a 16 Hz beta beat. Single pair, since the patent specifies the
+  pair directly.
+
+  The pair is rendered pure — no harmonic shaping — because the patent
+  specifies these two carriers verbatim; adding harmonics would put tones
+  at 432 and 448 Hz that the patent never asks for.
+
+  Voice inserts ("waking up", "refreshed", "bright" at 10 dB below the
+  primary group) are not implemented.
+sample_rate: 48000
+output:
+  peak_dbfs: -3.0
+
+segments:
+  - duration: "5:00"
+    groups:
+      - name: AA
+        beat: 16.0
+        carrier_base: 400.0
+        pairs: 1
+        harmonics: [1.0]
+        level_db: 0.0
+
+emerge: false

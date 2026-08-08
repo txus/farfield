@@ -1,0 +1,958 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Binaural session</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --page: #f5f5f2;
+    --card: #fdfdfc;
+    --ink: #16181d;
+    --ink-2: #52514e;
+    --muted: #898781;
+    --border: rgba(11, 11, 11, 0.10);
+    --chip-bg: rgba(11, 11, 11, 0.05);
+    /* canvases are instrument panels: always dark, in both page themes */
+    --panel: #14171c;
+    --panel-ink: #e6e8ee;
+    --panel-muted: #8b929e;
+    --left: #3987e5;
+    --right: #d95926;
+    --accent: #3987e5;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --page: #0d0d0d;
+      --card: #1a1a19;
+      --ink: #f2f2ef;
+      --ink-2: #c3c2b7;
+      --muted: #898781;
+      --border: rgba(255, 255, 255, 0.10);
+      --chip-bg: rgba(255, 255, 255, 0.06);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font: 14px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page);
+    color: var(--ink);
+  }
+  .transport {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 20px;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+  }
+  .transport h1 {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  #play {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+  }
+  #play:hover { filter: brightness(1.1); }
+  #clock {
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-2);
+    white-space: nowrap;
+  }
+  .tier {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: var(--chip-bg);
+    color: var(--ink-2);
+    white-space: nowrap;
+  }
+  .tier[data-tier="measured-tape"] { color: #3987e5; }
+  .tier[data-tier="measured-mss"] { color: #9085e9; }
+  .tier[data-tier="patent"] { color: #199e70; }
+  .tier[data-tier="original"] { color: #c98500; }
+  .spacer { flex: 1; }
+  .chip {
+    font-size: 12px;
+    color: var(--ink-2);
+    background: var(--chip-bg);
+    border-radius: 999px;
+    padding: 3px 10px;
+    white-space: nowrap;
+  }
+  main {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 20px 20px 48px;
+    display: grid;
+    gap: 18px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px 16px;
+  }
+  .card-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin: 0 0 10px;
+  }
+  .card-head h2 {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0;
+    color: var(--ink-2);
+  }
+  .card-head .hint { font-size: 12px; color: var(--muted); }
+  .legend { display: flex; gap: 14px; margin-left: auto; font-size: 12px; color: var(--ink-2); }
+  .legend .key { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+  canvas {
+    display: block;
+    width: 100%;
+    border-radius: 6px;
+    background: var(--panel);
+  }
+  canvas.seekable { cursor: crosshair; }
+  #spec-left { height: 220px; margin-bottom: 6px; }
+  #spec-right { height: 242px; }
+  #timeline { height: 200px; }
+  #meters { height: 200px; }
+  #waves { height: 240px; }
+  .prose { max-width: 72ch; font-size: 13.5px; color: var(--ink-2); }
+  .prose p { margin: 0 0 10px; }
+  .callout {
+    border-left: 3px solid var(--accent);
+    padding: 2px 0 2px 12px;
+    margin: 0 0 12px;
+  }
+  .muted { color: var(--muted); font-size: 12.5px; }
+  #tip {
+    position: fixed;
+    z-index: 20;
+    pointer-events: none;
+    background: rgba(20, 23, 28, 0.94);
+    color: #e6e8ee;
+    font-size: 12px;
+    line-height: 1.45;
+    padding: 6px 9px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    max-width: 260px;
+    display: none;
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+
+<div class="transport">
+  <button id="play" aria-label="Play">&#9654;</button>
+  <span id="clock">0:00&thinsp;/&thinsp;0:00</span>
+  <h1 id="title"></h1>
+  <span class="tier" id="tier"></span>
+  <span class="spacer"></span>
+  <span class="chip" id="chip-band"></span>
+  <span class="chip" id="chip-rate"></span>
+</div>
+
+<main>
+  <section class="card">
+    <div class="card-head">
+      <h2>Spectrogram</h2>
+      <span class="hint">precomputed at 0.73&nbsp;Hz resolution &middot; click to seek</span>
+      <div class="legend">
+        <span class="key"><span class="swatch" style="background:var(--left)"></span>left ear</span>
+        <span class="key"><span class="swatch" style="background:var(--right)"></span>right ear</span>
+      </div>
+    </div>
+    <canvas id="spec-left" class="seekable"></canvas>
+    <canvas id="spec-right" class="seekable"></canvas>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <h2>Session timeline</h2>
+      <span class="hint">one lane per signal group &middot; click to seek</span>
+    </div>
+    <canvas id="timeline" class="seekable"></canvas>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <h2>Carrier levels</h2>
+      <span class="hint">Goertzel meters at the exact rendered frequencies</span>
+      <div class="legend">
+        <span class="key"><span class="swatch" style="background:var(--left)"></span>left</span>
+        <span class="key"><span class="swatch" style="background:var(--right)"></span>right</span>
+      </div>
+    </div>
+    <canvas id="meters"></canvas>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <h2>Live waveform</h2>
+      <span class="hint">realtime oscilloscope, three traces</span>
+    </div>
+    <canvas id="waves"></canvas>
+  </section>
+
+  <section class="card prose">
+    <div class="callout"><p id="beat-note"></p></div>
+    <p id="notes"></p>
+  </section>
+</main>
+
+<div id="tip"></div>
+
+<script>
+const PAYLOAD = __PAYLOAD__;
+</script>
+<script>
+(function () {
+  "use strict";
+
+  // ---- palette (validated against the dark panel surface) --------------
+  const INK = "#e6e8ee";
+  const MUTED = "#8b929e";
+  const GRID = "rgba(255,255,255,0.07)";
+  const LEFT = "#3987e5";
+  const RIGHT = "#d95926";
+  const SUM = "#eef0f3";
+  const GROUP_COLORS = ["#199e70", "#c98500", "#9085e9"];
+  const PINK_BED = "#8b929e";
+  const PLAYHEAD = "rgba(255,255,255,0.9)";
+
+  // ---- helpers ----------------------------------------------------------
+  function b64ToBytes(b64) {
+    const binary = atob(b64);
+    const out = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) out[i] = binary.charCodeAt(i);
+    return out;
+  }
+  function dpr() { return window.devicePixelRatio || 1; }
+  function px(v) { return Math.round(v * dpr()); }
+  function hair() { return Math.max(1, Math.round(dpr())); }
+
+  function formatClock(seconds) {
+    if (!isFinite(seconds)) seconds = 0;
+    const total = Math.max(0, Math.round(seconds));
+    const h = Math.floor(total / 3600);
+    const m = Math.floor((total % 3600) / 60);
+    const s = total % 60;
+    return h
+      ? h + ":" + String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0")
+      : m + ":" + String(s).padStart(2, "0");
+  }
+
+  function fitCanvas(canvas) {
+    const width = Math.max(1, Math.round(canvas.clientWidth * dpr()));
+    const height = Math.max(1, Math.round(canvas.clientHeight * dpr()));
+    if (canvas.width !== width || canvas.height !== height) {
+      canvas.width = width;
+      canvas.height = height;
+    }
+  }
+
+  const SESSION = PAYLOAD.session;
+  const DURATION = SESSION.duration_s || 1;
+
+  // ---- header text --------------------------------------------------------
+  document.title = SESSION.title || "Binaural session";
+  document.getElementById("title").textContent = SESSION.title || "";
+  const TIER_LABELS = {
+    "measured-tape": "measured from the original tapes",
+    "measured-mss": "measured from the MSS remasters",
+    "patent": "from the patents",
+    "original": "original design",
+  };
+  const tierEl = document.getElementById("tier");
+  tierEl.textContent = TIER_LABELS[SESSION.fidelity] || SESSION.fidelity || "";
+  tierEl.dataset.tier = SESSION.fidelity || "";
+  document.getElementById("notes").textContent = SESSION.notes || "";
+  document.getElementById("beat-note").textContent =
+    "The binaural beat — the few-Hz difference between what each ear " +
+    "receives — is not present in this audio file: it exists only in the " +
+    "listener's superior olivary complex, where the brain compares the two " +
+    "ears. When a session stacks several carrier pairs (most presets do), " +
+    "each channel also carries its own gentle amplitude beats between " +
+    "adjacent carriers — that is deliberate, per the patent — but no " +
+    "single channel contains the binaural beat itself. Summing left and " +
+    "right produces an audible envelope at the beat rate: a monaural beat " +
+    "you would only hear from speakers, never in headphones.";
+  document.getElementById("chip-band").textContent =
+    Math.round(PAYLOAD.spectrogram.freq_min) + "–" +
+    Math.round(PAYLOAD.spectrogram.freq_max) + " Hz band";
+  document.getElementById("chip-rate").textContent =
+    (SESSION.sample_rate / 1000) + " kHz";
+
+  // ---- audio graph ---------------------------------------------------------
+  const audioEl = new Audio();
+  audioEl.src = PAYLOAD.audio_data_uri;
+  audioEl.preload = "auto";
+
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  const ctx = new AudioContextClass();
+  const source = ctx.createMediaElementSource(audioEl);
+  const splitter = ctx.createChannelSplitter(2);
+  const analyserLeft = ctx.createAnalyser();
+  const analyserRight = ctx.createAnalyser();
+  analyserLeft.fftSize = 2048;
+  analyserRight.fftSize = 2048;
+  analyserLeft.smoothingTimeConstant = 0;
+  analyserRight.smoothingTimeConstant = 0;
+  source.connect(splitter);
+  splitter.connect(analyserLeft, 0);
+  splitter.connect(analyserRight, 1);
+  source.connect(ctx.destination);
+
+  const waveLeftBuf = new Float32Array(analyserLeft.fftSize);
+  const waveRightBuf = new Float32Array(analyserRight.fftSize);
+  const sumBuf = new Float32Array(analyserLeft.fftSize);
+
+  const playButton = document.getElementById("play");
+  const clockEl = document.getElementById("clock");
+  let everPlayed = false;
+
+  playButton.addEventListener("click", function () {
+    if (ctx.state === "suspended") ctx.resume();
+    if (audioEl.paused) {
+      audioEl.play();
+      everPlayed = true;
+      playButton.innerHTML = "&#10074;&#10074;";
+      playButton.setAttribute("aria-label", "Pause");
+    } else {
+      audioEl.pause();
+      playButton.innerHTML = "&#9654;";
+      playButton.setAttribute("aria-label", "Play");
+    }
+  });
+  audioEl.addEventListener("ended", function () {
+    playButton.innerHTML = "&#9654;";
+    playButton.setAttribute("aria-label", "Play");
+  });
+
+  function currentDuration() {
+    return isFinite(audioEl.duration) && audioEl.duration > 0
+      ? audioEl.duration
+      : DURATION;
+  }
+  function seekTo(t) {
+    const d = currentDuration();
+    try { audioEl.currentTime = Math.max(0, Math.min(d - 0.01, t)); } catch (e) { /* metadata not ready */ }
+  }
+
+  // ---- tooltip --------------------------------------------------------------
+  const tip = document.getElementById("tip");
+  function showTip(clientX, clientY, html) {
+    tip.innerHTML = html;
+    tip.style.display = "block";
+    const pad = 14;
+    let x = clientX + pad;
+    let y = clientY + pad;
+    const r = tip.getBoundingClientRect();
+    if (x + r.width > window.innerWidth - 8) x = clientX - r.width - pad;
+    if (y + r.height > window.innerHeight - 8) y = clientY - r.height - pad;
+    tip.style.left = x + "px";
+    tip.style.top = y + "px";
+  }
+  function hideTip() { tip.style.display = "none"; }
+
+  // ---- shared axis drawing ---------------------------------------------------
+  function timeTickStep(duration) {
+    const steps = [1, 2, 5, 10, 15, 30, 60, 120, 300, 600, 900, 1800, 3600];
+    for (const s of steps) if (duration / s <= 9) return s;
+    return 7200;
+  }
+
+  function drawTimeAxis(cctx, plot, duration) {
+    const step = timeTickStep(duration);
+    const fontPx = px(11);
+    cctx.font = fontPx + "px system-ui, sans-serif";
+    cctx.textAlign = "center";
+    cctx.textBaseline = "top";
+    for (let t = 0; t <= duration + 0.001; t += step) {
+      const x = plot.x + (t / duration) * plot.w;
+      cctx.strokeStyle = GRID;
+      cctx.lineWidth = hair();
+      cctx.beginPath();
+      cctx.moveTo(x, plot.y);
+      cctx.lineTo(x, plot.y + plot.h);
+      cctx.stroke();
+      cctx.fillStyle = MUTED;
+      if (x < plot.x + plot.w - px(18)) {
+        cctx.fillText(formatClock(t), Math.max(x, plot.x + px(12)), plot.y + plot.h + px(5));
+      }
+    }
+    cctx.textAlign = "left";
+  }
+
+  function drawPlayhead(cctx, plot, duration) {
+    const t = audioEl.currentTime || 0;
+    const x = plot.x + (t / duration) * plot.w;
+    cctx.strokeStyle = PLAYHEAD;
+    cctx.lineWidth = hair();
+    cctx.beginPath();
+    cctx.moveTo(x, plot.y);
+    cctx.lineTo(x, plot.y + plot.h);
+    cctx.stroke();
+  }
+
+  // ---- spectrogram -------------------------------------------------------------
+  const SPEC = PAYLOAD.spectrogram;
+  const WINDOW_S = SPEC.window_s ||
+    Math.max(0, DURATION - (SPEC.n_frames - 1) * SPEC.hop_s);
+
+  // Single-hue sequential ramp on the dark panel: surface -> blue -> white.
+  const RAMP = [
+    [0.00, 20, 23, 28],
+    [0.35, 16, 66, 129],
+    [0.65, 57, 135, 229],
+    [0.85, 158, 197, 244],
+    [1.00, 244, 248, 255],
+  ];
+  function intensityToColor(v) {
+    v = Math.pow(v, 1.3); // tame the noise floor speckle
+    for (let i = 1; i < RAMP.length; i++) {
+      if (v <= RAMP[i][0]) {
+        const [p0, r0, g0, b0] = RAMP[i - 1];
+        const [p1, r1, g1, b1] = RAMP[i];
+        const t = (v - p0) / (p1 - p0 || 1);
+        return [
+          Math.round(r0 + (r1 - r0) * t),
+          Math.round(g0 + (g1 - g0) * t),
+          Math.round(b0 + (b1 - b0) * t),
+        ];
+      }
+    }
+    return [244, 248, 255];
+  }
+
+  function buildSpectrogramBitmap(base64, nFrames, nBins) {
+    const raw = b64ToBytes(base64);
+    const bmp = typeof OffscreenCanvas !== "undefined"
+      ? new OffscreenCanvas(nFrames, nBins)
+      : Object.assign(document.createElement("canvas"), { width: nFrames, height: nBins });
+    const bctx = bmp.getContext("2d");
+    const image = bctx.createImageData(nFrames, nBins);
+    const data = image.data;
+    for (let frame = 0; frame < nFrames; frame++) {
+      for (let bin = 0; bin < nBins; bin++) {
+        const rgb = intensityToColor(raw[frame * nBins + bin] / 255);
+        // Payload is row-major by frame; canvas y is inverted vs frequency.
+        const idx = ((nBins - 1 - bin) * nFrames + frame) * 4;
+        data[idx] = rgb[0];
+        data[idx + 1] = rgb[1];
+        data[idx + 2] = rgb[2];
+        data[idx + 3] = 255;
+      }
+    }
+    bctx.putImageData(image, 0, 0);
+    return bmp;
+  }
+
+  const specLeftBitmap = buildSpectrogramBitmap(SPEC.left, SPEC.n_frames, SPEC.n_bins);
+  const specRightBitmap = buildSpectrogramBitmap(SPEC.right, SPEC.n_frames, SPEC.n_bins);
+
+  const specLeftCanvas = document.getElementById("spec-left");
+  const specRightCanvas = document.getElementById("spec-right");
+  const specLeftCtx = specLeftCanvas.getContext("2d");
+  const specRightCtx = specRightCanvas.getContext("2d");
+
+  function specPlot(canvas, withTimeAxis) {
+    return {
+      x: px(58),
+      y: px(6),
+      w: canvas.width - px(58) - px(8),
+      h: canvas.height - px(6) - (withTimeAxis ? px(24) : px(6)),
+    };
+  }
+
+  function freqTicks(fmin, fmax) {
+    const span = fmax - fmin;
+    const step = span <= 40 ? 5 : span <= 100 ? 10 : span <= 250 ? 25 : 50;
+    const ticks = [];
+    for (let f = Math.ceil(fmin / step) * step; f <= fmax; f += step) ticks.push(f);
+    return ticks;
+  }
+
+  function drawSpectrogram(canvas, cctx, bitmap, channelColor, channelName, withTimeAxis) {
+    const plot = specPlot(canvas, withTimeAxis);
+    cctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // bitmap spans [window/2, duration - window/2] in time
+    const half = WINDOW_S / 2;
+    const x0 = plot.x + (half / DURATION) * plot.w;
+    const x1 = plot.x + ((DURATION - half) / DURATION) * plot.w;
+    cctx.imageSmoothingEnabled = true;
+    cctx.drawImage(bitmap, 0, 0, bitmap.width, bitmap.height, x0, plot.y, Math.max(1, x1 - x0), plot.h);
+
+    // frequency axis: labels in the left gutter, hairline grid across the plot
+    const span = SPEC.freq_max - SPEC.freq_min || 1;
+    const fontPx = px(11);
+    cctx.font = fontPx + "px system-ui, sans-serif";
+    cctx.textBaseline = "middle";
+    freqTicks(SPEC.freq_min, SPEC.freq_max).forEach(function (f) {
+      const y = plot.y + plot.h * (1 - (f - SPEC.freq_min) / span);
+      cctx.strokeStyle = GRID;
+      cctx.lineWidth = hair();
+      cctx.beginPath();
+      cctx.moveTo(plot.x, y);
+      cctx.lineTo(plot.x + plot.w, y);
+      cctx.stroke();
+      cctx.fillStyle = MUTED;
+      cctx.textAlign = "right";
+      cctx.fillText(f + " Hz", plot.x - px(8), y);
+    });
+    cctx.textAlign = "left";
+
+    if (withTimeAxis) drawTimeAxis(cctx, plot, DURATION);
+
+    // channel tag
+    cctx.fillStyle = channelColor;
+    cctx.fillRect(plot.x + px(10), plot.y + px(10), px(10), px(10));
+    cctx.fillStyle = INK;
+    cctx.font = px(11) + "px system-ui, sans-serif";
+    cctx.fillText(channelName, plot.x + px(26), plot.y + px(15));
+
+    drawPlayhead(cctx, plot, DURATION);
+    return plot;
+  }
+
+  // ---- timeline ------------------------------------------------------------------
+  const timelineCanvas = document.getElementById("timeline");
+  const timelineCtx = timelineCanvas.getContext("2d");
+
+  const LAYERS = SESSION.layers || [];
+  const PINK = SESSION.pink || [];
+
+  const groupNames = [];
+  LAYERS.forEach(function (l) {
+    if (groupNames.indexOf(l.group) === -1) groupNames.push(l.group);
+  });
+  const laneCount = groupNames.length + (PINK.length ? 1 : 0);
+  const LANE_H = 44;
+  const AXIS_H = 24;
+  timelineCanvas.style.height = (laneCount * LANE_H + AXIS_H + 8) + "px";
+
+  function groupColor(name) {
+    const i = groupNames.indexOf(name);
+    return GROUP_COLORS[Math.min(i, GROUP_COLORS.length - 1)];
+  }
+  function levelOpacity(db) {
+    const clamped = Math.max(-20, Math.min(0, db || 0));
+    return 0.45 + ((clamped + 20) / 20) * 0.5;
+  }
+  function beatLabel(layer) {
+    return layer.beat_start === layer.beat_end
+      ? layer.beat_start.toFixed(1) + " Hz"
+      : layer.beat_start.toFixed(1) + " → " + layer.beat_end.toFixed(1) + " Hz";
+  }
+
+  function timelinePlot() {
+    return {
+      x: px(58),
+      y: px(4),
+      w: timelineCanvas.width - px(58) - px(8),
+      h: timelineCanvas.height - px(4) - px(AXIS_H),
+    };
+  }
+
+  function drawTimeline() {
+    const w = timelineCanvas.width;
+    const h = timelineCanvas.height;
+    timelineCtx.clearRect(0, 0, w, h);
+    const plot = timelinePlot();
+    const laneH = plot.h / Math.max(1, laneCount);
+    const fontPx = px(11);
+    timelineCtx.font = fontPx + "px system-ui, sans-serif";
+    timelineCtx.textBaseline = "middle";
+
+    drawTimeAxis(timelineCtx, plot, DURATION);
+
+    // lane separators + labels
+    for (let i = 0; i < laneCount; i++) {
+      const y = plot.y + i * laneH;
+      if (i > 0) {
+        timelineCtx.strokeStyle = GRID;
+        timelineCtx.lineWidth = hair();
+        timelineCtx.beginPath();
+        timelineCtx.moveTo(plot.x, y);
+        timelineCtx.lineTo(plot.x + plot.w, y);
+        timelineCtx.stroke();
+      }
+      const name = i < groupNames.length ? groupNames[i] : "pink";
+      timelineCtx.fillStyle = i < groupNames.length ? groupColor(name) : PINK_BED;
+      timelineCtx.fillRect(px(8), y + laneH / 2 - px(5), px(10), px(10));
+      timelineCtx.fillStyle = INK;
+      timelineCtx.fillText(
+        name.slice(0, 6),
+        px(22),
+        y + laneH / 2,
+        px(34)
+      );
+    }
+
+    function bar(x0, x1, lane, color, alpha, label, sub) {
+      const y = plot.y + lane * laneH;
+      const barY = y + laneH * 0.18;
+      const barH = laneH * 0.64;
+      const r = px(3);
+      const bw = Math.max(px(2), x1 - x0);
+      timelineCtx.globalAlpha = alpha;
+      timelineCtx.fillStyle = color;
+      timelineCtx.beginPath();
+      timelineCtx.roundRect(x0, barY, bw, barH, r);
+      timelineCtx.fill();
+      timelineCtx.globalAlpha = 1;
+      if (label && bw > px(70)) {
+        timelineCtx.fillStyle = "rgba(255,255,255,0.95)";
+        timelineCtx.fillText(label, x0 + px(7), barY + barH * (sub ? 0.32 : 0.5));
+        if (sub) {
+          timelineCtx.fillStyle = "rgba(255,255,255,0.7)";
+          timelineCtx.fillText(sub, x0 + px(7), barY + barH * 0.72);
+        }
+      }
+    }
+
+    LAYERS.forEach(function (layer) {
+      bar(
+        plot.x + (layer.start_s / DURATION) * plot.w,
+        plot.x + (layer.end_s / DURATION) * plot.w,
+        groupNames.indexOf(layer.group),
+        groupColor(layer.group),
+        levelOpacity(layer.level_db),
+        beatLabel(layer),
+        (layer.level_db > 0 ? "+" : "") + layer.level_db.toFixed(0) + " dB"
+      );
+    });
+    PINK.forEach(function (p) {
+      bar(
+        plot.x + (p.start_s / DURATION) * plot.w,
+        plot.x + (p.end_s / DURATION) * plot.w,
+        groupNames.length,
+        PINK_BED,
+        0.4,
+        "pink noise",
+        p.level_db.toFixed(0) + " dB"
+      );
+    });
+
+    drawPlayhead(timelineCtx, plot, DURATION);
+  }
+
+  function timelineHit(offsetX, offsetY) {
+    const plot = timelinePlot();
+    const xd = offsetX * dpr();
+    const yd = offsetY * dpr();
+    if (xd < plot.x || xd > plot.x + plot.w) return null;
+    const t = ((xd - plot.x) / plot.w) * DURATION;
+    const laneH = plot.h / Math.max(1, laneCount);
+    const lane = Math.floor((yd - plot.y) / laneH);
+    if (lane < 0 || lane >= laneCount) return { t: t };
+    if (lane === groupNames.length) {
+      const p = PINK.find(function (q) { return t >= q.start_s && t <= q.end_s; });
+      return { t: t, pink: p };
+    }
+    const name = groupNames[lane];
+    const layer = LAYERS.find(function (l) {
+      return l.group === name && t >= l.start_s && t <= l.end_s;
+    });
+    return { t: t, layer: layer };
+  }
+
+  // ---- meters ---------------------------------------------------------------------
+  const metersCanvas = document.getElementById("meters");
+  const metersCtx = metersCanvas.getContext("2d");
+  const tracks = { left: {}, right: {} };
+  const freqSet = {};
+  (PAYLOAD.meters.carriers || []).forEach(function (m) {
+    tracks[m.channel][m.freq] = b64ToBytes(m.track);
+    freqSet[m.freq] = true;
+  });
+  const meterFreqs = Object.keys(freqSet).map(Number).sort(function (a, b) { return b - a; });
+  const METER_ROW = 16;
+  metersCanvas.style.height = (meterFreqs.length * METER_ROW + 30) + "px";
+
+  function meterIndex() {
+    const hop = PAYLOAD.meters.hop_s || 0.25;
+    return Math.max(0, Math.floor((audioEl.currentTime || 0) / hop));
+  }
+  function trackValue(track, idx) {
+    if (!track || !track.length) return 0;
+    return track[Math.min(idx, track.length - 1)] / 255;
+  }
+
+  function metersPlot() {
+    return {
+      centerW: px(64),
+      x: px(8),
+      y: px(6),
+      w: metersCanvas.width - px(16),
+      h: metersCanvas.height - px(12),
+    };
+  }
+
+  function drawMeters() {
+    const w = metersCanvas.width;
+    const h = metersCanvas.height;
+    metersCtx.clearRect(0, 0, w, h);
+    if (!meterFreqs.length) return;
+    const plot = metersPlot();
+    const rowH = plot.h / (meterFreqs.length + 1);
+    const centerX = plot.x + plot.w / 2;
+    const halfW = plot.w / 2 - plot.centerW / 2 - px(4);
+    const idx = meterIndex();
+    const fontPx = px(10.5);
+    metersCtx.font = fontPx + "px system-ui, sans-serif";
+    metersCtx.textBaseline = "middle";
+
+    // column captions
+    metersCtx.fillStyle = MUTED;
+    metersCtx.textAlign = "right";
+    metersCtx.fillText("left", centerX - plot.centerW / 2 - px(4), plot.y + rowH / 2);
+    metersCtx.textAlign = "left";
+    metersCtx.fillText("right", centerX + plot.centerW / 2 + px(4), plot.y + rowH / 2);
+
+    meterFreqs.forEach(function (freq, i) {
+      const y = plot.y + (i + 1) * rowH;
+      const lv = trackValue(tracks.left[freq], idx);
+      const rv = trackValue(tracks.right[freq], idx);
+      const active = lv > 0.02 || rv > 0.02;
+
+      metersCtx.fillStyle = active ? INK : "rgba(139,146,158,0.4)";
+      metersCtx.textAlign = "center";
+      metersCtx.fillText(freq.toFixed(0), centerX, y + rowH / 2 - px(1));
+
+      const barH = Math.max(px(4), rowH * 0.52);
+      const yBar = y + (rowH - barH) / 2;
+      // faint full-scale guides
+      metersCtx.fillStyle = "rgba(255,255,255,0.04)";
+      metersCtx.fillRect(centerX - plot.centerW / 2 - halfW, yBar, halfW, barH);
+      metersCtx.fillRect(centerX + plot.centerW / 2, yBar, halfW, barH);
+      if (lv > 0.004) {
+        metersCtx.fillStyle = LEFT;
+        const bw = Math.max(px(2), lv * halfW);
+        metersCtx.fillRect(centerX - plot.centerW / 2 - bw, yBar, bw, barH);
+      }
+      if (rv > 0.004) {
+        metersCtx.fillStyle = RIGHT;
+        metersCtx.fillRect(centerX + plot.centerW / 2, yBar, Math.max(px(2), rv * halfW), barH);
+      }
+    });
+    metersCtx.textAlign = "left";
+  }
+
+  function metersHit(offsetX, offsetY) {
+    const plot = metersPlot();
+    const yd = offsetY * dpr();
+    const rowH = plot.h / (meterFreqs.length + 1);
+    const i = Math.floor((yd - plot.y) / rowH) - 1;
+    if (i < 0 || i >= meterFreqs.length) return null;
+    const freq = meterFreqs[i];
+    const idx = meterIndex();
+    return {
+      freq: freq,
+      left: trackValue(tracks.left[freq], idx),
+      right: trackValue(tracks.right[freq], idx),
+    };
+  }
+
+  // ---- waveform ---------------------------------------------------------------------
+  const wavesCanvas = document.getElementById("waves");
+  const wavesCtx = wavesCanvas.getContext("2d");
+
+  function drawWaves() {
+    analyserLeft.getFloatTimeDomainData(waveLeftBuf);
+    analyserRight.getFloatTimeDomainData(waveRightBuf);
+    const w = wavesCanvas.width;
+    const h = wavesCanvas.height;
+    wavesCtx.clearRect(0, 0, w, h);
+    const n = waveLeftBuf.length;
+    const gutter = px(58);
+    const plotW = w - gutter - px(8);
+    const bandH = h / 3;
+    const centers = [bandH * 0.5, bandH * 1.5, bandH * 2.5];
+    const chanScale = bandH * 0.36;
+    const sumScale = bandH * 0.18; // |L+R| can reach 2
+
+    // band separators
+    for (let i = 1; i < 3; i++) {
+      wavesCtx.strokeStyle = GRID;
+      wavesCtx.lineWidth = hair();
+      wavesCtx.beginPath();
+      wavesCtx.moveTo(0, bandH * i);
+      wavesCtx.lineTo(w, bandH * i);
+      wavesCtx.stroke();
+    }
+
+    for (let i = 0; i < n; i++) sumBuf[i] = waveLeftBuf[i] + waveRightBuf[i];
+
+    function trace(buf, color, midY, scale) {
+      wavesCtx.strokeStyle = color;
+      wavesCtx.lineWidth = Math.max(1, Math.round(1.5 * dpr()));
+      wavesCtx.beginPath();
+      for (let i = 0; i < n; i++) {
+        const x = gutter + (i / (n - 1)) * plotW;
+        const y = midY - buf[i] * scale;
+        if (i === 0) wavesCtx.moveTo(x, y);
+        else wavesCtx.lineTo(x, y);
+      }
+      wavesCtx.stroke();
+    }
+
+    if (everPlayed) {
+      trace(waveLeftBuf, LEFT, centers[0], chanScale);
+      trace(waveRightBuf, RIGHT, centers[1], chanScale);
+      trace(sumBuf, SUM, centers[2], sumScale);
+    } else {
+      // empty state: faint center guides only, no traces through the hint
+      wavesCtx.strokeStyle = GRID;
+      wavesCtx.lineWidth = hair();
+      centers.forEach(function (midY) {
+        wavesCtx.beginPath();
+        wavesCtx.moveTo(gutter, midY);
+        wavesCtx.lineTo(gutter + plotW, midY);
+        wavesCtx.stroke();
+      });
+      wavesCtx.fillStyle = MUTED;
+      wavesCtx.font = px(13) + "px system-ui, sans-serif";
+      wavesCtx.textAlign = "center";
+      wavesCtx.textBaseline = "middle";
+      wavesCtx.fillText(
+        "Press play — the live oscilloscope draws here",
+        gutter + plotW / 2,
+        bandH * 1.5 - px(14)
+      );
+      wavesCtx.textAlign = "left";
+    }
+
+    // gutter labels: swatch + ink text
+    const fontPx = px(11);
+    wavesCtx.font = fontPx + "px system-ui, sans-serif";
+    wavesCtx.textBaseline = "middle";
+    [["left", LEFT], ["right", RIGHT], ["L+R sum", SUM]].forEach(function (pair, i) {
+      const labelY = i === 2 ? centers[i] - px(8) : centers[i];
+      wavesCtx.fillStyle = pair[1];
+      wavesCtx.fillRect(px(8), labelY - px(5), px(10), px(10));
+      wavesCtx.fillStyle = INK;
+      wavesCtx.fillText(pair[0], px(22), labelY);
+    });
+    wavesCtx.fillStyle = MUTED;
+    wavesCtx.fillText("(monaural beat)", px(8), centers[2] + px(8));
+  }
+
+  // ---- interaction ------------------------------------------------------------------
+  function specTimeAt(canvas, offsetX) {
+    const plot = specPlot(canvas, canvas === specRightCanvas);
+    const xd = offsetX * dpr();
+    if (xd < plot.x || xd > plot.x + plot.w) return null;
+    return ((xd - plot.x) / plot.w) * DURATION;
+  }
+  function specFreqAt(canvas, offsetY) {
+    const plot = specPlot(canvas, canvas === specRightCanvas);
+    const yd = offsetY * dpr();
+    if (yd < plot.y || yd > plot.y + plot.h) return null;
+    const frac = 1 - (yd - plot.y) / plot.h;
+    return SPEC.freq_min + frac * (SPEC.freq_max - SPEC.freq_min);
+  }
+
+  [specLeftCanvas, specRightCanvas].forEach(function (canvas) {
+    canvas.addEventListener("mousemove", function (e) {
+      const t = specTimeAt(canvas, e.offsetX);
+      const f = specFreqAt(canvas, e.offsetY);
+      if (t === null || f === null) { hideTip(); return; }
+      showTip(e.clientX, e.clientY, formatClock(t) + " &middot; " + f.toFixed(1) + " Hz");
+    });
+    canvas.addEventListener("mouseleave", hideTip);
+    canvas.addEventListener("click", function (e) {
+      const t = specTimeAt(canvas, e.offsetX);
+      if (t !== null) seekTo(t);
+    });
+  });
+
+  timelineCanvas.addEventListener("mousemove", function (e) {
+    const hit = timelineHit(e.offsetX, e.offsetY);
+    if (!hit) { hideTip(); return; }
+    if (hit.layer) {
+      const l = hit.layer;
+      showTip(e.clientX, e.clientY,
+        "<b>" + l.group + "</b> &middot; " + beatLabel(l) + "<br>" +
+        l.level_db.toFixed(0) + " dB &middot; " + l.pairs + " carrier pairs<br>" +
+        formatClock(l.start_s) + " – " + formatClock(l.end_s));
+    } else if (hit.pink) {
+      showTip(e.clientX, e.clientY,
+        "<b>pink noise</b> &middot; " + hit.pink.level_db.toFixed(0) + " dB<br>" +
+        formatClock(hit.pink.start_s) + " – " + formatClock(hit.pink.end_s));
+    } else {
+      showTip(e.clientX, e.clientY, formatClock(hit.t));
+    }
+  });
+  timelineCanvas.addEventListener("mouseleave", hideTip);
+  timelineCanvas.addEventListener("click", function (e) {
+    const hit = timelineHit(e.offsetX, e.offsetY);
+    if (hit) seekTo(hit.t);
+  });
+
+  metersCanvas.addEventListener("mousemove", function (e) {
+    const hit = metersHit(e.offsetX, e.offsetY);
+    if (!hit) { hideTip(); return; }
+    showTip(e.clientX, e.clientY,
+      "<b>" + hit.freq.toFixed(0) + " Hz</b><br>" +
+      "left " + (hit.left * 100).toFixed(0) + "% &middot; right " +
+      (hit.right * 100).toFixed(0) + "%");
+  });
+  metersCanvas.addEventListener("mouseleave", hideTip);
+
+  // ---- resize + frame loop ------------------------------------------------------------
+  const allCanvases = [specLeftCanvas, specRightCanvas, timelineCanvas, metersCanvas, wavesCanvas];
+  function resizeAll() { allCanvases.forEach(fitCanvas); }
+  window.addEventListener("resize", resizeAll);
+  resizeAll();
+
+  function tick() {
+    // Reschedule lives in `finally` so one bad frame can't freeze the page.
+    try {
+      drawSpectrogram(specLeftCanvas, specLeftCtx, specLeftBitmap, LEFT, "left ear", false);
+      drawSpectrogram(specRightCanvas, specRightCtx, specRightBitmap, RIGHT, "right ear", true);
+      drawTimeline();
+      drawMeters();
+      drawWaves();
+      clockEl.textContent =
+        formatClock(audioEl.currentTime) + " / " + formatClock(currentDuration());
+    } finally {
+      requestAnimationFrame(tick);
+    }
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>

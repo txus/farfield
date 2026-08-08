@@ -1,0 +1,43 @@
+name: focus-3
+title: "Focus 3 — settling on 7 Hz"
+fidelity: original
+notes: |
+  ORIGINAL DESIGN. Monroe never published frequency mappings for the Focus
+  levels, no recording of a Focus 3 program was available to measure, and
+  nothing here comes from the patents or from the Monroe Institute. This is
+  our own design, built by reasoning from the patents' band definitions and
+  their layering technique, together with published descriptions of the
+  state.
+
+  Focus 3 is described as a state of coherent, alert relaxation — a settling
+  into hemispheric coherence rather than a dissociated or drowsy condition.
+  That calls for a single steady signal rather than the opposed layering used
+  at deeper levels, so this preset holds one group at 7 Hz, on the alpha/theta
+  border, with no second signal competing for attention.
+
+  Treat this as a starting point for your own tuning, not a measurement
+  of anything.
+sample_rate: 48000
+default_total: "20:00"
+output:
+  peak_dbfs: -3.0
+
+defaults:
+  carrier_base: 200.0
+  pairs: 3
+  harmonics: [1.0, 0.35, 0.15]
+
+segments:
+  - duration: "4:00"
+    overlap: "0:30"
+    groups:
+      - {name: coherence, beat: {from: 12.0, to: 7.0}, level_db: 0.0}
+    pink: {level_db: -18.0}
+  - duration: hold
+    groups:
+      - {name: coherence, beat: 7.0, level_db: 0.0}
+    pink: {level_db: -18.0}
+
+emerge:
+  duration: "3:00"
+  target_beat: 15.0
